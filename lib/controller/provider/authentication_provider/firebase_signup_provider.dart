@@ -26,10 +26,12 @@ class SignUpProvider extends ChangeNotifier {
   String OTPCode = "";
   var user;
 
+
  final SharedPreferenceHelper _sharedPrefHelper =
       SharedPreferenceHelper.instance();
   signUpFirebase(context, name, email, password,
-      {isEmailVerified = false, isPhoneVerified = false}) async {
+      {isEmailVerified = false, isPhoneVerified = false,lat,long}) async {
+        log(lat.toString());
     try {
       isLoading = true;
       notifyListeners();
@@ -38,7 +40,7 @@ class SignUpProvider extends ChangeNotifier {
           .createUserWithEmailAndPassword(email: email, password: password);
       var uid = FirebaseAuth.instance.currentUser!.uid;
       var data = await FirebaseManager.signUpFirebaseStoreage(context:context, name:name,
-          email:email, password:password, uid:uid, isEmailVerified:isEmailVerified, isPhoneVerify:isPhoneVerified);
+          email:email, password:password, uid:uid, isEmailVerified:isEmailVerified, isPhoneVerify:isPhoneVerified,lat:lat,long:long);
       isLoading = false;
       notifyListeners();
       UID_Provider.uid = uid.toString();

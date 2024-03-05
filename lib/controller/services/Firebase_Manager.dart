@@ -22,8 +22,7 @@ class FirebaseManager {
   static String code = '';
 // /////////////////////DELETE ACCOUNT ////////////////////////
 
-static Future<void> deleteAccount(String email, String password) async {
-
+  static Future<void> deleteAccount(String email, String password) async {
     try {
       // Reauthenticate the user
       User user = FirebaseAuth.instance.currentUser!;
@@ -33,10 +32,10 @@ static Future<void> deleteAccount(String email, String password) async {
       );
       await user.reauthenticateWithCredential(credential);
 
-          await FirebaseFirestore.instance
-        .collection('Client')
-        .doc(user.uid)
-        .delete();
+      await FirebaseFirestore.instance
+          .collection('Client')
+          .doc(user.uid)
+          .delete();
       // Delete the user account
       await user.delete();
 
@@ -46,7 +45,6 @@ static Future<void> deleteAccount(String email, String password) async {
       throw e;
     }
   }
-
 
 ///////////////// UPDATE PROFILE DATA /////////////////////////
   static Future<Map<String, dynamic>> updateProfile({
@@ -217,6 +215,7 @@ static Future<void> deleteAccount(String email, String password) async {
     isEmailVerified,
     isPhoneVerify,
     image,
+    lat,long
   }) async {
     try {
       var data =
@@ -227,7 +226,10 @@ static Future<void> deleteAccount(String email, String password) async {
         "image": image ?? "",
         "UID": uid.toString(),
         "isEmailVerified": isEmailVerified,
-        "isPhoneVerified": isPhoneVerify,
+        "isPhoneVerified": isPhoneVerify,      
+        "createdTime": DateTime.now().toString(),
+        "latitude":lat,
+        "longitude":long,
       },SetOptions(merge: true));
       return data;
     } catch (e) {
@@ -236,7 +238,6 @@ static Future<void> deleteAccount(String email, String password) async {
     }
   }
 
- 
   // ignore: non_constant_identifier_names
   static VerifyOTP(String verificationID, String OTP) async {
     // try {
@@ -274,18 +275,17 @@ static Future<void> deleteAccount(String email, String password) async {
 // }
 
 Future<UserModel?> firebaseGetUserDetail(uid) async {
-  try{
-  var data = await FirebaseFirestore.instance
-      .collection(USER_COLLECTION)
-      .doc(uid)
-      .get();
-  // debugger();
-  log("-====> ${uid}");
-  if (data != null) {
-    log(data.data().toString());
-    return UserModel.fromJson(data.data()!);
-  }
-  }catch(e){
+  try {
+    var data = await FirebaseFirestore.instance
+        .collection(USER_COLLECTION)
+        .doc(uid)
+        .get();
+    // debugger();
+    if (data != null) {
+      print(data.data());
+      return UserModel.fromJson(data.data()!);
+    }
+  } catch (e) {
     log("exception is ===> ${e}");
   }
 }

@@ -1,4 +1,3 @@
-
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:developer';
@@ -13,6 +12,7 @@ import 'package:bhai_chara/view/settings-screens/dialogBox.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:bhai_chara/common/custom_button.dart';
@@ -48,7 +48,7 @@ class _ProductScreenState extends State<ProductScreen> {
           child: Consumer<ProductDetailProvider>(
               builder: (context, provider, child) {
             return provider.isLoading
-                ? const CustomLoader()
+                ? const Center(child: CustomLoader())
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -87,7 +87,7 @@ class _ProductScreenState extends State<ProductScreen> {
                             ),
                           ),
                         ),
-            
+
                         Padding(
                           padding: const EdgeInsets.only(left: 12),
                           child: Row(
@@ -116,7 +116,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       ]),
                       Padding(
                         padding: const EdgeInsets.only(left: 20, top: 25),
-                        child: provider.productDetailModel?.isFree==true
+                        child: provider.productDetailModel?.isFree == true
                             ? const Text("Free")
                             : Row(
                                 children: [
@@ -126,7 +126,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                         AppTextStyles.textStyleBoldBodyMedium,
                                   ),
                                   Text(
-                                    provider.productDetailModel?.price??'',
+                                    provider.productDetailModel?.price ?? '',
                                     style:
                                         AppTextStyles.textStyleBoldBodyMedium,
                                   ),
@@ -146,43 +146,21 @@ class _ProductScreenState extends State<ProductScreen> {
                             const EdgeInsets.only(left: 20, top: 25, right: 20),
                         child: Row(
                           //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             const Icon(
-                              Icons.location_on_outlined,
+                              Icons.calendar_month,
                               size: 30,
                             ),
-                            // Builder(builder: (context) {
-                            //   var loc = context.watch<AuthProvider>();
-                            //   return loc.isLoading
-                            //       ? Center(
-                            //           child: CustomLoader(),
-                            //         )
-                            //       : Container(
-                            //           width: MediaQuery.of(context).size.width -
-                            //               200,
-                            //           child: Text(
-                            //             loc.currentAddress,
-                            //             style: AppTextStyles
-                            //                 .textStyleBoldBodySmall
-                            //                 .copyWith(
-                            //                     fontSize: 16,
-                            //                     fontWeight: FontWeight.w400),
-                            //           ));
-                            // }),
-            
                             const Spacer(),
                             Text(
-                              DateFormat("dd-MMM-yyyy hh:mm a").format(
-                                  DateTime.parse(
-                                      provider.productDetailModel!.time!)),
+                              " ${DateFormat("dd-MMM-yyyy hh:mm a").format(DateTime.parse(provider.productDetailModel!.time!))}",
                               style: AppTextStyles.textStyleNormalBodyXSmall,
                             ),
                           ],
                         ),
                       ),
                       Padding(
-                   
                         padding: const EdgeInsets.only(left: 20, top: 25),
                         child: Text(
                           'Details',
@@ -203,13 +181,6 @@ class _ProductScreenState extends State<ProductScreen> {
                                           fontSize: 16,
                                           fontWeight: FontWeight.w400),
                                 ),
-                                Text(
-                                  'Condition:',
-                                  style: AppTextStyles.textStyleBoldBodySmall
-                                      .copyWith(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400),
-                                )
                               ],
                             ),
                             Padding(
@@ -224,13 +195,6 @@ class _ProductScreenState extends State<ProductScreen> {
                                             fontSize: 16,
                                             fontWeight: FontWeight.w600),
                                   ),
-                                  // Text(
-                                  //   'Open Box',
-                                  //   style: AppTextStyles.textStyleBoldBodySmall
-                                  //       .copyWith(
-                                  //           fontSize: 16,
-                                  //           fontWeight: FontWeight.w600),
-                                  // ),
                                 ],
                               ),
                             )
@@ -253,25 +217,25 @@ class _ProductScreenState extends State<ProductScreen> {
                               fontSize: 16, fontWeight: FontWeight.w400),
                         ),
                       ),
-                      
                       const Divider(),
                       ListTile(
                         leading: const CircleAvatar(
                           backgroundImage:
                               AssetImage('assets/images/Rectangle 10.png'),
                         ),
-                        title: Text(provider.donnerDetail?.name??'',
+                        title: Text(provider.donnerDetail?.name ?? '',
                             style: AppTextStyles.textStyleBoldBodySmall
                                 .copyWith(
                                     fontSize: 20, fontWeight: FontWeight.w600)),
                         subtitle: Text(
-                          'Member since Jul 2018',
+                        
+                          "Joined Since ${DateFormat("dd-MMM-yyyy").format(DateTime.parse(provider.donnerDetail!.createdTime.toString()))}",
                           style: AppTextStyles.textStyleNormalBodySmall,
                         ),
                       ),
-                      
+
                       const Divider(),
-                      
+
                       Padding(
                         padding: const EdgeInsets.only(left: 20, top: 25),
                         child: Text(
@@ -279,45 +243,63 @@ class _ProductScreenState extends State<ProductScreen> {
                           style: AppTextStyles.textStyleBoldBodySmall,
                         ),
                       ),
-                       Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 25),
-                        child: Row(
-                          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Icon(
-                              Icons.location_on_outlined,
-                              size: 30,
-                            ),
-                            // Builder(builder: (context) {
-                            //   var loc2 = context.watch<AuthProvider>();
-                            //   return Container(
-                            //       width: 180,
-                            //       child: Text(
-                            //         loc2.currentAddress,
-                            //         style: AppTextStyles.textStyleBoldBodySmall
-                            //             .copyWith(
-                            //           fontSize: 16,
-                            //           fontWeight: FontWeight.bold,
-                            //         ),
-                            //       ));
-                            // }),
-                          ],
-                        ),
-                      ),
-                      
+                      // Padding(
+                      //   padding:
+                      //       EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+                      //   child: Row(
+                      //     //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //     crossAxisAlignment: CrossAxisAlignment.start,
+                      //     children: [
+                      //       Icon(
+                      //         Icons.location_on_outlined,
+                      //         size: 30,
+                      //       ),
+                      //       // Builder(builder: (context) {
+                      //       //   var loc2 = context.watch<AuthProvider>();
+                      //       //   return Container(
+                      //       //       width: 180,
+                      //       //       child: Text(
+                      //       //         loc2.currentAddress,
+                      //       //         style: AppTextStyles.textStyleBoldBodySmall
+                      //       //             .copyWith(
+                      //       //           fontSize: 16,
+                      //       //           fontWeight: FontWeight.bold,
+                      //       //         ),
+                      //       //       ));
+                      //       // }),
+                      //     ],
+                      //   ),
+                      // ),
+
                       Container(
                         height: 190,
                         width: double.infinity,
                         child: InkWell(
-                          onTap: () {
-                            push(context, const MapScreen());
-                          },
-                          child: const Image(
-                              image: AssetImage('assets/images/HILmr (1).png')),
-                        ),
+                            onTap: () {
+                              push(context, const MapScreen());
+                            },
+                            child: GoogleMap(
+                              myLocationButtonEnabled: true,
+                              myLocationEnabled: true,
+                              mapType: MapType.normal,
+                              markers:  Set.from(provider.markersData)  ,
+                              initialCameraPosition:  CameraPosition(
+                                  zoom: 14,
+                                  target: LatLng(
+                                    provider.donnerDetail!.lat!.toDouble(),
+                                    provider.donnerDetail!.long!.toDouble()
+
+                                      ,)),
+                              onMapCreated: (GoogleMapController controller) {
+
+                                
+                                // bloc.googleMapController
+                                //     .complete(controller);
+                                
+                              },
+                            )),
                       ),
+
                       Padding(
                         padding: const EdgeInsets.only(top: 20, left: 8),
                         child: Text('Your safety matters to us!',
@@ -367,44 +349,47 @@ class _ProductScreenState extends State<ProductScreen> {
                                 ))
                             .toList(),
                       ),
-            
+
                       // CustomList(text: "Only meet in public / crowded places"),
                       // CustomList(text: "Never go alone to meet a buyer / seller, always take someone with you."),
                       // CustomList(text: "Check and inspect the product properly before purchasing it."),
                       // CustomList(text: "Never pay anything in advance or transfer money before inspecting the product."),
-                      if(FirebaseAuth.instance.currentUser?.uid != provider
-                                  .productDetailModel!.uid)
-                      Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: CustomButton(
-                          onTap: () async {
-                            var uid = FirebaseAuth.instance.currentUser!.uid;
-                            UserModel? user = await firebaseGetUserDetail(uid);
-                            if (user?.isPhoneVerified==true) {
-                              await provider.addRequest(context,productID:widget.id, user: user );                        
-                            } else {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return ErrorDialogBox(
-                                      title: "Verification Required!",
-                                      descrption:
-                                          "Please Verify your Phone Number",
-                                      buttonText: "GO",
-                                      onTap: () {
-                                        pop(context);
-                                        push(context, const SignUpScreenByPhone());
-                                      },
-                                    );
-                                  });
-                              // showSnack(
-                              //     context: context,
-                              //     text: "Please Verify your Phone Number");
-                            }
-                          },
-                          text: "Request",
+                      if (FirebaseAuth.instance.currentUser?.uid !=
+                          provider.productDetailModel!.uid)
+                        Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: CustomButton(
+                            onTap: () async {
+                              var uid = FirebaseAuth.instance.currentUser!.uid;
+                              UserModel? user =
+                                  await firebaseGetUserDetail(uid);
+                              if (user?.isPhoneVerified == true) {
+                                await provider.addRequest(context,
+                                    productID: widget.id, user: user);
+                              } else {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return ErrorDialogBox(
+                                        title: "Verification Required!",
+                                        descrption:
+                                            "Please Verify your Phone Number",
+                                        buttonText: "GO",
+                                        onTap: () {
+                                          pop(context);
+                                          push(context,
+                                              const SignUpScreenByPhone());
+                                        },
+                                      );
+                                    });
+                                // showSnack(
+                                //     context: context,
+                                //     text: "Please Verify your Phone Number");
+                              }
+                            },
+                            text: "Request",
+                          ),
                         ),
-                      ),
                       // SizedBox(
                       //     height: 20,
                       //   ),
