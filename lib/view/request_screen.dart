@@ -19,10 +19,10 @@ class _RequestScreenState extends State<RequestScreen> {
     return Scaffold(
       backgroundColor: AppColors.white,
       body: Container(
-        margin: EdgeInsets.all(20),
+        margin:const EdgeInsets.all(20),
         child: Column(
           children: [
-            SizedBox(
+         const   SizedBox(
               height: 100,
             ),
             Container(
@@ -32,7 +32,7 @@ class _RequestScreenState extends State<RequestScreen> {
                 borderRadius: BorderRadius.circular(50),
                 color: AppColors.blue,
               ),
-              child: Center(
+              child: const Center(
                 child: Icon(
                   Icons.done,
                   size: 30,
@@ -40,7 +40,7 @@ class _RequestScreenState extends State<RequestScreen> {
                 ),
               ),
             ),
-            SizedBox(
+         const   SizedBox(
               height: 20,
             ),
             Text(
@@ -51,7 +51,7 @@ class _RequestScreenState extends State<RequestScreen> {
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
             ),
-            SizedBox(
+          const  SizedBox(
               height: 10,
             ),
             Text(
@@ -62,7 +62,7 @@ class _RequestScreenState extends State<RequestScreen> {
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
             ),
-            SizedBox(
+          const  SizedBox(
               height: 50,
             ),
             CustomButton(

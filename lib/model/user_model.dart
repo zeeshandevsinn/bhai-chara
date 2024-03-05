@@ -3,6 +3,7 @@ class UserModel {
   String? name;
   String? password;
   String? uID;
+  String?image;
   bool? isEmailVerified;
   bool? isPhoneVerified;
 
@@ -10,12 +11,14 @@ class UserModel {
       {this.email,
       this.name,
       this.password,
+      this.image,
       this.uID,
       this.isEmailVerified,
       this.isPhoneVerified});
 
   UserModel.fromJson(Map<String, dynamic> json) {
     email = json['Email'];
+    image=json['image']??"";
     name = json['Name'];
     password = json['Password'];
     uID = json['UID'];
@@ -24,13 +27,14 @@ class UserModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['Email'] = this.email;
-    data['Name'] = this.name;
-    data['Password'] = this.password;
-    data['UID'] = this.uID;
-    data['isEmailVerified'] = this.isEmailVerified;
-    data['isPhoneVerified'] = this.isPhoneVerified;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['Email'] = email;
+    data['image']=image;
+    data['Name'] = name;
+    data['Password'] = password;
+    data['UID'] = uID;
+    data['isEmailVerified'] = isEmailVerified;
+    data['isPhoneVerified'] = isPhoneVerified;
     return data;
   }
 }

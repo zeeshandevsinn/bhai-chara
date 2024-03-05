@@ -19,6 +19,100 @@ class FirebaseManager {
   static final _auth = FirebaseAuth.instance;
   static String verifyId = '';
   static String code = '';
+// /////////////////////DELETE ACCOUNT ////////////////////////
+
+static Future<void> deleteAccount(String email, String password) async {
+
+    try {
+      // Reauthenticate the user
+      User user = FirebaseAuth.instance.currentUser!;
+      AuthCredential credential = EmailAuthProvider.credential(
+        email: email,
+        password: password,
+      );
+      await user.reauthenticateWithCredential(credential);
+
+          await FirebaseFirestore.instance
+        .collection('Client')
+        .doc(user.uid)
+        .delete();
+      // Delete the user account
+      await user.delete();
+
+      print('User account deleted successfully');
+    } catch (e) {
+      print('Error deleting user account: $e');
+      throw e;
+    }
+  }
+
+
+///////////////// UPDATE PROFILE DATA /////////////////////////
+  static Future<Map<String, dynamic>> updateProfile({
+    required String uid,
+    String? name,
+    String? email,
+    File? profileImage,
+  }) async {
+    try {
+      // Create a map to hold the updated user data
+      Map<String, dynamic> userData = {};
+
+      // Add fields to update if not null
+      if (name != null) {
+        userData['Name'] = name;
+      }
+      if (email != null) {
+        userData['Email'] = email;
+      }
+
+      // Upload profile image if provided
+      if (profileImage != null) {
+        String imageUrl = await uploadProfileImage(profileImage);
+        userData['image'] = imageUrl;
+      }
+
+      // Update user data in Firestore
+      await FirebaseFirestore.instance
+          .collection(USER_COLLECTION)
+          .doc(uid)
+          .update(userData);
+
+      // Fetch and return the updated user data
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance
+          .collection(USER_COLLECTION)
+          .doc(uid)
+          .get();
+
+      Map<String, dynamic>? updatedUserData =
+          snapshot.data() as Map<String, dynamic>? ?? {};
+
+      return updatedUserData;
+    } catch (e) {
+      print('Error updating profile: $e');
+      // Handle error
+      rethrow; // Re-throw the error to be caught by the caller
+    }
+  }
+
+  static Future<String> uploadProfileImage(File imageFile) async {
+    try {
+      String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
+      Reference referenceRoot = FirebaseStorage.instance.ref();
+      Reference referenceDirImages = referenceRoot.child('images');
+      Reference referenceImageToUpload =
+          referenceDirImages.child(uniqueFileName);
+
+      await referenceImageToUpload.putFile(imageFile);
+
+      String downloadUrl = await referenceImageToUpload.getDownloadURL();
+      return downloadUrl;
+    } catch (e) {
+      print('Error uploading profile image: $e');
+      throw e;
+    }
+  }
+
   static addProduct(
       {price,
       age,
@@ -79,7 +173,7 @@ class FirebaseManager {
         }
       }
 
-// Call the function with your selected images list
+// Call the function with your selecuted images list
       await uploadImages(selectedimages);
 
       // List<String> urlImage = [];
@@ -113,7 +207,7 @@ class FirebaseManager {
     }
   }
 
-  static SignUpFirebaseStoreage(
+  static signUpFirebaseStoreage({
     context,
     name,
     email,
@@ -121,13 +215,15 @@ class FirebaseManager {
     uid,
     isEmailVerified,
     isPhoneVerify,
-  ) async {
+    image,
+  }) async {
     try {
       var data =
           await FirebaseFirestore.instance.collection("Client").doc(uid).set({
         "Name": name,
         "Email": email,
         "Password": password,
+        "image": image ?? "",
         "UID": uid.toString(),
         "isEmailVerified": isEmailVerified,
         "isPhoneVerified": isPhoneVerify,
@@ -216,7 +312,7 @@ Future<UserModel?> firebaseGetUserDetail(uid) async {
       .collection(USER_COLLECTION)
       .doc(uid)
       .get();
-      // debugger();
+  // debugger();
   if (data != null) {
     print(data.data());
     return UserModel.fromJson(data.data()!);
