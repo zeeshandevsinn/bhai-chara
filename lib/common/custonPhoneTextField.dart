@@ -27,7 +27,7 @@ class CustomCountryPhoneField extends StatelessWidget {
               borderSide: BorderSide(),
               borderRadius: BorderRadius.circular(20)),
         ),
-        initialCountryCode: 'IN',
+        initialCountryCode: 'PK',
         onChanged: (phone) async {
           PhoneProvider.phonenumber = await phone.completeNumber;
         },

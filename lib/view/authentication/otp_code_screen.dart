@@ -99,7 +99,7 @@ class _OTPScreenState extends State<OTPScreen> {
                             TextSpan(children: [
                               TextSpan(
                                 text:
-                                    "Enter the 4-digit code sent via SMS to ",
+                                    "Enter the 6-digit code sent via SMS to ",
                                 style: AppTextStyles.textStyleNormalBodySmall,
                               ),
                               TextSpan(

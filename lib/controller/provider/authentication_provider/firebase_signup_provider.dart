@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../provider/phone_number.dart';
@@ -58,6 +60,7 @@ class SignUpProvider extends ChangeNotifier {
       var data =
           await FirebaseManager.PhoneNumberVerification(context, phoneNumber);
       verifiedID = FirebaseManager.verifyId;
+    
       if (data != null) {
         showSnack(context: context, text: "Phone Verified SuccessFully");
         PhoneNumber = phoneNumber.toString();
@@ -80,6 +83,7 @@ class SignUpProvider extends ChangeNotifier {
       // debugger();
       if (isVerified) {
         String? uid = UID_Provider.uid;
+        // String?uid='gH1Njlq0EugKbY9pWI7xT57bNSE3';
         if (uid != null) {
           FirebaseFirestore.instance
               .collection("Client")
@@ -91,7 +95,7 @@ class SignUpProvider extends ChangeNotifier {
       isLoading = false;
       notifyListeners();
     } catch (e) {
-      print(e.toString());
+      log(e.toString());
       showSnack(context: context, text: e.toString());
     }
   }

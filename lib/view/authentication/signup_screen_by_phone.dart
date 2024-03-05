@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, avoid_unnecessary_containers
 
+import 'dart:developer';
+
 import 'package:bhai_chara/common/custonPhoneTextField.dart';
 import 'package:bhai_chara/controller/provider/authentication_provider/firebase_signup_provider.dart';
 import 'package:bhai_chara/utils/app_colors.dart';
@@ -87,6 +89,7 @@ class _SignUpScreenByPhoneState extends State<SignUpScreenByPhone> {
                 ),
                 CustomButton(
                   onTap: () async {
+                    
                     if (numberController.text.isEmpty) {
                       showSnack(
                           context: context, text: "Please Enter Phone Field");

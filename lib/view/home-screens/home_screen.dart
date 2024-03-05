@@ -1,6 +1,9 @@
 // ignore_for_file: unnecessary_null_comparison, unused_local_variable, duplicate_ignore
 
+import 'dart:developer';
+
 import 'package:bhai_chara/common/custom_container_tile.dart';
+import 'package:bhai_chara/controller/provider/notification_provider.dart';
 import 'package:bhai_chara/utils/app_colors.dart';
 import 'package:bhai_chara/utils/app_config.dart';
 import 'package:bhai_chara/utils/custom_loader.dart';
@@ -11,6 +14,7 @@ import 'package:bhai_chara/view/home-screens/product_details_screen.dart';
 import 'package:bhai_chara/view/home-screens/root_screen.dart';
 import 'package:bhai_chara/view/home-screens/sell_sub_categorie_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../common/custom_container_children.dart';
@@ -70,6 +74,14 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: ()async {
+        String? token = await FirebaseMessaging.instance.getToken();
+        log(" ${token}");
+        token='dyOye8eFRN-jw8YMTLr_LG:APA91bEKwtOPiwqcimjXgV8ABnfiYfxDv2pdxxboC_NhLOxPG7Y12tqzXb6SZZR6Hd_WitEx9VUwpdaZwNkB7-Upji0O7SAVd1AMXYlvTpOAm2nRFckU6vDJDPxB6UO_up88yWU_AM6b';
+        NotificationProvider.sendNotification(token: token!, message: "Test notification");
+        // NotificationProvider.sendPushMessage(token);
+
+      },),
       backgroundColor: AppColors.white,
       body: RefreshIndicator(
         key: _refreshIndicatorKey,
