@@ -5,6 +5,9 @@ import 'package:bhai_chara/utils/app_colors.dart';
 import 'package:bhai_chara/utils/push.dart';
 import 'package:bhai_chara/utils/text-styles.dart';
 import 'package:bhai_chara/view/authentication/signup_screen_by_email.dart';
+import 'package:bhai_chara/view/settings-screens/privacy_policy.dart';
+import 'package:bhai_chara/view/settings-screens/terms_conditions.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
@@ -149,6 +152,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         text: "Terms and Conditions ",
                         style: AppTextStyles
                             .textStyleNormalBody_BlueColor_Underline,
+                             recognizer: TapGestureRecognizer()
+                      ..onTap = () async {
+                        push(context, TermsAndConditionsScreen());
+                      },
                       ),
                       TextSpan(
                         text: "and ",
@@ -158,6 +165,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         text: "Privacy",
                         style: AppTextStyles
                             .textStyleNormalBody_BlueColor_Underline,
+                            recognizer: TapGestureRecognizer()
+                      ..onTap = () async {
+                        push(context, PrivacyPolicyScreen());
+                      },
                       ),
                       const TextSpan(
                         text: " ",
@@ -166,6 +177,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         text: "Policy",
                         style: AppTextStyles
                             .textStyleNormalBody_BlueColor_Underline,
+                             recognizer: TapGestureRecognizer()
+                      ..onTap = () async {
+                        push(context, PrivacyPolicyScreen());
+                      },
                       )
                     ],
                   ),

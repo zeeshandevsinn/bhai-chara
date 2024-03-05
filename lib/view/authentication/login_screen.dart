@@ -13,6 +13,9 @@ import 'package:bhai_chara/utils/text-styles.dart';
 import 'package:bhai_chara/view/authentication/forget_password.dart';
 import 'package:bhai_chara/view/authentication/signup_screen.dart';
 import 'package:bhai_chara/view/onboard_screens/onboard_screen_three.dart';
+import 'package:bhai_chara/view/settings-screens/privacy_policy.dart';
+import 'package:bhai_chara/view/settings-screens/terms_conditions.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
@@ -281,6 +284,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                   text: "Terms and Conditions ",
                                   style: AppTextStyles
                                       .textStyleNormalBody_BlueColor_Underline,
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () async {
+                                      push(context, TermsAndConditionsScreen());
+                                    },
                                 ),
                                 TextSpan(
                                   text: "and ",
@@ -290,6 +297,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                   text: "Privacy",
                                   style: AppTextStyles
                                       .textStyleNormalBody_BlueColor_Underline,
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () async {
+                                      push(context, PrivacyPolicyScreen());
+                                    },
                                 ),
                                 const TextSpan(
                                   text: " ",
@@ -298,6 +309,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                   text: "Policy",
                                   style: AppTextStyles
                                       .textStyleNormalBody_BlueColor_Underline,
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () async {
+                                      push(context, PrivacyPolicyScreen());
+                                    },
                                 )
                               ],
                             ),
