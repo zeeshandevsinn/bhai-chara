@@ -222,9 +222,9 @@ class _ProductScreenState extends State<ProductScreen> {
                       ),
                       const Divider(),
                       ListTile(
-                        leading: const CircleAvatar(
+                        leading:  CircleAvatar(
                           backgroundImage:
-                              AssetImage('assets/images/Rectangle 10.png'),
+                              NetworkImage(provider.donnerDetail!.image!),
                         ),
                         title: Text(provider.donnerDetail?.name ?? '',
                             style: AppTextStyles.textStyleBoldBodySmall
