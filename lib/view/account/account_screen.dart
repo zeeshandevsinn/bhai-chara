@@ -258,7 +258,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           context: context,
                           builder: (context) {
                             return CupertinoAlertDialog(
-                              title: const Column(
+                              title:  Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.min,

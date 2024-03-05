@@ -40,7 +40,7 @@ class _RecredentialAlertState extends State<RecredentialAlert> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Column(
+      title:  Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,

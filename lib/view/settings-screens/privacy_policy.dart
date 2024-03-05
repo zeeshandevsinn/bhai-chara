@@ -7,7 +7,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Privacy Policy'),
       ),
-      body: const SingleChildScrollView(
+      body:  SingleChildScrollView(
         padding: EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
