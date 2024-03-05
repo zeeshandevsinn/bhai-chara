@@ -96,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Gap.h(30),
+                      
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 20,
@@ -145,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             style: const TextStyle(
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.w500,
-                                                color: AppColors.primary),
+                                                color: AppColors.black),
                                             textAlign: TextAlign.center,
                                           )
                               ],

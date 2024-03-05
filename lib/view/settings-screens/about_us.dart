@@ -1,3 +1,4 @@
+import 'package:bhai_chara/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AboutUsScreen extends StatelessWidget {
@@ -5,6 +6,8 @@ class AboutUsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: AppColors.blue,
         title: Text('About Us'),
       ),
       body:  SingleChildScrollView(

@@ -184,29 +184,30 @@ class _AccountScreenState extends State<AccountScreen> {
                             withBackground: true,
                             backgroundColor: Colors.red,
                           ),
-                          title: 'My Adds',
+                          title: 'My Ads',
                           // subtitle: "",
                         ),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 12),
-                          child: Divider(),
-                        ),
-                        SettingsItem(
-                          onTap: () {
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => const ContactSupport()));
-                          },
-                          icons: Icons.support_agent,
-                          iconStyle: IconStyle(
-                            iconsColor: Colors.white,
-                            withBackground: true,
-                            backgroundColor: Colors.pink.shade200,
-                          ),
-                          title: 'Contact Support',
-                          // subtitle: "",
-                        ),
+                        // const Padding(
+                        //   padding: EdgeInsets.symmetric(horizontal: 12),
+                        //   child: Divider(),
+                        // ),
+                        // SettingsItem(
+                        //   onTap: () {
+                        //     // Navigator.push(
+                        //     //     context,
+                        //     //     MaterialPageRoute(
+                        //     //         builder: (context) => const ContactSupport()));
+                        //   },
+                        //   icons: Icons.support_agent,
+                        //   iconStyle: IconStyle(
+                        //     iconsColor: Colors.white,
+                        //     withBackground: true,
+                        //     backgroundColor: Colors.pink.shade200,
+                        //   ),
+                        //   title: 'Contact Support',
+                        //   // subtitle: "",
+                        // ),
+                      
                         const Padding(
                           padding: EdgeInsets.symmetric(horizontal: 12),
                           child: Divider(),
