@@ -4,6 +4,9 @@ import 'package:bhai_chara/utils/push.dart';
 import 'package:bhai_chara/utils/text-styles.dart';
 import 'package:bhai_chara/view/authentication/signup_screen_by_email.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../controller/provider/authentication_provider/login_provider.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -86,7 +89,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 image: "assets/images/google.png",
                 text: "Continue with Google",
                 style_text: AppTextStyles.textStyleNormalBoldXLBodySmall,
-                ontap: () {},
+                ontap: () {
+                  context.read<LoginProvider>().signInWithGoogleAccount(context);
+                },
               ),
               const SizedBox(
                 height: 20,

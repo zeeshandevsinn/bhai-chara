@@ -8,6 +8,7 @@ import 'package:bhai_chara/utils/custom_loader.dart';
 import 'package:bhai_chara/utils/push.dart';
 import 'package:bhai_chara/utils/showSnack.dart';
 import 'package:bhai_chara/utils/text-styles.dart';
+import 'package:bhai_chara/view/authentication/forget_password.dart';
 import 'package:bhai_chara/view/authentication/signup_screen.dart';
 import 'package:bhai_chara/view/onboard_screens/onboard_screen_three.dart';
 import 'package:flutter/material.dart';
@@ -134,8 +135,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                   )),
                           suffixIconColor: AppColors.grey,
                         ),
+                        
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(onPressed: (){
+                            push(context, ForgetScreen());
+                          }, child:Text("Forget Password"))),
                         const SizedBox(
-                          height: 25,
+                          height: 15,
                         ),
                         CustomButton(
                           onTap: () async {
@@ -215,7 +222,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           text: "Continue with Google",
                           style_text:
                               AppTextStyles.textStyleNormalBoldXLBodySmall,
-                          ontap: () {},
+                          ontap: () {
+                            pro.signInWithGoogleAccount(context);
+                          },
                         ),
                         const SizedBox(
                           height: 30,
