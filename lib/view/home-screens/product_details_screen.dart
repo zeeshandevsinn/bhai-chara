@@ -34,7 +34,10 @@ class _ProductScreenState extends State<ProductScreen> {
   void initState() {
     super.initState();
     ProductDetailProvider provider = context.read<ProductDetailProvider>();
-    provider.getProductDetail(context, widget.id);
+    provider.getProductDetail(context, widget.id).then((val){
+    provider.getRequestedProduct(widget.id);
+
+    });
   }
 
   @override
@@ -228,7 +231,6 @@ class _ProductScreenState extends State<ProductScreen> {
                                 .copyWith(
                                     fontSize: 20, fontWeight: FontWeight.w600)),
                         subtitle: Text(
-                        
                           "Joined Since ${DateFormat("dd-MMM-yyyy").format(DateTime.parse(provider.donnerDetail!.createdTime.toString()))}",
                           style: AppTextStyles.textStyleNormalBodySmall,
                         ),
@@ -282,20 +284,16 @@ class _ProductScreenState extends State<ProductScreen> {
                               myLocationButtonEnabled: true,
                               myLocationEnabled: true,
                               mapType: MapType.normal,
-                              markers:  Set.from(provider.markersData)  ,
-                              initialCameraPosition:  CameraPosition(
+                              markers: Set.from(provider.markersData),
+                              initialCameraPosition: CameraPosition(
                                   zoom: 14,
                                   target: LatLng(
                                     provider.donnerDetail!.lat!.toDouble(),
-                                    provider.donnerDetail!.long!.toDouble()
-
-                                      ,)),
+                                    provider.donnerDetail!.long!.toDouble(),
+                                  )),
                               onMapCreated: (GoogleMapController controller) {
-
-                                
                                 // bloc.googleMapController
                                 //     .complete(controller);
-                                
                               },
                             )),
                       ),
@@ -356,40 +354,53 @@ class _ProductScreenState extends State<ProductScreen> {
                       // CustomList(text: "Never pay anything in advance or transfer money before inspecting the product."),
                       if (FirebaseAuth.instance.currentUser?.uid !=
                           provider.productDetailModel!.uid)
-                        Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: CustomButton(
-                            onTap: () async {
-                              var uid = FirebaseAuth.instance.currentUser!.uid;
-                              UserModel? user =
-                                  await firebaseGetUserDetail(uid);
-                              if (user?.isPhoneVerified == true) {
-                                await provider.addRequest(context,
-                                    productID: widget.id, user: user);
-                              } else {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return ErrorDialogBox(
-                                        title: "Verification Required!",
-                                        descrption:
-                                            "Please Verify your Phone Number",
-                                        buttonText: "GO",
-                                        onTap: () {
-                                          pop(context);
-                                          push(context,
-                                              const SignUpScreenByPhone());
-                                        },
-                                      );
-                                    });
-                                // showSnack(
-                                //     context: context,
-                                //     text: "Please Verify your Phone Number");
-                              }
-                            },
-                            text: "Request",
+                        if (provider.isProductRequested)
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("Already Requested", style: AppTextStyles.textStyleNormalBody_BlueColor,),
+                              ],
+                            ),
+                          )
+                        else
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: CustomButton(
+                              onTap: () async {
+                                var uid =
+                                    FirebaseAuth.instance.currentUser!.uid;
+                                UserModel? user =
+                                    await firebaseGetUserDetail(uid);
+                                if (user?.isPhoneVerified == true) {
+                                  await provider.addRequest(context,
+                                      productID: widget.id, user: user);
+                                } else {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return ErrorDialogBox(
+                                          title: "Verification Required!",
+                                          descrption:
+                                              "Please Verify your Phone Number",
+                                          buttonText: "GO",
+                                          onTap: () {
+                                            pop(context);
+                                            push(context,
+                                                const SignUpScreenByPhone());
+                                          },
+                                        );
+                                      });
+                                  // showSnack(
+                                  //     context: context,
+                                  //     text: "Please Verify your Phone Number");
+                                }
+                              },
+                              text: "Request",
+                            ),
                           ),
-                        ),
+
                       // SizedBox(
                       //     height: 20,
                       //   ),

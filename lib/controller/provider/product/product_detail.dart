@@ -2,6 +2,7 @@
 
 // ignore_for_file: unnecessary_null_comparison
 
+import 'dart:developer';
 import 'dart:ui' as ui;
 
 import 'package:bhai_chara/controller/provider/product/status.dart';
@@ -26,6 +27,7 @@ class ProductDetailProvider extends ChangeNotifier {
   UserModel? donnerDetail;
   ProductDetailModel? productDetailModel;
   List<Marker> markersData = [];
+  bool isProductRequested = false;
   getDonerDetail(uid) async {
     // debugger();
     var data = await firebaseGetUserDetail(uid);
@@ -64,15 +66,13 @@ Future<Uint8List> getBytesFromAsset(String path, int width) async {
   getProductDetail(context, id) async {
     try {
       isLoading = true;
+                  isProductRequested = false;
+
       notifyListeners();
       var data = await FirebaseFirestore.instance
           .collection(PRODUCT_COLLECTION)
           .doc(id)
           .get();
-
-      // debugger();
-
-      // debugger();
       if (data != null) {
         productDetailModel = ProductDetailModel.fromJson(data.data()!);
         donnerDetail = await getDonerDetail(productDetailModel!.uid);
@@ -84,6 +84,26 @@ Future<Uint8List> getBytesFromAsset(String path, int width) async {
     } catch (e) {
       pop(context);
       showSnack(context: context, text: e.toString());
+    }
+  }
+
+  getRequestedProduct(id) async {
+    try {
+// notifyListeners();
+      var myID = FirebaseAuth.instance.currentUser?.uid;
+      var data = await FirebaseFirestore.instance
+          .collection(REQUEST_COLLECTION)
+          .where(Filter.and(
+            Filter("requester_id", isEqualTo: myID ),
+            Filter("product_id", isEqualTo: id ),
+          ))
+          .get();
+          print(data.docs.length);
+          // debugger();
+      isProductRequested =  data.docs.isNotEmpty;
+      notifyListeners();
+    } catch (e) {
+     
     }
   }
 
@@ -107,6 +127,7 @@ Future<Uint8List> getBytesFromAsset(String path, int width) async {
       print(data);
     
       await FirebaseFirestore.instance.collection(REQUEST_COLLECTION).add(data);
+      await getRequestedProduct(productID);
       isLoading = false;
       notifyListeners();
 
