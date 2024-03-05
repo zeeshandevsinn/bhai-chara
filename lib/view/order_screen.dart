@@ -76,8 +76,11 @@ class OrderScreen extends StatelessWidget {
 
                                           receiverEmail:
                                               request.get("requester_email"),
+                                              
                                           receiverPhone:
                                               request.get("requester_phone"),
+                                              receiverImage:
+                                              request.get("requester_image"),
                                           receiverName:
                                               request.get("requester_name"),
                                               receiverID:
@@ -92,7 +95,7 @@ class OrderScreen extends StatelessWidget {
                                           price:
                                               "Price:\t\t\t${request.get("price")}",
                                           time:
-                                              "time:\t\t\t\t${DateFormat("d-MMM-yyyy mm:ss a").format(request.get("request_time").toDate())}"),
+                                              "Time:\t\t\t\t${DateFormat("d-MMM-yyyy mm:ss a").format(request.get("request_time").toDate())}"),
                                     );
                                   }),
                             ],
@@ -146,6 +149,8 @@ class OrderScreen extends StatelessWidget {
                                               request.get("requester_email"),
                                           receiverPhone:
                                               request.get("requester_phone"),
+                                              receiverImage:
+                                              request.get("requester_image"),
                                           receiverName:
                                               request.get("requester_name"),
                                           uid: request.id,
@@ -212,6 +217,8 @@ class OrderScreen extends StatelessWidget {
                                                                                 status: ProductStatus.rejected.name,
                                           uid: request.id,
                                           text: request.get("title"),
+                                          receiverImage:
+                                              request.get("requester_image"),
                                           receiverEmail:
                                               request.get("requester_email"),
                                               receiverID:

@@ -25,6 +25,7 @@ class OrderContainer extends StatelessWidget {
       required this.color1,
       required this.color2,
       required this.time,
+      required this.receiverImage,
       required this.address,
       required this.price});
   var text,
@@ -39,6 +40,7 @@ class OrderContainer extends StatelessWidget {
       receiverID,
       receiverEmail,
       receiverPhone,
+      receiverImage,
       status;
 
   @override
@@ -61,8 +63,9 @@ class OrderContainer extends StatelessWidget {
           children: [
             Row(
               children: [
-                const CircleAvatar(
+                 CircleAvatar(
                   radius: 20,
+                  backgroundImage: NetworkImage(receiverImage),
                 ),
                 const SizedBox(
                   width: 8,
@@ -167,6 +170,7 @@ class OrderContainer extends StatelessWidget {
     final ChatService chatService = ChatService();
 
     await chatService.sendMessage(
+      receiverImage: receiverImage,
         recevierId: receiverID,
         message: "Are you Interested?",
         receiverEmail: receiverEmail,

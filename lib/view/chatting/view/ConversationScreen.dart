@@ -12,9 +12,11 @@ class ConversationScreen extends StatefulWidget {
   ConversationScreen(
       {super.key,
       required this.reciverUserID,
+      required this.receiverImage,
       required this.reciverUserEmail,
       required this.receiverName});
   final String reciverUserID;
+  final String receiverImage;
   final String receiverName;
   final String reciverUserEmail;
 
@@ -29,6 +31,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
   sendMessage() async {
     if (messageController.text.isNotEmpty) {
       await chatService.sendMessage(
+        receiverImage:widget.receiverImage,
           recevierId: widget.reciverUserID,
           message: messageController.text,
           receiverEmail: widget.reciverUserEmail,
@@ -195,7 +198,9 @@ class _ConversationScreenState extends State<ConversationScreen> {
                 children: [
                   data['senderId'] == firebaseAuth.currentUser!.uid
                       ? Text(" ")
-                      : CircleAvatar(radius: 15),
+                      : CircleAvatar(radius: 15, backgroundImage: NetworkImage(
+                        data['senderId'] == firebaseAuth.currentUser!.uid ? data["senderImage"] :
+                        data["receiverImage"]),),
                   SizedBox(width: 8),
                   Text(data['senderEmail']),
                 ],

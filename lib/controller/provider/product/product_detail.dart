@@ -103,6 +103,7 @@ Future<Uint8List> getBytesFromAsset(String path, int width) async {
       data["requester_name"] = user!.name;
       data["requester_email"] = user.email;
       data["requester_phone"] = user.phoneNumber;
+      data["requester_image"] = user.image;
       print(data);
     
       await FirebaseFirestore.instance.collection(REQUEST_COLLECTION).add(data);
