@@ -86,6 +86,10 @@ class _ChatViewState extends State<ChatView> {
               push(
                   context,
                   ConversationScreen(
+                    receiverImage: data['senderId'] != myID
+                          ? data["senderImage"]
+                          : data["receiverImage"],
+                      
                       reciverUserID: data['senderId'] != myID
                           ? data["senderId"]
                           : data["receverId"],
