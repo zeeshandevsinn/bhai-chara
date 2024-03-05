@@ -26,8 +26,11 @@ class AuthProvider extends ChangeNotifier {
       if (data != null) {
         currentAddress = data;
         await Preferences.saveAddress(data);
+         isLoading=false;
+         notifyListeners();
         return currentAddress;
       }
+     
     } catch (e) {
       isLoading = false;
       notifyListeners();

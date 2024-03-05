@@ -118,7 +118,7 @@ class SignUpProvider extends ChangeNotifier {
       isLoading = false;
       notifyListeners();
     } catch (e) {
-      print(e.toString());
+      log(e.toString());
       showSnack(context: context, text: e.toString());
     }
   }

@@ -177,13 +177,18 @@ class FirebaseManager {
 // }
 
 Future<UserModel?> firebaseGetUserDetail(uid) async {
+  try{
   var data = await FirebaseFirestore.instance
       .collection(USER_COLLECTION)
       .doc(uid)
       .get();
       // debugger();
-  if (data != null) {
+  if (data.data() != null) {
+     log(" ===> ${data.data()}");
     print(data.data());
     return UserModel.fromJson(data.data()!);
+  }
+  }catch(e){
+    log("exception is ===> ${e}");
   }
 }

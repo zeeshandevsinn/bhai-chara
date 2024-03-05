@@ -85,9 +85,9 @@ class _ProductScreenState extends State<ProductScreen> {
                             ),
                           ),
                         ),
-      
+            
                         Padding(
-                          padding: const EdgeInsets.all(12),
+                          padding: const EdgeInsets.only(left: 12),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -114,7 +114,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       ]),
                       Padding(
                         padding: const EdgeInsets.only(left: 20, top: 25),
-                        child: provider.productDetailModel!.isFree!
+                        child: provider.productDetailModel?.isFree==true
                             ? const Text("Free")
                             : Row(
                                 children: [
@@ -124,7 +124,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                         AppTextStyles.textStyleBoldBodyMedium,
                                   ),
                                   Text(
-                                    provider.productDetailModel!.price!,
+                                    provider.productDetailModel?.price??'',
                                     style:
                                         AppTextStyles.textStyleBoldBodyMedium,
                                   ),
@@ -168,7 +168,7 @@ class _ProductScreenState extends State<ProductScreen> {
                             //                     fontWeight: FontWeight.w400),
                             //           ));
                             // }),
-      
+            
                             const Spacer(),
                             Text(
                               DateFormat("dd-MMM-yyyy hh:mm a").format(
@@ -180,6 +180,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         ),
                       ),
                       Padding(
+                   
                         padding: const EdgeInsets.only(left: 20, top: 25),
                         child: Text(
                           'Details',
@@ -250,13 +251,14 @@ class _ProductScreenState extends State<ProductScreen> {
                               fontSize: 16, fontWeight: FontWeight.w400),
                         ),
                       ),
+                      
                       const Divider(),
                       ListTile(
                         leading: const CircleAvatar(
                           backgroundImage:
                               AssetImage('assets/images/Rectangle 10.png'),
                         ),
-                        title: Text(provider.donnerDetail!.name!,
+                        title: Text(provider.donnerDetail?.name??'',
                             style: AppTextStyles.textStyleBoldBodySmall
                                 .copyWith(
                                     fontSize: 20, fontWeight: FontWeight.w600)),
@@ -265,7 +267,9 @@ class _ProductScreenState extends State<ProductScreen> {
                           style: AppTextStyles.textStyleNormalBodySmall,
                         ),
                       ),
+                      
                       const Divider(),
+                      
                       Padding(
                         padding: const EdgeInsets.only(left: 20, top: 25),
                         child: Text(
@@ -300,6 +304,7 @@ class _ProductScreenState extends State<ProductScreen> {
                           ],
                         ),
                       ),
+                      
                       Container(
                         height: 190,
                         width: double.infinity,
@@ -360,7 +365,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                 ))
                             .toList(),
                       ),
-      
+            
                       // CustomList(text: "Only meet in public / crowded places"),
                       // CustomList(text: "Never go alone to meet a buyer / seller, always take someone with you."),
                       // CustomList(text: "Check and inspect the product properly before purchasing it."),
@@ -374,8 +379,8 @@ class _ProductScreenState extends State<ProductScreen> {
                             var uid = FirebaseAuth.instance.currentUser!.uid;
                             UserModel? user = await firebaseGetUserDetail(uid);
                             // debugger();
-                            if (user!.isPhoneVerified!) {
-                              await provider.addRequest(context,productID:widget.id , user: user);                        
+                            if (user?.isPhoneVerified==true) {
+                              await provider.addRequest(context,productID:widget.id );                        
                             } else {
                               showDialog(
                                   context: context,

@@ -1,5 +1,9 @@
 
 
+
+
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +29,7 @@ class LoginProvider extends ChangeNotifier {
 
       UID_Provider.uid = await FirebaseAuth.instance.currentUser!.uid;
 
-      print(UID_Provider.uid);
+      log(UID_Provider.uid.toString());
       isLoading = false;
       notifyListeners();
       showSnack(context: context, text: "SignIn Successfully");
