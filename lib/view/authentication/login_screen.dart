@@ -155,8 +155,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               showSnack(
                                   context: context, text: "Invalid Password");
                             } else {
-                              var login = context.read<LoginProvider>();
-                              await login.Login(context, emailController.text,
+                              var pro = context.read<LoginProvider>();
+                              await pro.Login(context, emailController.text,
                                   passwordController.text);
                             }
                           },

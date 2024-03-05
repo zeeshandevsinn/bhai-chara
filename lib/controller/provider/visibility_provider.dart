@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-class visibilityProvider1 extends ChangeNotifier{
+class VisibilityProvider1 extends ChangeNotifier{
   bool show= true;
 
   toggle()
@@ -11,7 +11,7 @@ class visibilityProvider1 extends ChangeNotifier{
   }
 }
 
-class visibilityProvider2 extends ChangeNotifier{
+class VisibilityProvider2 extends ChangeNotifier{
   bool show= true;
 
   toggle()

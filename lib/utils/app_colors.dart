@@ -29,4 +29,5 @@ class AppColors {
   static const TextColor = Color(0xff000000);
   static Color light_black = Color(0xfa000000);
   static const cardColor = Color(0xfaDDA315);
+  static const error = Colors.red;
 }

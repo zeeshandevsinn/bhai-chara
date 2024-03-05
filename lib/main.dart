@@ -1,5 +1,6 @@
 import 'package:bhai_chara/controller/provider/authentication_provider/firebase_signup_provider.dart';
 import 'package:bhai_chara/controller/provider/product/product_detail.dart';
+import 'package:bhai_chara/controller/services/shared_prefrences.dart';
 import 'package:bhai_chara/firebase_options.dart';
 import 'package:bhai_chara/view/chatting/controller/service/chatt_service.dart';
 import 'package:bhai_chara/view/onboard_screens/splash_screen.dart';
@@ -23,6 +24,7 @@ import 'controller/provider/visibility_provider.dart';
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await SharedPreferenceHelper.initializeSharedPreferences();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -65,8 +67,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => TimerProvider()),
-          ChangeNotifierProvider(create: (context) => visibilityProvider1()),
-          ChangeNotifierProvider(create: (context) => visibilityProvider2()),
+          ChangeNotifierProvider(create: (context) => VisibilityProvider1()),
+          ChangeNotifierProvider(create: (context) => VisibilityProvider2()),
           ChangeNotifierProvider(create: (context) => SwitchProvider()),
           ChangeNotifierProvider(create: (context) => SliderProvider()),
           ChangeNotifierProvider(create: (context) => RootProvider()),
@@ -82,7 +84,7 @@ class MyApp extends StatelessWidget {
           // ChangeNotifierProvider(create: (context) => ()),
         ],
         child: Sizer(builder: (context, orientation, deviceType) {
-          return MaterialApp(
+          return const MaterialApp(
             debugShowCheckedModeBanner: false,
             // theme: ThemeData(
             //   fontFamily: "Lora-Regular",

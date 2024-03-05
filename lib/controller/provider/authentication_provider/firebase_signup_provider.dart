@@ -1,6 +1,11 @@
 
 import 'dart:developer';
 
+
+
+import 'dart:developer';
+
+import 'package:bhai_chara/controller/services/shared_prefrences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../view/authentication/otp_code_screen.dart';
@@ -20,25 +25,28 @@ class SignUpProvider extends ChangeNotifier {
   String verifiedID = "";
   String OTPCode = "";
   var user;
-  SignUpFirebase(context, name, email, password,
+
+ final SharedPreferenceHelper _sharedPrefHelper =
+      SharedPreferenceHelper.instance();
+  signUpFirebase(context, name, email, password,
       {isEmailVerified = false, isPhoneVerified = false}) async {
     try {
-      // debugger();
       isLoading = true;
       notifyListeners();
       // ignore: unused_local_variable
       user = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
       var uid = FirebaseAuth.instance.currentUser!.uid;
-      // isEmailVerified = true;
-      var data = await FirebaseManager.SignUpFirebaseStoreage(context, name,
-          email, password, uid, isEmailVerified, isPhoneVerified);
+      var data = await FirebaseManager.signUpFirebaseStoreage(context:context, name:name,
+          email:email, password:password, uid:uid, isEmailVerified:isEmailVerified, isPhoneVerify:isPhoneVerified);
       isLoading = false;
       notifyListeners();
       UID_Provider.uid = uid.toString();
-      // debugger();/
-      print(UID_Provider.uid);
+   var userData = await firebaseGetUserDetail(UID_Provider.uid);
+      await _sharedPrefHelper.insertUser(userData!);
 
+      print(UID_Provider.uid);
+      log(user.toString());
       if (user != null) {
         showSnack(context: context, text: "SignUp SuccessFully");
         pushUntil(context, SignUpScreenByPhone());

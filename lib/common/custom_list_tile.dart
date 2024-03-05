@@ -100,12 +100,12 @@ class CutomListTileUser extends StatelessWidget {
 class CustomListAccountTile extends StatelessWidget {
   CustomListAccountTile(
       {super.key,
-      this.asset_image,
+      this.image,
       this.subtitle_style,
       this.subtitle_text,
       this.title_style,
       this.title_text});
-  var asset_image, title_text, subtitle_text, title_style, subtitle_style;
+  var image, title_text, subtitle_text, title_style, subtitle_style;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -116,7 +116,7 @@ class CustomListAccountTile extends StatelessWidget {
               CircleAvatar(
                 radius: 50,
                 child: Image(
-                  image: asset_image,
+                  image: image,
                 ),
               ),
             ],

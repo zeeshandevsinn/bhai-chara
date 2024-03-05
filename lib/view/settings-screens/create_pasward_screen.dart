@@ -18,9 +18,9 @@ class CreatePasswardScreen extends StatelessWidget {
   CreatePasswardScreen({Key? key});
   var passwordController = TextEditingController();
   var confirmPasswordController = TextEditingController();
-  final visibilityProvider1 passwordVisibilityProvider = visibilityProvider1();
-  final visibilityProvider2 confirmPasswordVisibilityProvider =
-      visibilityProvider2();
+  final VisibilityProvider1 passwordVisibilityProvider = VisibilityProvider1();
+  final VisibilityProvider2 confirmPasswordVisibilityProvider =
+      VisibilityProvider2();
 
   @override
   Widget build(BuildContext context) {
@@ -39,14 +39,14 @@ class CreatePasswardScreen extends StatelessWidget {
         children: [
           Gap.h(10),
           ChangeNotifierProvider(
-            create: (_) => visibilityProvider1(),
+            create: (_) => VisibilityProvider1(),
             child: CustomeTextField(
               hinttext: 'Password',
               controller: passwordController,
             ),
           ),
           ChangeNotifierProvider(
-            create: (_) => visibilityProvider2(),
+            create: (_) => VisibilityProvider2(),
             child: CustomeTextField(
               hinttext: 'Confirm Password',
               controller: confirmPasswordController,

@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:bhai_chara/controller/services/shared_prefrences.dart';
 import 'package:bhai_chara/view/home-screens/root_screen.dart';
 import 'package:bhai_chara/view/onboard_screens/intro_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,14 +20,17 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final SharedPreferenceHelper _sharedPrefHelper =
+      SharedPreferenceHelper.instance();
+  
   startTimer() async {
     var _duration = const Duration(seconds: 5);
     return Timer(_duration, Navigation);
   }
 
   Navigation() {
-    var user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
+    var user = _sharedPrefHelper.isUserLoggedIn;
+    if (user == true) {
       pushUntil(context, RootScreen());
     } else {
       pushUntil(context, IntroSlider());

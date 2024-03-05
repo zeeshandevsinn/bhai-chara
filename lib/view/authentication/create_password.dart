@@ -118,7 +118,6 @@ class _CreatePasswordState extends State<CreatePassword> {
                                   ? IconButton(
                                       onPressed: () {
                                         setState(() {});
-
                                         x = VariableProvider.IncrementVariable(
                                             x);
                                       },
@@ -146,7 +145,7 @@ class _CreatePasswordState extends State<CreatePassword> {
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(20),
                                   borderSide:
-                                      BorderSide(color: AppColors.grey)),
+                                   const   BorderSide(color: AppColors.grey)),
                               // hintText: "Confirm Password",
                               labeltext: "Confirm Password",
                               suffixIcon: y % 2 != 0
@@ -197,37 +196,15 @@ class _CreatePasswordState extends State<CreatePassword> {
                                         text:
                                             "Password must at least 6 character long");
                                   } else {
-                                    // UserCredential userCredential = await FirebaseAuth
-                                    //     .instance
-                                    //     .createUserWithEmailAndPassword(
-                                    //   email: widget.emailController,
-                                    //   password: passwordController.text,
-                                    // );
-
-                                    // if (userCredential != null) {
-                                    // await FirebaseAuth.instance
-                                    //     .createUserWithEmailAndPassword(
-                                    //         email: widget.emailController,
-                                    //         password: passwordController.text);
                                     var pro = context.read<SignUpProvider>();
-                                    await pro.SignUpFirebase(
+                                    await pro.signUpFirebase(
                                         context,
                                         widget.fullName,
                                         widget.emailController,
                                         passwordController.text);
-
-                                    // User? user = userCredential.user;
-                                    // return user;
-                                    // }
                                   }
                                 },
                                 text: "Next"),
-                            // ontapPasswordScreen(
-                            //     context: context,
-                            //     confirmpasswordController: confirmpasswordController,
-                            //     passwordController: passwordController,
-                            //     email: widget.emailController,
-                            //     name: widget.fullName),
 
                             Gap.h(20),
                           ],

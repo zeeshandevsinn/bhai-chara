@@ -66,7 +66,6 @@ class RootScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
       var myProvider = context.watch<RootProvider>();
-
       return WillPopScope(
         onWillPop: () => showExitPopup(context),
         child: Scaffold(

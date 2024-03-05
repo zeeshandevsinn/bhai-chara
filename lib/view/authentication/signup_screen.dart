@@ -91,14 +91,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               const SizedBox(
                 height: 20,
               ),
-              // CustomContainerTile(
-              //     image: "assets/images/facebook.png",
-              //     text: "Continue with Facebook",
-              //     style_text: AppTextStyles.textStyleNormalBoldXLBodySmall,
-              //     tap: () {}),
-              // const SizedBox(
-              //   height: 20,
-              // ),
+             
               CustomContainerTile(
                   image: "assets/images/mail.png",
                   text: "Continue with Email",
@@ -106,32 +99,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ontap: () {
                     push(context, SignupByEmail());
                   }),
-              // const SizedBox(
-              //   height: 20,
-              // ),
-              // CustomContainerTile(
-              //     ontap: () {
-              //       push(context, SignUpScreenByPhone());
-              //     },
-              //     image: "assets/images/phone.png",
-              //     text: "Continue with Phone",
-              //     style_text: AppTextStyles.textStyleNormalBoldXLBodySmall,
-              //     tap: () {
-              //       push(context, SignUpScreenByPhone());
-              //     }),
-              // const Spacer(),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     Text(
-              //       "If you continue, you are accepting",
-              //       style: AppTextStyles.textStyleNormalXLBodySmall,
-              //       maxLines: 2,
-              //       softWrap: true,
-              //       overflow: TextOverflow.ellipsis,
-              //     ),
-              //   ],
-              // ),
+             
                const SizedBox(
                 height: 20,
               ),
