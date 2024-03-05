@@ -37,13 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
       new GlobalKey<RefreshIndicatorState>();
   TextEditingController searchController = TextEditingController();
 
-  Future<Null> _refresh() {
-    return getUser().then((_user) {
-      // ignore: unused_local_variable
-      User user;
-      setState(() => user = _user);
-    });
-  }
+
 
   List<Color> ColorList = [
     AppColors.orange,
