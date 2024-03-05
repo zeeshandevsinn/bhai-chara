@@ -65,7 +65,7 @@ dependencies:
   pinput: ^3.0.1
   firebase_messaging: ^14.7.10
   babstrap_settings_screen:
-  url_launcher: ^6.2.5
+  url_launcher:
 
 dev_dependencies:
   flutter_test:
