@@ -23,7 +23,7 @@ class ItemContainer extends StatelessWidget {
                         onTap: ontap,
 
       child: Container(
-        height: 220,
+        // height: 220,
         margin: const EdgeInsets.only(bottom: 20),
         padding: const EdgeInsets.all(10),
         decoration: const BoxDecoration(
@@ -44,7 +44,7 @@ class ItemContainer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "From: ${time}",
+              "From: ${DateFormat.yMd().add_jm().format(DateTime.parse(time))}",
               style: AppTextStyles.textStyleSubtitleSmallBody,
             ),
             Row(
@@ -64,112 +64,139 @@ class ItemContainer extends StatelessWidget {
                   )
                 ]),
                 const SizedBox(
-                  width: 20,
+                  width: 4,
                 ),
-                Container(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: AppTextStyles.textStyleTitleBodySmall,
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            'Rs:',
-                            style: AppTextStyles.textStyleSubtitleSmallBody
-                                .copyWith(color: AppColors.grey),
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          style: AppTextStyles.textStyleTitleBodySmall.copyWith(
+                            overflow: TextOverflow.ellipsis
                           ),
-                          SizedBox(
-                            width: 05,
-                          ),
-                          Text(
-                            titleText,
-                            style: AppTextStyles.textStyleBoldBodyXSmall
-                                .copyWith(color: AppColors.blue),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Text.rich(TextSpan(children: [
-                        TextSpan(
-                            text: "Category: ",
-                            style: AppTextStyles.textStyleBoldXLBodySmall),
-                        TextSpan(
-                            text: category,
-                            style: AppTextStyles.textStyleNormalBodyXSmall)
-                      ])),
-                      Text.rich(TextSpan(children: [
-                        TextSpan(
-                            text: "Sub Category: ",
-                            style: AppTextStyles.textStyleBoldXLBodySmall),
-                        TextSpan(
-                            text: subcategory,
-                            style: AppTextStyles.textStyleNormalBodyXSmall)
-                      ])),
-                    ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              'Rs:',
+                              style: AppTextStyles.textStyleSubtitleSmallBody
+                                  .copyWith(color: AppColors.grey),
+                            ),
+                            SizedBox(
+                              width: 05,
+                            ),
+                            Text(
+                              titleText,
+                            
+                              style: AppTextStyles.textStyleBoldBodyXSmall
+                                  .copyWith(color: AppColors.blue),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Text.rich(TextSpan(children: [
+                          TextSpan(
+                              text: "Category: ",
+                            
+                              style: AppTextStyles.textStyleBoldXLBodySmall.copyWith(
+                                fontSize: 12
+                              )),
+                          TextSpan(
+                              text: category,
+                              style: AppTextStyles.textStyleNormalBodyXSmall.copyWith(
+                                overflow: TextOverflow.ellipsis,
+                              ))
+                        ])),
+                       
+                        Text.rich(
+                        
+                          TextSpan(children: [
+                          TextSpan(
+                              text: "Sub Category: ",
+                              style: AppTextStyles.textStyleBoldXLBodySmall.copyWith(
+                                fontSize: 12
+                              )),
+                          TextSpan(
+                          
+                              text: subcategory,
+                              style: AppTextStyles.textStyleNormalBodyXSmall.copyWith(
+                                overflow: TextOverflow.ellipsis,
+                              ),)
+                        ])),
+                      ],
+                    ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            // const SizedBox(
+            //   height: 20,
+            // ),
     
-            // rowww
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text.rich(TextSpan(children: [
-                  TextSpan(
-                      text: "Views: ",
-                      style: AppTextStyles.textStyleBoldXLBodySmall),
-                  TextSpan(
-                      text: "0", style: AppTextStyles.textStyleSubtitleSmallBody),
-                ])),
-                Container(
-                  height: 25,
-                  width: 3,
-                  color: AppColors.black,
-                ),
-                Text.rich(TextSpan(children: [
-                  TextSpan(
-                      text: "Tel: ",
-                      style: AppTextStyles.textStyleBoldXLBodySmall),
-                  TextSpan(
-                      text: "0", style: AppTextStyles.textStyleSubtitleSmallBody),
-                ])),
-                Container(
-                  height: 25,
-                  width: 3,
-                  color: AppColors.black,
-                ),
-                Text.rich(TextSpan(children: [
-                  TextSpan(
-                      text: "Likes: ",
-                      style: AppTextStyles.textStyleBoldXLBodySmall),
-                  TextSpan(
-                      text: "0", style: AppTextStyles.textStyleSubtitleSmallBody),
-                ])),
-                Container(
-                  height: 25,
-                  width: 3,
-                  color: AppColors.black,
-                ),
-                Text.rich(TextSpan(children: [
-                  TextSpan(
-                      text: "Chat: ",
-                      style: AppTextStyles.textStyleBoldXLBodySmall),
-                  TextSpan(
-                      text: "0", style: AppTextStyles.textStyleSubtitleSmallBody),
-                ])),
-              ],
-            ),
+            // // rowww
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //   children: [
+            //     Text.rich(TextSpan(children: [
+            //       TextSpan(
+            //           text: "Views: ",
+            //           style: AppTextStyles.textStyleBoldXLBodySmall.copyWith(
+            //                     fontSize: 12
+            //                   )),
+            //       TextSpan(
+            //           text: "0", style: AppTextStyles.textStyleSubtitleSmallBody),
+            //     ])),
+            //     Container(
+            //       height: 25,
+            //       width: 2,
+            //       color: AppColors.black,
+            //     ),
+            //     Text.rich(TextSpan(children: [
+            //       TextSpan(
+            //           text: "Tel: ",
+            //           style: AppTextStyles.textStyleBoldXLBodySmall.copyWith(
+            //                     fontSize: 12
+            //                   )),
+            //       TextSpan(
+            //           text: "0", style: AppTextStyles.textStyleSubtitleSmallBody),
+            //     ])),
+            //     Container(
+            //       height: 25,
+            //       width: 2,
+            //       color: AppColors.black,
+            //     ),
+            //     Text.rich(TextSpan(children: [
+            //       TextSpan(
+            //           text: "Likes: ",
+            //           style: AppTextStyles.textStyleBoldXLBodySmall.copyWith(
+            //                     fontSize: 12
+            //                   )),
+            //       TextSpan(
+            //           text: "0", style: AppTextStyles.textStyleSubtitleSmallBody),
+            //     ])),
+            //     Container(
+            //       height: 25,
+            //       width: 2,
+            //       color: AppColors.black,
+            //     ),
+            //     Text.rich(TextSpan(children: [
+            //       TextSpan(
+            //           text: "Chat: ",
+            //           style: AppTextStyles.textStyleBoldXLBodySmall.copyWith(
+            //                     fontSize: 12
+            //                   )),
+            //       TextSpan(
+            //           text: "0", style: AppTextStyles.textStyleSubtitleSmallBody),
+            //     ])),
+            //   ],
+            // ),
+          
           ],
         ),
       ),

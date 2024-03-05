@@ -430,26 +430,34 @@ class _PostDetailScreen1State extends State<PostDetailScreen1> {
                               // const SizedBox(
                               //   height: 20,
                               // ),
-                              GestureDetector(
-                                onTap: () async {},
-                                child: Builder(builder: (context) {
-                                  var pro = context.read<AuthProvider>();
-                                  return CutomListTileUser(
-                                    title_text: "Location",
-                                    title_style:
-                                        AppTextStyles.textStyleTitleBodySmall,
-                                    subtitle_text: pro.currentAddress != Null
-                                        ? pro.currentAddress
-                                        : "Choose",
-                                    subtitle_style:
-                                        AppTextStyles.textStyleSubtitleBody,
-                                    trailing_widget: const Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: Color(0xfa000000),
-                                      size: 20,
-                                    ),
-                                  );
-                                }),
+                              Consumer<AuthProvider>(
+                                  
+                                  builder: (context, pro,child) {
+                                    
+                                  return  GestureDetector(
+                                  onTap: () async {
+                              
+                                    pro.Location(context);
+                                  },
+                                  child: Builder(builder: (context) {
+                                    // var pro = context.read<AuthProvider>();
+                                    return CutomListTileUser(
+                                      title_text: "Location",
+                                      title_style:
+                                          AppTextStyles.textStyleTitleBodySmall,
+                                      subtitle_text: pro.currentAddress != Null
+                                          ? pro.currentAddress
+                                          : "Choose",
+                                      subtitle_style:
+                                          AppTextStyles.textStyleSubtitleBody,
+                                      trailing_widget: const Icon(
+                                        Icons.arrow_forward_ios,
+                                        color: Color(0xfa000000),
+                                        size: 20,
+                                      ),
+                                    );
+                                  }),
+                                );}
                               ),
                               const SizedBox(
                                 height: 10,

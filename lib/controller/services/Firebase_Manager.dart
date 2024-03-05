@@ -228,7 +228,7 @@ static Future<void> deleteAccount(String email, String password) async {
         "UID": uid.toString(),
         "isEmailVerified": isEmailVerified,
         "isPhoneVerified": isPhoneVerify,
-      });
+      },SetOptions(merge: true));
       return data;
     } catch (e) {
       debugger();
@@ -280,8 +280,9 @@ Future<UserModel?> firebaseGetUserDetail(uid) async {
       .doc(uid)
       .get();
   // debugger();
+  log("-====> ${uid}");
   if (data != null) {
-    print(data.data());
+    log(data.data().toString());
     return UserModel.fromJson(data.data()!);
   }
   }catch(e){
