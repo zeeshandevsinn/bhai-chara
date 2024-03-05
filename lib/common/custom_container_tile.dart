@@ -127,7 +127,8 @@ class CustomTextField extends StatelessWidget {
       this.prefixcolor,
       this.prfixicon,
       this.labeltext,
-      this.keyboardtype = TextInputType.text
+      this.keyboardtype = TextInputType.text,
+      this.onTap
       // this.pad_left = 20,
       // this.pad_bottom,
       // this.pad_right,
@@ -145,6 +146,7 @@ class CustomTextField extends StatelessWidget {
       keyboardtype,
       labeltext;
   bool obsecuretext;
+ void Function()?onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -154,6 +156,7 @@ class CustomTextField extends StatelessWidget {
             height: height,
             width: width,
             child: TextField(
+              onTap: onTap,
               obscureText: obsecuretext,
               style: const TextStyle(
                   fontWeight: FontWeight.w400, color: AppColors.black),

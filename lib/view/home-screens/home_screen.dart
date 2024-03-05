@@ -12,6 +12,7 @@ import 'package:bhai_chara/utils/refresh.dart';
 import 'package:bhai_chara/utils/text-styles.dart';
 import 'package:bhai_chara/view/home-screens/product_details_screen.dart';
 import 'package:bhai_chara/view/home-screens/root_screen.dart';
+import 'package:bhai_chara/view/home-screens/search_deligate.dart';
 import 'package:bhai_chara/view/home-screens/sell_sub_categorie_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -179,6 +180,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       margin: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 10),
                       child: CustomTextField(
+                          onTap: () async {
+                            await showSearch(
+                              context: context,
+                              delegate: CustomSearchDelegate(),
+                            );
+                          },
                           prfixicon: const Icon(Icons.search),
                           prefixcolor: AppColors.Grey,
                           controller: searchController,
