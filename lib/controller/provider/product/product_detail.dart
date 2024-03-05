@@ -73,6 +73,8 @@ class ProductDetailProvider extends ChangeNotifier {
       data["requester_address"] = address ?? "";
       data["request_time"] = DateTime.now();
       data["requester_name"] = user!.name;
+      data["requester_email"] = user.email;
+      data["requester_phone"] = user.phoneNumber;
       print(data);
     
       await FirebaseFirestore.instance.collection(REQUEST_COLLECTION).add(data);

@@ -6,12 +6,19 @@ final String senderId;
 final String senderEmail;
 final String receverId;
 final String message;
+final String senderName;
+final String recevierEmail;
+final String recevierName;
 final Timestamp timestamp;
 
 Message({
 required this.senderId,
 required this.senderEmail,
 required this.receverId,
+required this.senderName,
+required this.recevierEmail,
+required this.recevierName,
+
 required this.message,
   required this.timestamp,
 });
@@ -22,6 +29,9 @@ Map<String,dynamic >toMap(){
     "senderEmail":senderEmail,
     "receverId":receverId,
     "message":message,
+    "senderName":senderName,
+    "recevierEmail":recevierEmail,
+    "recevierName":recevierName,
     "timestamp":timestamp,
   };
 } 

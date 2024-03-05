@@ -1,17 +1,24 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:bhai_chara/controller/services/Firebase_Manager.dart';
+import 'package:bhai_chara/utils/showSnack.dart';
 import 'package:bhai_chara/utils/text-styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../controller/provider/product/status.dart';
 import '../utils/app_colors.dart';
+import '../view/chatting/controller/service/chatt_service.dart';
 
 class OrderContainer extends StatelessWidget {
   OrderContainer(
       {super.key,
       required this.uid,
+      required this.receiverID,
+      required this.receiverName,
+      required this.receiverEmail,
+      required this.receiverPhone,
       required this.text,
       required this.isFree,
       required this.color1,
@@ -19,7 +26,7 @@ class OrderContainer extends StatelessWidget {
       required this.time,
       required this.address,
       required this.price});
-  var text, uid, color1, color2, time, price, isFree, address;
+  var text, uid, color1, color2, time, price, isFree, address, receiverName,receiverID, receiverEmail, receiverPhone;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +58,8 @@ class OrderContainer extends StatelessWidget {
                   width: 8,
                 ),
                 Text(
-                  text,
+                  receiverName,
+                  // text,
                   style: AppTextStyles.textStyleBoldBodySmall,
                 ),
               ],
@@ -111,8 +119,9 @@ FirebaseFirestore.instance.collection(REQUEST_COLLECTION).doc(uid).update({"requ
                   width: 50,
                 ),
                 InkWell(
-                  onTap: (){
-                    FirebaseFirestore.instance.collection(REQUEST_COLLECTION).doc(uid).update({"request": ProductStatus.approved.name});
+                  onTap: ()async{
+                   await FirebaseFirestore.instance.collection(REQUEST_COLLECTION).doc(uid).update({"request": ProductStatus.approved.name});
+                   startChat(context);
                   },
                   child: Container(
                     height: 30,
@@ -135,5 +144,17 @@ FirebaseFirestore.instance.collection(REQUEST_COLLECTION).doc(uid).update({"requ
         ),
       ),
     );
+  }
+  startChat(context)async{
+    
+  final ChatService chatService = ChatService();
+
+     await chatService.sendMessage(
+     recevierId :
+          receiverID,  message:"Are you Interested?",
+          receiverEmail: receiverEmail, receiverName: receiverName
+          );
+
+          showSnack(context: context, text: "Message Sent!");
   }
 }

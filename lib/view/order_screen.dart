@@ -11,7 +11,6 @@ import '../controller/services/Firebase_Manager.dart';
 import '../utils/app_colors.dart';
 
 class OrderScreen extends StatelessWidget {
-  const OrderScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,29 +22,32 @@ class OrderScreen extends StatelessWidget {
             backgroundColor: AppColors.white,
             foregroundColor: AppColors.white,
             title: Text(
-                  "Requests",
-                  style: AppTextStyles.textStyleBoldBodyMedium,
-                ),
+              "Requests",
+              style: AppTextStyles.textStyleBoldBodyMedium,
+            ),
             centerTitle: true,
             bottom: TabBar(
               labelColor: AppColors.blue,
-        tabs: [
-          Tab(text: "Pending"),
-          Tab(text: "Approved"),
-          Tab(text: "Rejected"),
-        ],
-      ),
+              tabs: [
+                Tab(text: "Pending"),
+                Tab(text: "Approved"),
+                Tab(text: "Rejected"),
+              ],
+            ),
           ),
-          body: TabBarView(
-            children: [
-              SingleChildScrollView(
+          body: TabBarView(children: [
+            SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Gap.h(10),
                   StreamBuilder(
                       stream: FirebaseFirestore.instance
-                          .collection(REQUEST_COLLECTION).where("uid", isEqualTo: FirebaseAuth.instance.currentUser?.uid).where("request",isEqualTo: ProductStatus.pending.name)
+                          .collection(REQUEST_COLLECTION)
+                          .where("uid",
+                              isEqualTo: FirebaseAuth.instance.currentUser?.uid)
+                          .where("request",
+                              isEqualTo: ProductStatus.pending.name)
                           .snapshots(),
                       builder: (context, AsyncSnapshot snapshot) {
                         if (snapshot.hasData) {
@@ -59,48 +61,60 @@ class OrderScreen extends StatelessWidget {
                                       .textStyleNormalBody_BlueColor,
                                 ),
                               ),
-                              ListView.builder(           
-                                physics: const NeverScrollableScrollPhysics(),                 
+                              ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   itemCount: snapshot.data.docs.length,
                                   itemBuilder: (context, index) {
                                     var request = snapshot.data.docs[index];
                                     return Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 10,),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 10,
+                                      ),
                                       child: OrderContainer(
-                                        uid: request.id,
+                                          receiverEmail:
+                                              request.get("requester_email"),
+                                          receiverPhone:
+                                              request.get("requester_phone"),
+                                          receiverName:
+                                              request.get("requester_name"),
+                                              receiverID:
+                                              request.get("requester_id"),
+                                          uid: request.id,
                                           text: request.get("title"),
                                           color1: AppColors.grey,
                                           color2: AppColors.blue,
                                           isFree: request.get("isFree"),
-                                          address: request.get("requester_address"),
-                                          price: "Price:\t\t\t${request.get("price")}",
+                                          address:
+                                              request.get("requester_address"),
+                                          price:
+                                              "Price:\t\t\t${request.get("price")}",
                                           time:
                                               "time:\t\t\t\t${DateFormat("d-MMM-yyyy mm:ss a").format(request.get("request_time").toDate())}"),
                                     );
                                   }),
-                                  
                             ],
                           );
                         }
-              
+
                         return CustomLoader();
-                        
-                      }
-                      ),
-                       Gap.h(80),
+                      }),
+                  Gap.h(80),
                 ],
               ),
             ),
-            
-              SingleChildScrollView(
+            SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Gap.h(10),
                   StreamBuilder(
                       stream: FirebaseFirestore.instance
-                          .collection(REQUEST_COLLECTION).where("uid", isEqualTo: FirebaseAuth.instance.currentUser?.uid).where("request",isEqualTo: ProductStatus.approved.name)
+                          .collection(REQUEST_COLLECTION)
+                          .where("uid",
+                              isEqualTo: FirebaseAuth.instance.currentUser?.uid)
+                          .where("request",
+                              isEqualTo: ProductStatus.approved.name)
                           .snapshots(),
                       builder: (context, AsyncSnapshot snapshot) {
                         if (snapshot.hasData) {
@@ -114,48 +128,60 @@ class OrderScreen extends StatelessWidget {
                                       .textStyleNormalBody_BlueColor,
                                 ),
                               ),
-                              ListView.builder(           
-                                physics: const NeverScrollableScrollPhysics(),                 
+                              ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   itemCount: snapshot.data.docs.length,
                                   itemBuilder: (context, index) {
                                     var request = snapshot.data.docs[index];
                                     return Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 10,),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 10,
+                                      ),
                                       child: OrderContainer(
-                                        uid: request.id,
+                                          receiverEmail:
+                                              request.get("requester_email"),
+                                          receiverPhone:
+                                              request.get("requester_phone"),
+                                          receiverName:
+                                              request.get("requester_name"),
+                                          uid: request.id,
+                                          receiverID:
+                                              request.get("requester_id"),
                                           text: request.get("title"),
                                           color1: AppColors.grey,
                                           color2: AppColors.blue,
                                           isFree: request.get("isFree"),
-                                          address: request.get("requester_address"),
-                                          price: "Price:\t\t\t${request.get("price")}",
+                                          address:
+                                              request.get("requester_address"),
+                                          price:
+                                              "Price:\t\t\t${request.get("price")}",
                                           time:
                                               "time:\t\t\t\t${DateFormat("d-MMM-yyyy mm:ss a").format(request.get("request_time").toDate())}"),
                                     );
                                   }),
-                                  
                             ],
                           );
                         }
-              
+
                         return CustomLoader();
-                        
-                      }
-                      ),
-                       Gap.h(80),
+                      }),
+                  Gap.h(80),
                 ],
               ),
             ),
-            
-              SingleChildScrollView(
+            SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Gap.h(10),
                   StreamBuilder(
                       stream: FirebaseFirestore.instance
-                          .collection(REQUEST_COLLECTION).where("uid", isEqualTo: FirebaseAuth.instance.currentUser?.uid).where("request",isEqualTo: ProductStatus.rejected.name)
+                          .collection(REQUEST_COLLECTION)
+                          .where("uid",
+                              isEqualTo: FirebaseAuth.instance.currentUser?.uid)
+                          .where("request",
+                              isEqualTo: ProductStatus.rejected.name)
                           .snapshots(),
                       builder: (context, AsyncSnapshot snapshot) {
                         if (snapshot.hasData) {
@@ -169,40 +195,49 @@ class OrderScreen extends StatelessWidget {
                                       .textStyleNormalBody_BlueColor,
                                 ),
                               ),
-                              ListView.builder(           
-                                physics: const NeverScrollableScrollPhysics(),                 
+                              ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   itemCount: snapshot.data.docs.length,
                                   itemBuilder: (context, index) {
                                     var request = snapshot.data.docs[index];
                                     return Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 10,),
-                                      child: OrderContainer(uid: request.id,
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 10,
+                                      ),
+                                      child: OrderContainer(
+                                          uid: request.id,
                                           text: request.get("title"),
+                                          receiverEmail:
+                                              request.get("requester_email"),
+                                              receiverID:
+                                              request.get("requester_id"),
+                                          receiverPhone:
+                                              request.get("requester_phone"),
+                                          receiverName:
+                                              request.get("requester_name"),
                                           color1: AppColors.grey,
                                           color2: AppColors.blue,
                                           isFree: request.get("isFree"),
-                                          address: request.get("requester_address"),
-                                          price: "Price:\t\t\t${request.get("price")}",
+                                          address:
+                                              request.get("requester_address"),
+                                          price:
+                                              "Price:\t\t\t${request.get("price")}",
                                           time:
                                               "time:\t\t\t\t${DateFormat("d-MMM-yyyy mm:ss a").format(request.get("request_time").toDate())}"),
                                     );
                                   }),
-                                  
                             ],
                           );
                         }
-              
+
                         return CustomLoader();
-                        
-                      }
-                      ),
-                       Gap.h(80),
+                      }),
+                  Gap.h(80),
                 ],
               ),
             ),
-            ]
-          )),
+          ])),
     );
   }
 }

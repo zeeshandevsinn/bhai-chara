@@ -4,13 +4,18 @@ import 'package:intl/intl.dart';
 import '../../../../utils/app_colors.dart';
 import 'package:bhai_chara/utils/text-styles.dart';
 
+import '../../../controller/services/shared_prefrences.dart';
 import '../controller/service/chatt_service.dart';
 import 'widget/chat_bubble.dart';
 
 class ConversationScreen extends StatefulWidget {
   ConversationScreen(
-      {super.key, required this.reciverUserID, required this.reciverUserEmail});
+      {super.key,
+      required this.reciverUserID,
+      required this.reciverUserEmail,
+      required this.receiverName});
   final String reciverUserID;
+  final String receiverName;
   final String reciverUserEmail;
 
   @override
@@ -21,11 +26,13 @@ class _ConversationScreenState extends State<ConversationScreen> {
   final TextEditingController messageController = TextEditingController();
   final ChatService chatService = ChatService();
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-  DateTime now = new DateTime.now();
   sendMessage() async {
     if (messageController.text.isNotEmpty) {
       await chatService.sendMessage(
-          widget.reciverUserID, messageController.text);
+          recevierId: widget.reciverUserID,
+          message: messageController.text,
+          receiverEmail: widget.reciverUserEmail,
+          receiverName: widget.receiverName);
       messageController.clear();
     }
   }
@@ -110,9 +117,13 @@ class _ConversationScreenState extends State<ConversationScreen> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: TextFormField(
+                  
+                  scrollPadding: EdgeInsets.zero,
                   controller: messageController,
                   obscureText: false,
                   decoration: const InputDecoration(
+                    isDense: false,
+                    contentPadding: EdgeInsets.only(bottom: 10),
                       hintText: " Write a message",
                       hintStyle: TextStyle(fontSize: 14),
                       border: InputBorder.none),
@@ -233,7 +244,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
           leadingWidth: 85,
           backgroundColor: AppColors.white,
           foregroundColor: AppColors.black,
-          title: Text(widget.reciverUserEmail,
+          title: Text(widget.receiverName,
               style: AppTextStyles.textStyleBoldBodyMedium
                   .copyWith(color: AppColors.black)),
           leading: Row(
@@ -249,8 +260,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
       body: Container(
           height: double.infinity,
           width: double.infinity,
-          decoration: BoxDecoration(
-          ),
+          decoration: BoxDecoration(),
           child: Column(
             children: [
               Expanded(

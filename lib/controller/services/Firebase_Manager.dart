@@ -12,6 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 const USER_COLLECTION = "Client";
+const CHAT_COLLECTION = "chat";
 const REQUEST_COLLECTION = "requests";
 const PRODUCT_COLLECTION = "Products";
 

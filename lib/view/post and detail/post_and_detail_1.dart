@@ -557,11 +557,16 @@ class _PostDetailScreen1State extends State<PostDetailScreen1> {
                                         // ownerID:ownerID,
                                         // itemLocation:""
                                       );
-                                    }
-      
-                                    FocusScope.of(context).nextFocus();
+                                       FocusScope.of(context).nextFocus();
                                     // uploadImage(selectedImages);
                                     push(context, RootScreen());
+                                    }else{
+                                       showSnack(
+                                        context: context,
+                                        text: "Please! Select Images!");
+                                    }
+      
+                                   
                                   }
                                 },
                                 text: "Post Now",

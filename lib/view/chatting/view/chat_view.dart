@@ -1,3 +1,4 @@
+import 'package:bhai_chara/controller/services/Firebase_Manager.dart';
 
 import '../../../../utils/app_colors.dart';
 import 'package:bhai_chara/utils/push.dart';
@@ -28,10 +29,10 @@ class _ChatViewState extends State<ChatView> {
       appBar: AppBar(
         backgroundColor: AppColors.white,
         foregroundColor: AppColors.white,
-       title: Text(
-                "Chat",
-                style: AppTextStyles.textStyleBoldBodyMedium,
-              ),
+        title: Text(
+          "Chat",
+          style: AppTextStyles.textStyleBoldBodyMedium,
+        ),
         centerTitle: true,
         // actions: [
         //   IconButton(onPressed: (){
@@ -40,7 +41,13 @@ class _ChatViewState extends State<ChatView> {
         // ],
       ),
       body: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('users').snapshots(),
+          stream: FirebaseFirestore.instance
+              .collection(CHAT_COLLECTION)
+              .where(Filter.or(
+                Filter("senderId", isEqualTo: auth.currentUser?.uid),
+                Filter("receverId", isEqualTo: auth.currentUser?.uid),
+              ))
+              .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return Column(
@@ -59,34 +66,43 @@ class _ChatViewState extends State<ChatView> {
 
   Widget buildUserListItems(DocumentSnapshot document) {
     Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-    if (auth.currentUser!.email != data['email']) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 5),
-        child: Column(
-          children: [
-            ListTile(
-              trailing: Text(data['email'],
-                  style: AppTextStyles.textStyleNormalBodyXSmall),
-              leading: const CircleAvatar(radius: 35),
-              title: Text(data['name'].toString(),
-                  style: AppTextStyles.textStyleNormalBodySmall),
-              //  subtitle:  Text(' ',style:AppTextStyles.textStyleNormalBodyXSmall),
-              onTap: () {
-                push(
-                    context,
-                    ConversationScreen(
-                      reciverUserID: data['uid'],
-                      reciverUserEmail: data['email'],
-                    ));
-              },
-            ),
-            // Divider(),
-          ],
-        ),
-      );
-    } else {
-      return Container();
-    }
+    // if (auth.currentUser!.email != data['senderEmail']) {
+    var myID = FirebaseAuth.instance.currentUser?.uid;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 5),
+      child: Column(
+        children: [
+          ListTile(
+            subtitle: Text(data['message'],
+                style: AppTextStyles.textStyleNormalBodyXSmall),
+            leading: const CircleAvatar(radius: 35),
+            title: Text(
+                data['senderId'] != myID
+                    ? data["senderName"]
+                    : data["recevierName"].toString(),
+                style: AppTextStyles.textStyleNormalBodySmall),
+            //  subtitle:  Text(' ',style:AppTextStyles.textStyleNormalBodyXSmall),
+            onTap: () {
+              push(
+                  context,
+                  ConversationScreen(
+                      reciverUserID: data['senderId'] != myID
+                          ? data["senderId"]
+                          : data["receverId"],
+                      reciverUserEmail: data['senderId'] != myID
+                          ? data["senderEmail"]
+                          : data["recevierEmail"],
+                      receiverName: data['senderId'] != myID
+                          ? data["senderName"]
+                          : data["recevierName"]));
+            },
+          ),
+        ],
+      ),
+    );
+    // } else {
+    //   return Container();
+    // }
   }
 
 //   Widget searchField() {
