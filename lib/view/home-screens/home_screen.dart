@@ -150,10 +150,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                           )
                               ],
                             ),
-                            const Icon(
-                              Icons.notifications,
-                              size: 24,
-                              color: AppColors.black,
+                            // const Icon(
+                            //   Icons.notifications,
+                            //   size: 24,
+                            //   color: AppColors.black,
+                            // )
+                            SizedBox(
+                              width: 30,
                             )
                           ],
                         ),
