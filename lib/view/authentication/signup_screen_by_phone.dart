@@ -95,7 +95,7 @@ class _SignUpScreenByPhoneState extends State<SignUpScreenByPhone> {
                       showDialog(
                         barrierDismissible: false,
                         context: context,
-                        builder: (ctx) => const AlertDialog(
+                        builder: (ctx) =>  AlertDialog(
                           title: Text("Wait for Verification OTP"),
                           content: Row(
                             mainAxisAlignment: MainAxisAlignment.center,

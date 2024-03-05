@@ -272,7 +272,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         style: AppTextStyles.textStyleBoldBodySmall,
                       ),
                     ),
-                    const Padding(
+                     Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal: 20, vertical: 25),
                       child: Row(
