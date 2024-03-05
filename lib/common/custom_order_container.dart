@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:bhai_chara/utils/text-styles.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +25,9 @@ class OrderContainer extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         width: double.infinity,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(7), color: AppColors.white),
+            border: Border.all(color: AppColors.Grey),
+            borderRadius: BorderRadius.circular(7),
+            color: AppColors.white),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -41,15 +45,15 @@ class OrderContainer extends StatelessWidget {
                 ),
               ],
             ),
-            if(!isFree)
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Text(
-                price,
-                style: AppTextStyles.textStyleBoldBodyXSmall,
-                textAlign: TextAlign.start,
+            if (!isFree)
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Text(
+                  price,
+                  style: AppTextStyles.textStyleBoldBodyXSmall,
+                  textAlign: TextAlign.start,
+                ),
               ),
-            ),
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child: Text(
@@ -59,7 +63,7 @@ class OrderContainer extends StatelessWidget {
               ),
             ),
             Padding(
-              padding:  EdgeInsets.symmetric(vertical: 12),
+              padding: EdgeInsets.symmetric(vertical: 12),
               child: Row(
                 children: [
                   Icon(Icons.location_on),
@@ -79,8 +83,9 @@ class OrderContainer extends StatelessWidget {
                   child: Center(
                     child: Text(
                       "Decline",
-                     // textAlign: TextAlign.center,
-                      style: AppTextStyles.textStyleNormalBodySmall.copyWith(color: AppColors.white),
+                      // textAlign: TextAlign.center,
+                      style: AppTextStyles.textStyleNormalBodySmall
+                          .copyWith(color: AppColors.white),
                     ),
                   ),
                   decoration: BoxDecoration(
@@ -95,8 +100,9 @@ class OrderContainer extends StatelessWidget {
                   child: Center(
                     child: Text(
                       "Accept",
-                     // textAlign: TextAlign.center,
-                      style: AppTextStyles.textStyleNormalBodySmall.copyWith(color: AppColors.white),
+                      // textAlign: TextAlign.center,
+                      style: AppTextStyles.textStyleNormalBodySmall
+                          .copyWith(color: AppColors.white),
                     ),
                   ),
                   decoration: BoxDecoration(

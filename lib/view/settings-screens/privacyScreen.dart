@@ -1,3 +1,4 @@
+import 'package:bhai_chara/utils/app_colors.dart';
 import 'package:bhai_chara/utils/push.dart';
 import 'package:bhai_chara/view/settings-screens/create_pasward_screen.dart';
 import 'package:flutter/material.dart';
@@ -12,12 +13,22 @@ class PrivacyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Column(children: [
-          CustomContainer(context, "Privacy"),
+    return Scaffold(
+      backgroundColor: AppColors.white,
+      appBar: AppBar(
+        backgroundColor: AppColors.white,
+        foregroundColor: AppColors.black,
+         title: Text(
+                "Privacy",
+                style: AppTextStyles.textStyleBoldBodyMedium,
+              ),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        child: Column(children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(vertical: 10),
             child: Row(children: [
               Text("Show my phone number on ads",
                   style: AppTextStyles.textStyleBoldBodySmall),
@@ -35,20 +46,23 @@ class PrivacyScreen extends StatelessWidget {
             ]),
           ),
           const Divider(),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: InkWell(
-              onTap: () {
-                // debugger();
-                push(context, CreatePasswardScreen());
-              },
-              child: Row(
-                children: [
-                  Text("Create Password",
-                      style: AppTextStyles.textStyleBoldBodySmall),
-                  const Spacer(),
-                  const Icon(Icons.arrow_forward_ios)
-                ],
+          Container(
+            color: AppColors.white,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: InkWell(
+                onTap: () {
+                  // debugger();
+                  push(context, CreatePasswardScreen());
+                },
+                child: Row(
+                  children: [
+                    Text("Create Password",
+                        style: AppTextStyles.textStyleBoldBodySmall),
+                    const Spacer(),
+                    const Icon(Icons.arrow_forward_ios)
+                  ],
+                ),
               ),
             ),
           ),

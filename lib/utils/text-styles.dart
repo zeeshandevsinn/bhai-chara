@@ -1,3 +1,4 @@
+import 'package:bhai_chara/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AppTextStyles {
@@ -81,6 +82,14 @@ class AppTextStyles {
       decorationStyle: TextDecorationStyle.solid,
       fontStyle: FontStyle.normal,
       color: Colors.cyan);
+    static TextStyle textStyleNormalBody_BlueColor = const TextStyle(
+      decorationColor: Colors.blue,
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      letterSpacing: 0.5,
+      decorationStyle: TextDecorationStyle.solid,
+      fontStyle: FontStyle.normal,
+      color: AppColors.blue);
   // ignore: non_constant_identifier_names
   static TextStyle textStyleNormalBodySmall_WhiteColor = const TextStyle(
       fontSize: 18,

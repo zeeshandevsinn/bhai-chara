@@ -24,7 +24,8 @@ class ChatBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: leftpadding, right: rightpadding),
+      padding: EdgeInsets.only(left: 0, right: 0),
+      // padding: EdgeInsets.only(left: leftpadding, right: rightpadding),
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(

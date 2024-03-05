@@ -1,5 +1,6 @@
 import 'package:bhai_chara/common/custom_button.dart';
 import 'package:bhai_chara/utils/app_colors.dart';
+import 'package:bhai_chara/utils/app_config.dart';
 import 'package:bhai_chara/utils/push.dart';
 import 'package:bhai_chara/utils/showSnack.dart';
 import 'package:bhai_chara/view/authentication/create_password.dart';
@@ -21,21 +22,21 @@ class _SignupByEmailState extends State<SignupByEmail> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size * 1;
-    return SafeArea(
-      child: Scaffold(
-        body: ListView(
-          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-          children: [
-            Container(
-              height: size.height * .95,
-              padding: EdgeInsets.all(10),
+    return Scaffold(
+      backgroundColor: AppColors.white,
+      body: ListView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        children: [
+          Container(
+            height: size.height * .95,
+            // padding: EdgeInsets.all(10),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(
-                    height: 20,
-                  ),
+                   Gap.h(30),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -52,16 +53,14 @@ class _SignupByEmailState extends State<SignupByEmail> {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 50,
+                   Gap.h(50),
+                  Center(
+                    child: Text(
+                      "Enter your Detail",
+                      style: AppTextStyles.textStyleBoldSubTitleLarge,
+                    ),
                   ),
-                  Text(
-                    "Enter your Detail",
-                    style: AppTextStyles.textStyleBoldSubTitleLarge,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                   Gap.h(10),
                   Container(
                       child: Text(
                     "Your Details is the most secure method to verify your Account",
@@ -69,9 +68,8 @@ class _SignupByEmailState extends State<SignupByEmail> {
                     textAlign: TextAlign.center,
                     style: AppTextStyles.textStyleNormalBodyXSmall,
                   )),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  Gap.h(30),
+
                   CustomTextField(
                     // height: 60.0,
                     labeltext: "Full Name",
@@ -82,9 +80,7 @@ class _SignupByEmailState extends State<SignupByEmail> {
                         borderRadius: BorderRadius.circular(20),
                         borderSide: BorderSide(color: AppColors.grey)),
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  Gap.h(20),
                   CustomTextField(
                     // height: 60.0,
                     labeltext: "E-mail",
@@ -120,14 +116,12 @@ class _SignupByEmailState extends State<SignupByEmail> {
                     },
                     text: "Next",
                   ),
-                  const SizedBox(
-                    height: 30,
-                  ),
+                   Gap.h(20),
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

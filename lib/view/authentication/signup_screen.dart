@@ -1,4 +1,5 @@
 import 'package:bhai_chara/common/custom_container_tile.dart';
+import 'package:bhai_chara/utils/app_colors.dart';
 import 'package:bhai_chara/utils/push.dart';
 import 'package:bhai_chara/utils/text-styles.dart';
 import 'package:bhai_chara/view/authentication/signup_screen_by_email.dart';
@@ -15,16 +16,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return SafeArea(
-      child: Scaffold(
-        // backgroundColor: AppColors.primary,
-        body: Container(
-          height: double.infinity,
-          width: double.infinity,
-          padding: EdgeInsets.all(10),
+    return Scaffold(
+      backgroundColor: AppColors.white,
+      // backgroundColor: AppColors.primary,
+      body: Container(
+        height: double.infinity,
+        width: double.infinity,
+        // padding: EdgeInsets.all(10),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(
                 height: 20,
@@ -46,18 +49,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
               const SizedBox(
                 height: 20,
               ),
+    
+              Center(
+                child: Text(
+                  "Welcome to BHAI CHARA",
+                  style: AppTextStyles.textStyleBoldBodyMedium,
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                      width: size.width * .90,
+                      width: size.width * .80,
                       child: Text(
                         "Where trust unites buyers and seller in a strong community",
                         maxLines: 3,
                         textAlign: TextAlign.center,
-                        style: AppTextStyles.textStyleNormalBodyMedium,
+                        style: AppTextStyles.textStyleBoldXLBodySmall,
                       )),
                 ],
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Text(
+                "Create your account to continue!",
+                style: AppTextStyles.textStyleBoldXLBodySmall,
               ),
               const SizedBox(
                 height: 20,
@@ -99,18 +119,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
               //     tap: () {
               //       push(context, SignUpScreenByPhone());
               //     }),
-              const Spacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "If you continue, you are accepting",
-                    style: AppTextStyles.textStyleNormalXLBodySmall,
-                    maxLines: 2,
-                    softWrap: true,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
+              // const Spacer(),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     Text(
+              //       "If you continue, you are accepting",
+              //       style: AppTextStyles.textStyleNormalXLBodySmall,
+              //       maxLines: 2,
+              //       softWrap: true,
+              //       overflow: TextOverflow.ellipsis,
+              //     ),
+              //   ],
+              // ),
+               const SizedBox(
+                height: 20,
               ),
               Container(
                 child: RichText(
@@ -121,7 +144,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: "Bhai Chara ",
+                        text: "BHAI CHARA ",
                         style: AppTextStyles.textStyleBoldBodyXSmall,
                       ),
                       TextSpan(
@@ -150,6 +173,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
               ),
+             
             ],
           ),
         ),

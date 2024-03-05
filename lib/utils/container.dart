@@ -13,7 +13,7 @@ class CustomContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 80,
-      decoration: const BoxDecoration(color: AppColors.darkBlue),
+      decoration: const BoxDecoration(color: AppColors.white),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -28,7 +28,7 @@ class CustomContainer extends StatelessWidget {
                     icon: Icon(
                       iconVar,
                       size: 24,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                   ),
                 ),
@@ -36,7 +36,7 @@ class CustomContainer extends StatelessWidget {
               padding: const EdgeInsets.only(left: 20),
               child: Text(text,
                   style: AppTextStyles.textStyleBoldBodyMedium
-                      .copyWith(color: AppColors.white)))
+                      .copyWith(color: AppColors.black)))
         ],
       ),
     );

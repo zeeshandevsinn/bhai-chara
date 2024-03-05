@@ -17,6 +17,7 @@ class _RequestScreenState extends State<RequestScreen> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: AppColors.white,
       body: Container(
         margin: EdgeInsets.all(20),
         child: Column(

@@ -21,7 +21,8 @@ class AuthProvider extends ChangeNotifier {
 
       var data = await ScreenManager.geoLocation(
           context);
-          debugger();
+          log('aaaaaaaaaaaaaaaaaaaaaa');
+          // debugger();
       if (data != null) {
         currentAddress = data;
         await Preferences.saveAddress(data);

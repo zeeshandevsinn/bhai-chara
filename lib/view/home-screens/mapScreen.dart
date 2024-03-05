@@ -46,7 +46,7 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
+backgroundColor: AppColors.white,
       appBar:AppBar(
         backgroundColor: AppColors.black,
         foregroundColor: AppColors.white,

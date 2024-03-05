@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_init_to_null, prefer_typing_uninitialized_variables, non_constant_identifier_names, prefer_if_null_operators, avoid_unnecessary_containers, sized_box_for_whitespace
+
 import 'package:bhai_chara/utils/app_colors.dart';
 import 'package:bhai_chara/utils/text-styles.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +33,7 @@ class CustomContainerTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(20)),
         child: Container(
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            // mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
                 // flex: 1,
@@ -46,8 +48,11 @@ class CustomContainerTile extends StatelessWidget {
                       : chil_widget,
                 ),
               ),
+              const SizedBox(
+                width: 45,
+              ),
               Expanded(
-                flex: 2,
+                flex: 5,
                 child: Text(
                   "$text",
                   style: style_text == null
@@ -97,7 +102,7 @@ class CustomTextFormField extends StatelessWidget {
       maxLength: maxlength,
       controller: controller,
       decoration: InputDecoration(
-          contentPadding: EdgeInsets.only(top: 10),
+          contentPadding: const EdgeInsets.only(top: 10),
           border: border,
           hintText: hint_text,
           counterText: " ",
@@ -150,7 +155,7 @@ class CustomTextField extends StatelessWidget {
             width: width,
             child: TextField(
               obscureText: obsecuretext,
-              style: TextStyle(
+              style: const TextStyle(
                   fontWeight: FontWeight.w400, color: AppColors.black),
               maxLines: 1,
               keyboardType: keyboardtype,
@@ -159,7 +164,7 @@ class CustomTextField extends StatelessWidget {
                   : null,
               controller: controller,
               decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(
+                  contentPadding: const EdgeInsets.only(
                     left: 20,
                   ),
                   border: border,
@@ -170,7 +175,7 @@ class CustomTextField extends StatelessWidget {
                   hintText: hintText,
                   labelText: labeltext,
                   // labelStyle: TextStyle(color: AppColors.blue, fontSize: 17),
-                  hintStyle: TextStyle(
+                  hintStyle: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                       color: AppColors.grey)),

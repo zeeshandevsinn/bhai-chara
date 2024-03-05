@@ -1,4 +1,5 @@
 import 'package:bhai_chara/common/custom_button.dart';
+import 'package:bhai_chara/utils/app_config.dart';
 import 'package:bhai_chara/utils/push.dart';
 import 'package:bhai_chara/view/authentication/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -21,9 +22,10 @@ class _OnboardScreenThreeState extends State<OnboardScreenThree> {
       child: Scaffold(
           backgroundColor: AppColors.black,
           body: SingleChildScrollView(
+            // physics: NeverScrollableScrollPhysics(),
             child: Padding(
               padding:
-                  const EdgeInsets.symmetric(vertical: 35.0, horizontal: 25.0),
+                  const EdgeInsets.symmetric(vertical: 25.0, horizontal: 25.0),
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -33,7 +35,8 @@ class _OnboardScreenThreeState extends State<OnboardScreenThree> {
                       height: 114,
                       width: 90,
                     ),
-                    const SizedBox(height: 20),
+                    // const SizedBox(height: 20),
+                    Gap.h(20),
                     Text(
                       "Empowering Together",
                       textAlign: TextAlign.center,
@@ -41,14 +44,17 @@ class _OnboardScreenThreeState extends State<OnboardScreenThree> {
                         color: AppColors.white,
                       ),
                     ),
+
                     const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 50.0),
+                      padding: EdgeInsets.symmetric(vertical: 10.0),
                       child: Image(
                         image: AssetImage("assets/images/onboard3.png"),
                         //height: 350,
                         width: 270,
                       ),
                     ),
+                    // const SizedBox(height: 10),
+                    Gap.h(10),
                     Text(
                       "Uniting for Progress",
                       textAlign: TextAlign.center,
@@ -58,7 +64,7 @@ class _OnboardScreenThreeState extends State<OnboardScreenThree> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 23, vertical: 15),
+                          horizontal: 23, vertical: 10),
                       child: Text(
                         "In the spirit of Bhai Chara, we empower each other to grow and succeed. Explore opportunities to collaborate, contribute, and uplift our community.",
                         textAlign: TextAlign.center,
@@ -68,7 +74,7 @@ class _OnboardScreenThreeState extends State<OnboardScreenThree> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 60.0),
+                      padding: const EdgeInsets.symmetric(vertical: 35.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -80,7 +86,7 @@ class _OnboardScreenThreeState extends State<OnboardScreenThree> {
                     ),
                     CustomButton(
                       onTap: () {
-                        push(context, const LoginScreen());
+                        pushUntil(context, const LoginScreen());
                       },
                       text: "Next",
                     ),

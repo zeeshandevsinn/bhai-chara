@@ -1,6 +1,5 @@
-import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 import '../../provider/phone_number.dart';
 import 'package:bhai_chara/controller/services/Firebase_Manager.dart';
@@ -39,7 +38,7 @@ class SignUpProvider extends ChangeNotifier {
 
       if (user != null) {
         showSnack(context: context, text: "SignUp SuccessFully");
-        push(context, SignUpScreenByPhone());
+        pushUntil(context, SignUpScreenByPhone());
         return data;
       }
     } catch (e) {

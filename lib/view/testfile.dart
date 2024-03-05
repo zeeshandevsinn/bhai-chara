@@ -1,3 +1,4 @@
+import 'package:bhai_chara/utils/app_colors.dart';
 import 'package:bhai_chara/utils/showSnack.dart';
 import 'package:flutter/material.dart';
 
@@ -15,9 +16,9 @@ class _TestFileState extends State<TestFile> {
     AlertDialog alert = AlertDialog(
       content: Row(
         children: [
-          CustomLoader(),
+          const CustomLoader(),
           Container(
-              margin: EdgeInsets.only(left: 7), child: Text("Loading...")),
+              margin: const EdgeInsets.only(left: 7), child: const Text("Loading...")),
         ],
       ),
     );
@@ -34,13 +35,14 @@ class _TestFileState extends State<TestFile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.white,
       body: Center(
           child: ElevatedButton(
               onPressed: () {
                 showDialog(
                   context: context,
-                  builder: (ctx) => AlertDialog(
-                    title: const Text("Wait for Verification OTP"),
+                  builder: (ctx) => const AlertDialog(
+                    title: Text("Wait for Verification OTP"),
                     content: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -53,7 +55,7 @@ class _TestFileState extends State<TestFile> {
                 showSnack(context: context, text: "Hi Dialogue Box");
               },
               // onPressed: showLoaderDialog(context),
-              child: Icon(
+              child: const Icon(
                 Icons.favorite,
                 size: 30,
               ))),

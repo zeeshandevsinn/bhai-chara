@@ -1,8 +1,9 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:bhai_chara/common/custom_button.dart';
 import 'package:bhai_chara/common/custom_container_tile.dart';
 import 'package:bhai_chara/controller/provider/authentication_provider/login_provider.dart';
 import 'package:bhai_chara/utils/app_colors.dart';
-import 'package:bhai_chara/utils/container.dart';
 import 'package:bhai_chara/utils/custom_loader.dart';
 import 'package:bhai_chara/utils/push.dart';
 import 'package:bhai_chara/utils/showSnack.dart';
@@ -31,41 +32,59 @@ class _LoginScreenState extends State<LoginScreen> {
       onWillPop: () {
         var pro = context.watch<LoginProvider>();
         pro.isLoading = false;
-        return push(context, OnboardScreenThree());
+        return push(context, const OnboardScreenThree());
       },
-      child: SafeArea(
-        child: Scaffold(
-          body: Builder(builder: (context) {
-            var pro = context.watch<LoginProvider>();
-            return pro.isLoading
-                ? Center(
-                    child: CustomLoader(),
-                  )
-                : SingleChildScrollView(
+      child: Scaffold(
+        backgroundColor: AppColors.white,
+        body: Builder(builder: (context) {
+          var pro = context.watch<LoginProvider>();
+          return pro.isLoading
+              ? const Center(
+                  child: CustomLoader(),
+                )
+              : SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        CustomContainer(
-                          text: "Login",
-                          iconVar: null,
+                        // CustomContainer(
+                        //   text: "Login",
+                        //   iconVar: null,
+                        // ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Center(
+                          child: Container(
+                            height: 130,
+                            width: 150,
+                            decoration: const BoxDecoration(
+                                // color: AppColors.primary,
+                                image: DecorationImage(
+                                    image: AssetImage("assets/images/logo.png"),
+                                    fit: BoxFit.contain)),
+                          ),
                         ),
                         const SizedBox(
-                          height: 50,
+                          height: 20,
                         ),
-                        Container(
-                          height: 130,
-                          width: 150,
-                          decoration: const BoxDecoration(
-                              // color: AppColors.primary,
-                              image: DecorationImage(
-                                  image: AssetImage("assets/images/logo.png"),
-                                  fit: BoxFit.contain)),
+                        Center(
+                          child: Text(
+                            "Welcome to BHAI CHARA",
+                            style: AppTextStyles.textStyleBoldBodyMedium,
+                          ),
                         ),
                         const SizedBox(
-                          height: 50,
+                          height: 20,
+                        ),
+                        const SizedBox(
+                          height: 20,
                         ),
                         Text(
-                          "Welcome back",
-                          style: AppTextStyles.textStyleBoldSubTitleLarge,
+                          "Hello there, login in to continue!",
+                          style: AppTextStyles.textStyleBoldXLBodySmall,
                         ),
                         const SizedBox(
                           height: 20,
@@ -75,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           width: size.width * .90,
                           controller: emailController,
                           border: OutlineInputBorder(
-                            borderSide: BorderSide(color: AppColors.grey),
+                            borderSide: const BorderSide(color: AppColors.grey),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           labeltext: "Email Address",
@@ -89,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           width: size.width * .90,
                           controller: passwordController,
                           border: OutlineInputBorder(
-                            borderSide: BorderSide(color: AppColors.grey),
+                            borderSide: const BorderSide(color: AppColors.grey),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           labeltext: "Password",
@@ -97,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ? IconButton(
                                   onPressed: () {
                                     setState(() {});
-
+                    
                                     x = VariableProvider.IncrementVariable(x);
                                   },
                                   icon: const Icon(
@@ -116,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           suffixIconColor: AppColors.grey,
                         ),
                         const SizedBox(
-                          height: 15,
+                          height: 25,
                         ),
                         CustomButton(
                           onTap: () async {
@@ -156,7 +175,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             TextButton(
                               onPressed: () {
-                                push(context, SignUpScreen());
+                                push(context, const SignUpScreen());
                               },
                               child: Text(
                                 "Sign up",
@@ -170,7 +189,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
-                              margin: EdgeInsets.only(right: 3, left: 3),
+                              margin: const EdgeInsets.only(right: 3, left: 3),
                               height: 2,
                               width: size.width * .30,
                               color: AppColors.light_black,
@@ -180,7 +199,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               style: AppTextStyles.textStyleSubtitleBody,
                             ),
                             Container(
-                              margin: EdgeInsets.only(left: 3, right: 3),
+                              margin: const EdgeInsets.only(left: 3, right: 3),
                               height: 2,
                               width: size.width * .30,
                               color: AppColors.light_black,
@@ -188,10 +207,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           ],
                         ),
                         const SizedBox(
-                          height: 10,
+                          height: 20,
                         ),
                         CustomContainerTile(
-                          width: size.width * .80,
+                          width: size.width * .85,
                           image: "assets/images/google.png",
                           text: "Continue with Google",
                           style_text:
@@ -199,10 +218,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           ontap: () {},
                         ),
                         const SizedBox(
-                          height: 20,
+                          height: 30,
                         ),
                         Container(
-                          margin: EdgeInsets.only(bottom: 5),
+                          margin: const EdgeInsets.only(bottom: 5),
                           child: RichText(
                             textAlign: TextAlign.center,
                             overflow: TextOverflow.ellipsis,
@@ -211,7 +230,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             text: TextSpan(
                               children: [
                                 TextSpan(
-                                  text: "Bhai Chara ",
+                                  text: "BHAI CHARA ",
                                   style: AppTextStyles.textStyleBoldBodyXSmall,
                                 ),
                                 TextSpan(
@@ -242,9 +261,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ],
                     ),
-                  );
-          }),
-        ),
+                  ),
+                );
+        }),
       ),
     );
   }

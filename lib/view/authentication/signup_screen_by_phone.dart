@@ -1,6 +1,9 @@
+// ignore_for_file: use_build_context_synchronously, avoid_unnecessary_containers
+
 import 'package:bhai_chara/common/custonPhoneTextField.dart';
 import 'package:bhai_chara/controller/provider/authentication_provider/firebase_signup_provider.dart';
 import 'package:bhai_chara/utils/app_colors.dart';
+import 'package:bhai_chara/utils/app_config.dart';
 import 'package:bhai_chara/utils/push.dart';
 import 'package:bhai_chara/utils/showSnack.dart';
 import 'package:bhai_chara/utils/text-styles.dart';
@@ -31,121 +34,110 @@ class _SignUpScreenByPhoneState extends State<SignUpScreenByPhone> {
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
     var size = MediaQuery.of(context).size;
-    return SafeArea(
-      child: Scaffold(
-        body: Builder(builder: (context) {
-          // ignore: unused_local_variable
-          var phone = context.watch<SignUpProvider>();
-          return Container(
-            padding: EdgeInsets.all(20),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 130,
-                        width: 150,
-                        decoration: const BoxDecoration(
-                            // color: AppColors.primary,
-                            image: DecorationImage(
-                                scale: 1,
-                                image: AssetImage("assets/images/logo.png"),
-                                fit: BoxFit.contain)),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  Text(
-                    "Enter your phone",
-                    style: AppTextStyles.textStyleBoldSubTitleLarge,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                      child: Text(
-                    "We will send a confirmation code to your phone",
-                    maxLines: 3,
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.textStyleNormalBodyXSmall,
-                  )),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  CustomCountryPhoneField(
-                    controller: numberController,
-                    completePhoneNumber: completePhoneNumber,
-                  ),
-                  SizedBox(
-                    height: (size.height < 300)
-                        ? size.height * .05
-                        : size.height * .20,
-                  ),
-                  CustomButton(
-                    onTap: () async {
-                      if (numberController.text.isEmpty) {
-                        showSnack(
-                            context: context, text: "Please Enter Phone Field");
-                      } else {
-                        FocusScope.of(context).unfocus();
-                        showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (ctx) => AlertDialog(
-                            title: const Text("Wait for Verification OTP"),
-                            content: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text("Never tab Back"),
-                              ],
-                            ),
-                            actions: <Widget>[
-                              CustomLoader(),
+    return Scaffold(
+      backgroundColor: AppColors.white,
+      body: Builder(builder: (context) {
+        // ignore: unused_local_variable
+        var phone = context.watch<SignUpProvider>();
+        return Container(
+          padding: const EdgeInsets.all(20),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Gap.h(30),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 150,
+                      width: 150,
+                      decoration: const BoxDecoration(
+                          // color: AppColors.primary,
+                          image: DecorationImage(
+                              scale: 1,
+                              image: AssetImage("assets/images/logo.png"),
+                              fit: BoxFit.contain)),
+                    ),
+                  ],
+                ),
+                Gap.h(50),
+                Text(
+                  "Enter your phone",
+                  style: AppTextStyles.textStyleBoldSubTitleLarge,
+                ),
+                Gap.h(10),
+                Container(
+                    child: Text(
+                  "We will send a confirmation code to your phone",
+                  maxLines: 3,
+                  textAlign: TextAlign.center,
+                  style: AppTextStyles.textStyleNormalBodyXSmall,
+                )),
+                Gap.h(20),
+                CustomCountryPhoneField(
+                  controller: numberController,
+                  completePhoneNumber: completePhoneNumber,
+                ),
+                SizedBox(
+                  height: (size.height < 300)
+                      ? size.height * .10
+                      : size.height * .28,
+                ),
+                CustomButton(
+                  onTap: () async {
+                    if (numberController.text.isEmpty) {
+                      showSnack(
+                          context: context, text: "Please Enter Phone Field");
+                    } else {
+                      FocusScope.of(context).unfocus();
+                      showDialog(
+                        barrierDismissible: false,
+                        context: context,
+                        builder: (ctx) => const AlertDialog(
+                          title: Text("Wait for Verification OTP"),
+                          content: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("Never tab Back"),
                             ],
                           ),
-                        );
-                        var data = context.read<SignUpProvider>();
+                          actions: <Widget>[
+                            CustomLoader(),
+                          ],
+                        ),
+                      );
+                      var data = context.read<SignUpProvider>();
 
-                        await data.PhoneVerifyFireBase(
-                            context, PhoneProvider.phonenumber);
-                        data.isLoading
-                            ? null
-                            : push(
-                                context,
-                                OTPScreen(
-                                  phone: PhoneProvider.phonenumber,
-                                ));
-                        // numberController =
-                        //     await CustomCountryPhoneField().controller;
-                      }
-                    },
-                    text: "Next",
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  CustomButton(
-                    colorBox: AppColors.grey,
-                    onTap: () async {
-                      push(context, RootScreen());
-                    },
-                    text: "Skip",
-                  ),
-                ],
-              ),
+                      await data.PhoneVerifyFireBase(
+                          context, PhoneProvider.phonenumber);
+                      data.isLoading
+                          ? null
+                          : push(
+                              context,
+                              OTPScreen(
+                                phone: PhoneProvider.phonenumber,
+                              ));
+                      // numberController =
+                      //     await CustomCountryPhoneField().controller;
+                    }
+                  },
+                  text: "Next",
+                ),
+                Gap.h(10),
+                CustomButton(
+                  colorBox: AppColors.grey,
+                  onTap: () async {
+                    push(context, RootScreen());
+                  },
+                  text: "Skip",
+                ),
+              ],
             ),
-          );
-        }),
-      ),
+          ),
+        );
+      }),
     );
   }
 }

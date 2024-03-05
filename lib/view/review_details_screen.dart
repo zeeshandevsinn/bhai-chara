@@ -25,6 +25,7 @@ class _PostDetailScreen2State extends State<PostDetailScreen2> {
     var size = MediaQuery.of(context).size;
     return SafeArea(
         child: Scaffold(
+          backgroundColor: AppColors.white,
       body: Column(
         children: [
           CustomContainer(

@@ -1,6 +1,8 @@
 import 'package:bhai_chara/utils/app_colors.dart';
+import 'package:bhai_chara/utils/app_config.dart';
 import 'package:bhai_chara/utils/listtile_custom.dart';
 import 'package:bhai_chara/utils/push.dart';
+import 'package:bhai_chara/utils/text-styles.dart';
 import 'package:bhai_chara/view/settings-screens/manage_account_screen.dart';
 import 'package:bhai_chara/view/settings-screens/privacyScreen.dart';
 import 'package:bhai_chara/view/settings-screens/user_preferences_screen.dart';
@@ -18,57 +20,61 @@ class SettingScreen extends StatefulWidget {
 class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: AppColors.primary,
-        body: Column(
-          children: [
-            CustomContainer(context, "Setting"),
-            const SizedBox(
-              height: 30,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                children: [
-                  CustomListTile(
-                    tap: () {
-                      push(context, const PrivacyScreen());
-                    },
-                    title: "Privacy",
-                    subtitle: "Phone number visibility",
-                  ),
-                  const Divider(
-                    thickness: 2,
-                    color: AppColors.dividerColor,
-                  ),
-                  CustomListTile(
-                    tap: () {
-                      push(context, ManageAccountScreen());
-                    },
-                    title: "Manage account",
-                    subtitle: "Take action on account",
-                  ),
-                  const Divider(
-                    thickness: 2,
-                    color: AppColors.dividerColor,
-                  ),
-                  CustomListTile(
-                    tap: () {
-                      push(context, UserPreferencesScreen());
-                    },
-                    title: "User Preferences",
-                    subtitle: "Customize appearance",
-                  ),
-                  const Divider(
-                    thickness: 2,
-                    color: AppColors.dividerColor,
-                  ),
-                ],
+    return Scaffold(
+      backgroundColor: AppColors.white,
+       appBar: AppBar(
+        backgroundColor: AppColors.white,
+        foregroundColor: AppColors.black,
+         title: Text(
+                "Settings",
+                style: AppTextStyles.textStyleBoldBodyMedium,
               ),
+        centerTitle: true,
+      ),
+      body: Column(
+        children: [
+          Gap.h(30),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Column(
+              children: [
+                CustomListTile(
+                  tap: () {
+                    push(context, const PrivacyScreen());
+                  },
+                  title: "Privacy",
+                  subtitle: "Phone number visibility",
+                ),
+                const Divider(
+                  thickness: 2,
+                  color: AppColors.dividerColor,
+                ),
+                CustomListTile(
+                  tap: () {
+                    push(context, ManageAccountScreen());
+                  },
+                  title: "Manage account", 
+                  subtitle: "Take action on account",
+                ),
+                const Divider(
+                  thickness: 2,
+                  color: AppColors.dividerColor,
+                ),
+                CustomListTile(
+                  tap: () {
+                    push(context, UserPreferencesScreen());
+                  },
+                  title: "User Preferences",
+                  subtitle: "Customize appearance",
+                ),
+                const Divider(
+                  thickness: 2,
+                  color: AppColors.dividerColor,
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

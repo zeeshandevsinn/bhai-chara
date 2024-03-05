@@ -1,3 +1,4 @@
+
 import '../../../../utils/app_colors.dart';
 import 'package:bhai_chara/utils/push.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,10 +24,15 @@ class _ChatViewState extends State<ChatView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.white,
       appBar: AppBar(
-        backgroundColor: AppColors.black,
+        backgroundColor: AppColors.white,
         foregroundColor: AppColors.white,
-        title: Text("Chatt"),
+       title: Text(
+                "Chat",
+                style: AppTextStyles.textStyleBoldBodyMedium,
+              ),
+        centerTitle: true,
         // actions: [
         //   IconButton(onPressed: (){
         //     FirebaseAuth.instance.signOut();
@@ -43,7 +49,7 @@ class _ChatViewState extends State<ChatView> {
                       .toList());
             }
 
-            return Text("Loading . . .");
+            return const Text("Loading . . .");
           }),
     );
     // }
@@ -53,16 +59,15 @@ class _ChatViewState extends State<ChatView> {
 
   Widget buildUserListItems(DocumentSnapshot document) {
     Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-
     if (auth.currentUser!.email != data['email']) {
       return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 5),
         child: Column(
           children: [
             ListTile(
               trailing: Text(data['email'],
                   style: AppTextStyles.textStyleNormalBodyXSmall),
-              leading: CircleAvatar(radius: 35),
+              leading: const CircleAvatar(radius: 35),
               title: Text(data['name'].toString(),
                   style: AppTextStyles.textStyleNormalBodySmall),
               //  subtitle:  Text(' ',style:AppTextStyles.textStyleNormalBodyXSmall),
@@ -75,7 +80,7 @@ class _ChatViewState extends State<ChatView> {
                     ));
               },
             ),
-            Divider(),
+            // Divider(),
           ],
         ),
       );

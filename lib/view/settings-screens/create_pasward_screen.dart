@@ -1,3 +1,6 @@
+import 'package:bhai_chara/utils/app_colors.dart';
+import 'package:bhai_chara/utils/app_config.dart';
+import 'package:bhai_chara/utils/text-styles.dart';
 import 'package:bhai_chara/view/authentication/otp_code_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -21,36 +24,41 @@ class CreatePasswardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Column(
-          children: [
-            CustomContainer(
-              text: 'Create Password',
-              iconVar: Icons.arrow_back_ios,
-            ),
-            ChangeNotifierProvider(
-              create: (_) => visibilityProvider1(),
-              child: CustomeTextField(
-                hinttext: 'Password',
-                controller: passwordController,
+    return Scaffold(
+      backgroundColor: AppColors.white,
+       appBar: AppBar(
+        backgroundColor: AppColors.white,
+        foregroundColor: AppColors.black,
+         title: Text(
+                "Create Password",
+                style: AppTextStyles.textStyleBoldBodyMedium,
               ),
+        centerTitle: true,
+      ),
+      body: Column(
+        children: [
+          Gap.h(10),
+          ChangeNotifierProvider(
+            create: (_) => visibilityProvider1(),
+            child: CustomeTextField(
+              hinttext: 'Password',
+              controller: passwordController,
             ),
-            ChangeNotifierProvider(
-              create: (_) => visibilityProvider2(),
-              child: CustomeTextField(
-                hinttext: 'Confirm Password',
-                controller: confirmPasswordController,
-              ),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => visibilityProvider2(),
+            child: CustomeTextField(
+              hinttext: 'Confirm Password',
+              controller: confirmPasswordController,
             ),
-            Container(
-                margin: const EdgeInsets.only(left: 24, right: 24, top: 20),
-                child: CustomButton(
-                  onTap: (){push(context, OTPScreen());},
-                  text: "Next",
-                )),
-          ],
-        ),
+          ),
+          Container(
+              margin: const EdgeInsets.only(left: 24, right: 24, top: 20),
+              child: CustomButton(
+                onTap: (){push(context, OTPScreen());},
+                text: "Next",
+              )),
+        ],
       ),
     );
   }

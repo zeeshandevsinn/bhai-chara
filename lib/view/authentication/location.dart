@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_final_fields, unused_field, duplicate_ignore
+
 import 'package:bhai_chara/utils/app_colors.dart';
+import 'package:bhai_chara/utils/app_config.dart';
 import 'package:bhai_chara/utils/custom_loader.dart';
 import 'package:bhai_chara/utils/text-styles.dart';
 
@@ -25,37 +28,38 @@ class _LocationScreenState extends State<LocationScreen> {
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
     var size = MediaQuery.of(context).size * 1;
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
-          margin: EdgeInsets.all(10),
-          child: Builder(builder: (context) {
-            var pro = context.watch<AuthProvider>();
-            return pro.isLoading
-                ? Center(child: CustomLoader())
-                : Column(
-                    children: [
-                      const SizedBox(
-                        height: 80,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            height: 200,
-                            width: size.width * .90,
-                            decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                        "assets/images/location_animated.png"),
-                                    fit: BoxFit.contain)),
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Container(
+    return Scaffold(
+      backgroundColor: AppColors.white,
+      body: Container(
+        margin: EdgeInsets.all(10),
+        child: Builder(builder: (context) {
+          var pro = context.watch<AuthProvider>();
+          return pro.isLoading
+              ? Center(child: CustomLoader())
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 80,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 200,
+                          width: size.width * .90,
+                          decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(
+                                      "assets/images/location_animated.png"),
+                                  fit: BoxFit.contain)),
+                        )
+                      ],
+                    ),
+                    Gap.h(20),
+                    Center(
+                      child: Container(
                         width: size.width,
                         padding: EdgeInsets.all(20),
                         child: Text(
@@ -64,7 +68,9 @@ class _LocationScreenState extends State<LocationScreen> {
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      Container(
+                    ),
+                    Center(
+                      child: Container(
                         width: size.width * .85,
                         padding: EdgeInsets.only(left: 20, right: 20),
                         child: Text(
@@ -73,12 +79,14 @@ class _LocationScreenState extends State<LocationScreen> {
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      const Spacer(),
-                      InkWell(
+                    ),
+                    const Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      child: InkWell(
                         onTap: () async {
                           var loc = context.read<AuthProvider>();
-                          loc.Location(
-                              context);
+                          loc.Location(context);
                           push(context, RootScreen());
                         },
                         child: Container(
@@ -98,9 +106,7 @@ class _LocationScreenState extends State<LocationScreen> {
                                     fit: BoxFit.contain,
                                   ),
                                 ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
+                                Gap.h(10),
                                 Text(
                                   "Near me",
                                   style: AppTextStyles
@@ -109,11 +115,11 @@ class _LocationScreenState extends State<LocationScreen> {
                               ],
                             )),
                       ),
-                      const Spacer(),
-                    ],
-                  );
-          }),
-        ),
+                    ),
+                    Gap.h(20),
+                  ],
+                );
+        }),
       ),
     );
   }

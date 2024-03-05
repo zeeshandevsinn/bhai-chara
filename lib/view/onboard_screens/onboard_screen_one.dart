@@ -1,4 +1,5 @@
 import 'package:bhai_chara/common/custom_button.dart';
+import 'package:bhai_chara/utils/app_config.dart';
 import 'package:bhai_chara/utils/push.dart';
 import 'package:bhai_chara/view/onboard_screens/onboard_screen_two.dart';
 import 'package:flutter/material.dart';
@@ -21,9 +22,10 @@ class _OnboardScreenOneState extends State<OnboardScreenOne> {
       child: Scaffold(
           backgroundColor: AppColors.black,
           body: SingleChildScrollView(
+            // physics: NeverScrollableScrollPhysics(),
             child: Padding(
               padding:
-                  const EdgeInsets.symmetric(vertical: 35.0, horizontal: 25.0),
+                  const EdgeInsets.symmetric(vertical: 25.0, horizontal: 25.0),
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -33,7 +35,8 @@ class _OnboardScreenOneState extends State<OnboardScreenOne> {
                       height: 114,
                       width: 90,
                     ),
-                    const SizedBox(height: 20),
+                    // const SizedBox(height: 20),
+                    Gap.h(20),
                     Text(
                       "Welcome to Bhai Chara",
                       textAlign: TextAlign.center,
@@ -42,13 +45,15 @@ class _OnboardScreenOneState extends State<OnboardScreenOne> {
                       ),
                     ),
                     const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 0.0),
+                      padding: EdgeInsets.symmetric(vertical: 10.0),
                       child: Image(
                         image: AssetImage("assets/images/onboard1.png"),
                         //height: 350,
                         width: 270,
                       ),
                     ),
+                    //  const SizedBox(height: 10),
+                     Gap.h(10),
                     Text(
                       "Embrace Unity, Foster Brotherhood",
                       textAlign: TextAlign.center,
@@ -58,7 +63,7 @@ class _OnboardScreenOneState extends State<OnboardScreenOne> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 23, vertical: 15),
+                          horizontal: 23, vertical: 10),
                       child: Text(
                         "Join a community that believes in the power of unity and brotherhood. Connect, collaborate, and make a positive impact together.",
                         textAlign: TextAlign.center,
@@ -68,7 +73,7 @@ class _OnboardScreenOneState extends State<OnboardScreenOne> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 60.0),
+                      padding: const EdgeInsets.symmetric(vertical: 45.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

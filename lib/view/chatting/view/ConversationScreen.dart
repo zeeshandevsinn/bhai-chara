@@ -31,26 +31,101 @@ class _ConversationScreenState extends State<ConversationScreen> {
   }
 
   Widget buildMessageInput() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 8),
+    return
+        //  Center(
+        //           child: Padding(
+        //             padding: const EdgeInsets.only(bottom: 0),
+        //             child: Container(
+        //                 decoration: const BoxDecoration(
+        //                   color: Colors.white,
+        //                   borderRadius: BorderRadius.all(Radius.circular(5)),
+        //                 ),
+        //                 height: 60,
+        //                 child: Column(
+        //                   crossAxisAlignment: CrossAxisAlignment.start,
+        //                   mainAxisAlignment: MainAxisAlignment.start,
+        //                   children: [
+        //                     Padding(
+        //                       padding: const EdgeInsets.symmetric(horizontal: 10),
+        //                       child: Row(
+        //                         children: [
+        //                           // const Icon(Icons.add, size: 33,),
+        //                           Expanded(
+        //                               child: Column(
+        //                             crossAxisAlignment: CrossAxisAlignment.start,
+        //                             mainAxisAlignment: MainAxisAlignment.start,
+        //                             children: [
+        //                               Container(
+        //                                 height: 40,
+        //                                 decoration: BoxDecoration(
+        //                                     color: const Color.fromARGB(255, 232, 230, 230),
+        //                                     borderRadius: BorderRadius.circular(20)),
+        //                                 child: Padding(
+        //                                   padding: const EdgeInsets.symmetric(
+        //                                       horizontal: 20),
+        //                                   child: TextFormField(
+        //                                     controller: messageController,
+        //                                     decoration: const InputDecoration(
+        //                                         hintText: " Write a message",
+        //                                         hintStyle: TextStyle(fontSize: 14),
+        //                                         border: InputBorder.none),
+        //                                   ),
+        //                                 ),
+        //                               ),
+        //                             ],
+        //                           )),
+        //                           InkWell(
+        //                             onTap: () {
+        //                               sendMessage;
+        //                             },
+        //                             child: Padding(
+        //                               padding: const EdgeInsets.symmetric(horizontal: 8),
+        //                               child: Container(
+        //                                 height: 40,
+        //                                 width: 42,
+        //                                 decoration: BoxDecoration(
+        //                                     color: AppColors.black,
+        //                                     borderRadius: BorderRadius.circular(40)),
+        //                                 child: const Center(child: Icon(Icons.send,color: Colors.white,size: 22,))
+        //                               ),
+        //                             ),
+        //                           ),
+        //                         ],
+        //                       ),
+        //                     ),
+        //                   ],
+        //                 )),
+        //           ),
+        //         );
+        Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 0),
       child: Row(
         children: [
           Expanded(
-              child: TextField(
-            decoration: InputDecoration(
-              fillColor: Colors.grey,
-              hintText: "Type Here",
-              border: OutlineInputBorder(
-                  gapPadding: 8, borderRadius: BorderRadius.circular(30)),
+            child: Container(
+              height: 40,
+              decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 232, 230, 230),
+                  borderRadius: BorderRadius.circular(20)),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: TextFormField(
+                  controller: messageController,
+                  obscureText: false,
+                  decoration: const InputDecoration(
+                      hintText: " Write a message",
+                      hintStyle: TextStyle(fontSize: 14),
+                      border: InputBorder.none),
+                ),
+              ),
             ),
-            controller: messageController,
-            obscureText: false,
-          )),
-          SizedBox(width: 15),
+          ),
+          SizedBox(width: 10),
           CircleAvatar(
-              radius: 30,
-              child:
-                  IconButton(onPressed: sendMessage, icon: Icon(Icons.send))),
+              radius: 20,
+              child: Center(
+                  child: IconButton(
+                      onPressed: sendMessage, icon: Icon(Icons.send)))),
         ],
       ),
     );
@@ -86,7 +161,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
     return Container(
         alignment: alinment,
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           child: Column(
             crossAxisAlignment:
                 (data['senderId'] == firebaseAuth.currentUser!.uid)
@@ -116,8 +191,8 @@ class _ConversationScreenState extends State<ConversationScreen> {
               ),
               const SizedBox(height: 5),
               ChatBubble(
-                text:  DateFormat('dd/MMM/yyyy, hh:mm a')
-                            .format(data['timestamp'].toDate()),
+                text: DateFormat('dd/MMM/yyyy, hh:mm a')
+                    .format(data['timestamp'].toDate()),
                 // alignment: alinment,
 
                 message: data['message'],
@@ -153,17 +228,18 @@ class _ConversationScreenState extends State<ConversationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.white,
       appBar: AppBar(
-          leadingWidth: 90,
-          backgroundColor: AppColors.black,
-          foregroundColor: AppColors.white,
+          leadingWidth: 85,
+          backgroundColor: AppColors.white,
+          foregroundColor: AppColors.black,
           title: Text(widget.reciverUserEmail,
-              style: AppTextStyles.textStyleBoldXLBodySmall
-                  .copyWith(color: AppColors.white)),
+              style: AppTextStyles.textStyleBoldBodyMedium
+                  .copyWith(color: AppColors.black)),
           leading: Row(
             children: [
               IconButton(
-                  icon: Icon(Icons.arrow_back_ios),
+                  icon: Icon(Icons.arrow_back),
                   onPressed: () {
                     Navigator.pop(context);
                   }),
@@ -173,15 +249,19 @@ class _ConversationScreenState extends State<ConversationScreen> {
       body: Container(
           height: double.infinity,
           width: double.infinity,
-          decoration: BoxDecoration(),
+          decoration: BoxDecoration(
+          ),
           child: Column(
             children: [
               Expanded(
                 child: buildMessageList(),
               ),
+              const SizedBox(
+                height: 10,
+              ),
               buildMessageInput(),
               const SizedBox(
-                height: 25,
+                height: 20,
               )
             ],
           )),
