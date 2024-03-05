@@ -2,6 +2,8 @@
 
 // ignore_for_file: unnecessary_null_comparison
 
+import 'dart:developer';
+
 import 'package:bhai_chara/controller/provider/product/status.dart';
 import 'package:bhai_chara/controller/services/Firebase_Manager.dart';
 import 'package:bhai_chara/model/product_detail_model.dart';
@@ -64,6 +66,7 @@ class ProductDetailProvider extends ChangeNotifier {
       notifyListeners();
       var data = productDetailModel!.toJson();
       var address = await Preferences.getAddress();
+      // debugger();
       data["product_id"] = productID;
       data["requester_id"] = FirebaseAuth.instance.currentUser!.uid;
       data["request"] = ProductStatus.pending.name;

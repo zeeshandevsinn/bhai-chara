@@ -1,6 +1,8 @@
 
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:developer';
+
 import 'package:bhai_chara/controller/provider/product/product_detail.dart';
 import 'package:bhai_chara/controller/services/Firebase_Manager.dart';
 import 'package:bhai_chara/model/user_model.dart';
@@ -378,9 +380,8 @@ class _ProductScreenState extends State<ProductScreen> {
                           onTap: () async {
                             var uid = FirebaseAuth.instance.currentUser!.uid;
                             UserModel? user = await firebaseGetUserDetail(uid);
-                            // debugger();
                             if (user?.isPhoneVerified==true) {
-                              await provider.addRequest(context,productID:widget.id );                        
+                              await provider.addRequest(context,productID:widget.id, user: user );                        
                             } else {
                               showDialog(
                                   context: context,
