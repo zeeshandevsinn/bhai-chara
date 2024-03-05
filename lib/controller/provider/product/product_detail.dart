@@ -2,7 +2,7 @@
 
 // ignore_for_file: unnecessary_null_comparison
 
-import 'dart:developer';
+import 'dart:ui' as ui;
 
 import 'package:bhai_chara/controller/provider/product/status.dart';
 import 'package:bhai_chara/controller/services/Firebase_Manager.dart';
@@ -14,6 +14,9 @@ import 'package:bhai_chara/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 
 import '../../../utils/push.dart';
 import '../../../view/request_screen.dart';
@@ -22,16 +25,41 @@ class ProductDetailProvider extends ChangeNotifier {
   bool isLoading = false;
   UserModel? donnerDetail;
   ProductDetailModel? productDetailModel;
-
+  List<Marker> markersData = [];
   getDonerDetail(uid) async {
     // debugger();
     var data = await firebaseGetUserDetail(uid);
     // debugger();
     if (data != null) {
       donnerDetail = data;
+       markersData.add(
+          Marker(
+            markerId: const MarkerId("1"),
+            position: LatLng(data.lat!.toDouble(), data.long!.toDouble()),
+            icon: BitmapDescriptor.fromBytes(
+                await getBytesFromAsset('assets/images/location.png', 80)),
+            // infoWindow: InfoWindow(
+            //   title: location.address,
+            // ),
+          ),
+        );
       return donnerDetail;
     }
   }
+
+
+Future<Uint8List> getBytesFromAsset(String path, int width) async {
+  final ByteData data = await rootBundle.load(path);
+  final ui.Codec codec = await ui
+      .instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+  final ui.FrameInfo fi = await codec.getNextFrame();
+  final ui.Image image = fi.image;
+  final ByteData? byteData =
+      await image.toByteData(format: ui.ImageByteFormat.png);
+  return byteData!.buffer.asUint8List();
+}
+
+
 
   getProductDetail(context, id) async {
     try {

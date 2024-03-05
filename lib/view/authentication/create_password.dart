@@ -1,8 +1,13 @@
+import 'dart:async';
+import 'dart:developer';
+
+import 'package:bhai_chara/common/material_dialouge.dart';
 import 'package:bhai_chara/controller/provider/authentication_provider/firebase_signup_provider.dart';
 import 'package:bhai_chara/utils/app_config.dart';
 import 'package:bhai_chara/utils/custom_loader.dart';
 import 'package:bhai_chara/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import '../../common/custom_button.dart';
 import '../../common/custom_container_tile.dart';
@@ -20,6 +25,8 @@ class CreatePassword extends StatefulWidget {
 }
 
 class _CreatePasswordState extends State<CreatePassword> {
+  Position? location;
+
   var x = 1;
   var y = 1;
   TextEditingController passwordController = TextEditingController();
@@ -145,7 +152,7 @@ class _CreatePasswordState extends State<CreatePassword> {
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(20),
                                   borderSide:
-                                   const   BorderSide(color: AppColors.grey)),
+                                      const BorderSide(color: AppColors.grey)),
                               // hintText: "Confirm Password",
                               labeltext: "Confirm Password",
                               suffixIcon: y % 2 != 0
@@ -196,12 +203,44 @@ class _CreatePasswordState extends State<CreatePassword> {
                                         text:
                                             "Password must at least 6 character long");
                                   } else {
-                                    var pro = context.read<SignUpProvider>();
-                                    await pro.signUpFirebase(
-                                        context,
-                                        widget.fullName,
-                                        widget.emailController,
-                                        passwordController.text);
+                                    Future.delayed(
+                                            const Duration(microseconds: 200))
+                                        .then((value) async {
+                                      final permissionStatus =
+                                          await Geolocator.checkPermission();
+                                      if (permissionStatus ==
+                                          LocationPermission.denied) {
+                                        _handleDeniedLocationPermissionScenarios();
+                                      } else if (permissionStatus ==
+                                          LocationPermission.deniedForever) {
+                                        _showLocationDeniedForeverSnackbar();
+                                      } else {
+                                        enableLocationPermission();
+                                        final isLocationServiceEnabled =
+                                            await Geolocator
+                                                .isLocationServiceEnabled();
+                                        if (isLocationServiceEnabled) {
+                                          location = await Geolocator
+                                              .getCurrentPosition();
+                                          // Handle the received location data
+                                          var pro =
+                                              context.read<SignUpProvider>();
+                                          await pro.signUpFirebase(
+                                            context,
+                                            widget.fullName,
+                                            widget.emailController,
+                                            passwordController.text,
+                                            lat: location!.latitude.toInt(),
+                                            long: location!.longitude.toInt(),
+                                          );
+
+                                          // handleLocation(await Geolocator.getCurrentPosition());
+
+                                          return;
+                                        }
+                                        _handleEnableLocationScenarios();
+                                      }
+                                    });
                                   }
                                 },
                                 text: "Next"),
@@ -216,5 +255,65 @@ class _CreatePasswordState extends State<CreatePassword> {
         }),
       ),
     );
+  }
+
+  bool? isHaveLocationPermission = false;
+
+  void _handleEnableLocationScenarios() async {
+    final requestServiceRequestValue =
+        await Geolocator.isLocationServiceEnabled();
+    if (!requestServiceRequestValue) {}
+    location = await Geolocator.getCurrentPosition();
+    var pro = context.read<SignUpProvider>();
+    await pro.signUpFirebase(
+      context,
+      widget.fullName,
+      widget.emailController,
+      passwordController.text,
+      lat: location!.latitude.toInt(),
+      long: location!.longitude.toInt(),
+    );
+  }
+
+  void _showLocationDeniedForeverSnackbar() =>
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text("Enable Location",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Color(0xffFFFFFF), fontSize: 14)),
+            backgroundColor: Color(0xfff84a4a)),
+      );
+
+  void _handleDeniedLocationPermissionScenarios() async {
+    final permissionRequestStatus = await Geolocator.requestPermission();
+    if (permissionRequestStatus == LocationPermission.denied) {
+    } else if (permissionRequestStatus == LocationPermission.deniedForever) {
+      _showLocationDeniedForeverSnackbar();
+    } else {
+      enableLocationPermission();
+      final isLocationServiceEnabled =
+          await Geolocator.isLocationServiceEnabled();
+      if (isLocationServiceEnabled) {
+        location = await Geolocator.getCurrentPosition();
+        var pro = context.read<SignUpProvider>();
+        await pro.signUpFirebase(
+          context,
+          widget.fullName,
+          widget.emailController,
+          passwordController.text,
+          lat: location!.latitude.toInt(),
+          long: location!.longitude.toInt(),
+        );
+        return;
+      }
+      _handleEnableLocationScenarios();
+    }
+  }
+
+  void enableLocationPermission() => isHaveLocationPermission = true;
+
+  Future<void> handleLocation(Position locationPositionData) async {
+    log('==================> I am now in Handle Location method of bloc${locationPositionData.latitude} ');
+    await Future.delayed(const Duration(milliseconds: 1000));
   }
 }
