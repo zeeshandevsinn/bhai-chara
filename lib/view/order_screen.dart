@@ -72,6 +72,8 @@ class OrderScreen extends StatelessWidget {
                                         horizontal: 10,
                                       ),
                                       child: OrderContainer(
+                                                                                status: ProductStatus.pending.name,
+
                                           receiverEmail:
                                               request.get("requester_email"),
                                           receiverPhone:
@@ -122,10 +124,10 @@ class OrderScreen extends StatelessWidget {
                             children: [
                               Center(
                                 child: Text(
-                                  "${snapshot.data.docs.length} New Requests",
+                                  "${snapshot.data.docs.length} Approved Requests",
                                   //textAlign: TextAlign.center,
                                   style: AppTextStyles
-                                      .textStyleNormalBody_BlueColor,
+                                      .textStyleNormalBody_BlueColor.copyWith(color: AppColors.Green),
                                 ),
                               ),
                               ListView.builder(
@@ -139,6 +141,7 @@ class OrderScreen extends StatelessWidget {
                                         horizontal: 10,
                                       ),
                                       child: OrderContainer(
+                                        status: ProductStatus.approved.name,
                                           receiverEmail:
                                               request.get("requester_email"),
                                           receiverPhone:
@@ -189,10 +192,10 @@ class OrderScreen extends StatelessWidget {
                             children: [
                               Center(
                                 child: Text(
-                                  "${snapshot.data.docs.length} New Requests",
+                                  "${snapshot.data.docs.length} Rejected Requests",
                                   //textAlign: TextAlign.center,
                                   style: AppTextStyles
-                                      .textStyleNormalBody_BlueColor,
+                                      .textStyleNormalBody_BlueColor.copyWith(color: AppColors.red),
                                 ),
                               ),
                               ListView.builder(
@@ -206,6 +209,7 @@ class OrderScreen extends StatelessWidget {
                                         horizontal: 10,
                                       ),
                                       child: OrderContainer(
+                                                                                status: ProductStatus.rejected.name,
                                           uid: request.id,
                                           text: request.get("title"),
                                           receiverEmail:
