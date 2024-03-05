@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:bhai_chara/common/custom_container_tile.dart';
 import 'package:bhai_chara/utils/app_colors.dart';
 import 'package:bhai_chara/utils/push.dart';
 import 'package:bhai_chara/utils/text-styles.dart';
 import 'package:bhai_chara/view/authentication/signup_screen_by_email.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 
 import '../../controller/provider/authentication_provider/login_provider.dart';
@@ -16,6 +19,7 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  Position? location;
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -52,7 +56,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
               const SizedBox(
                 height: 20,
               ),
-    
               Center(
                 child: Text(
                   "Welcome to BHAI CHARA",
@@ -90,13 +93,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 text: "Continue with Google",
                 style_text: AppTextStyles.textStyleNormalBoldXLBodySmall,
                 ontap: () {
-                  context.read<LoginProvider>().signInWithGoogleAccount(context);
+                  Future.delayed(const Duration(microseconds: 200))
+                      .then((value) async {
+                    final permissionStatus = await Geolocator.checkPermission();
+                    if (permissionStatus == LocationPermission.denied) {
+                      _handleDeniedLocationPermissionScenarios();
+                    } else if (permissionStatus ==
+                        LocationPermission.deniedForever) {
+                      _showLocationDeniedForeverSnackbar();
+                    } else {
+                      enableLocationPermission();
+                      final isLocationServiceEnabled =
+                          await Geolocator.isLocationServiceEnabled();
+                      if (isLocationServiceEnabled) {
+                        location = await Geolocator.getCurrentPosition();
+                        // Handle the received location data
+                        context.read<LoginProvider>().signInWithGoogleAccount(
+                            context, location!.latitude, location!.longitude);
+
+                        // handleLocation(await Geolocator.getCurrentPosition());
+
+                        return;
+                      }
+                      _handleEnableLocationScenarios();
+                    }
+                  });
                 },
               ),
               const SizedBox(
                 height: 20,
               ),
-             
               CustomContainerTile(
                   image: "assets/images/mail.png",
                   text: "Continue with Email",
@@ -104,8 +130,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ontap: () {
                     push(context, SignupByEmail());
                   }),
-             
-               const SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Container(
@@ -146,11 +171,56 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
               ),
-             
             ],
           ),
         ),
       ),
     );
+  }
+
+  bool? isHaveLocationPermission = false;
+
+  void _handleEnableLocationScenarios() async {
+    final requestServiceRequestValue =
+        await Geolocator.isLocationServiceEnabled();
+    if (!requestServiceRequestValue) {}
+    location = await Geolocator.getCurrentPosition();
+    context.read<LoginProvider>().signInWithGoogleAccount(
+        context, location!.latitude, location!.longitude);
+  }
+
+  void _showLocationDeniedForeverSnackbar() =>
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text("Enable Location",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Color(0xffFFFFFF), fontSize: 14)),
+            backgroundColor: Color(0xfff84a4a)),
+      );
+
+  void _handleDeniedLocationPermissionScenarios() async {
+    final permissionRequestStatus = await Geolocator.requestPermission();
+    if (permissionRequestStatus == LocationPermission.denied) {
+    } else if (permissionRequestStatus == LocationPermission.deniedForever) {
+      _showLocationDeniedForeverSnackbar();
+    } else {
+      enableLocationPermission();
+      final isLocationServiceEnabled =
+          await Geolocator.isLocationServiceEnabled();
+      if (isLocationServiceEnabled) {
+        location = await Geolocator.getCurrentPosition();
+        context.read<LoginProvider>().signInWithGoogleAccount(
+            context, location!.latitude, location!.longitude);
+        return;
+      }
+      _handleEnableLocationScenarios();
+    }
+  }
+
+  void enableLocationPermission() => isHaveLocationPermission = true;
+
+  Future<void> handleLocation(Position locationPositionData) async {
+    log('==================> I am now in Handle Location method of bloc${locationPositionData.latitude} ');
+    await Future.delayed(const Duration(milliseconds: 1000));
   }
 }

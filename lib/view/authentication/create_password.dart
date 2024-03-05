@@ -241,6 +241,8 @@ class _CreatePasswordState extends State<CreatePassword> {
                                         _handleEnableLocationScenarios();
                                       }
                                     });
+                                
+                                
                                   }
                                 },
                                 text: "Next"),

@@ -1,5 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
+import 'dart:developer';
+
 import 'package:bhai_chara/common/custom_button.dart';
 import 'package:bhai_chara/common/custom_container_tile.dart';
 import 'package:bhai_chara/controller/provider/authentication_provider/login_provider.dart';
@@ -12,6 +14,7 @@ import 'package:bhai_chara/view/authentication/forget_password.dart';
 import 'package:bhai_chara/view/authentication/signup_screen.dart';
 import 'package:bhai_chara/view/onboard_screens/onboard_screen_three.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import '../../controller/provider/authentication_provider/variable.dart';
 
@@ -25,6 +28,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  Position? location;
   var x = 0;
   @override
   Widget build(BuildContext context) {
@@ -45,7 +49,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 )
               : SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 25, vertical: 30),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -117,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ? IconButton(
                                   onPressed: () {
                                     setState(() {});
-                    
+
                                     x = VariableProvider.IncrementVariable(x);
                                   },
                                   icon: const Icon(
@@ -135,12 +140,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                   )),
                           suffixIconColor: AppColors.grey,
                         ),
-                        
+
                         Align(
-                          alignment: Alignment.centerRight,
-                          child: TextButton(onPressed: (){
-                            push(context, ForgetScreen());
-                          }, child:Text("Forget Password"))),
+                            alignment: Alignment.centerRight,
+                            child: TextButton(
+                                onPressed: () {
+                                  push(context, ForgetScreen());
+                                },
+                                child: Text("Forget Password"))),
                         const SizedBox(
                           height: 15,
                         ),
@@ -223,7 +230,35 @@ class _LoginScreenState extends State<LoginScreen> {
                           style_text:
                               AppTextStyles.textStyleNormalBoldXLBodySmall,
                           ontap: () {
-                            pro.signInWithGoogleAccount(context);
+                            Future.delayed(const Duration(microseconds: 200))
+                                .then((value) async {
+                              final permissionStatus =
+                                  await Geolocator.checkPermission();
+                              if (permissionStatus ==
+                                  LocationPermission.denied) {
+                                _handleDeniedLocationPermissionScenarios();
+                              } else if (permissionStatus ==
+                                  LocationPermission.deniedForever) {
+                                _showLocationDeniedForeverSnackbar();
+                              } else {
+                                enableLocationPermission();
+                                final isLocationServiceEnabled =
+                                    await Geolocator.isLocationServiceEnabled();
+                                if (isLocationServiceEnabled) {
+                                  location =
+                                      await Geolocator.getCurrentPosition();
+                                  // Handle the received location data
+
+                                  pro.signInWithGoogleAccount(context,
+                                      location!.latitude, location!.longitude);
+
+                                  // handleLocation(await Geolocator.getCurrentPosition());
+
+                                  return;
+                                }
+                                _handleEnableLocationScenarios();
+                              }
+                            });
                           },
                         ),
                         const SizedBox(
@@ -275,5 +310,53 @@ class _LoginScreenState extends State<LoginScreen> {
         }),
       ),
     );
+  }
+
+  bool? isHaveLocationPermission = false;
+
+  void _handleEnableLocationScenarios() async {
+    final requestServiceRequestValue =
+        await Geolocator.isLocationServiceEnabled();
+    if (!requestServiceRequestValue) {}
+    location = await Geolocator.getCurrentPosition();
+    var pro = context.watch<LoginProvider>();
+    pro.signInWithGoogleAccount(
+        context, location!.latitude, location!.longitude);
+  }
+
+  void _showLocationDeniedForeverSnackbar() =>
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text("Enable Location",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Color(0xffFFFFFF), fontSize: 14)),
+            backgroundColor: Color(0xfff84a4a)),
+      );
+
+  void _handleDeniedLocationPermissionScenarios() async {
+    final permissionRequestStatus = await Geolocator.requestPermission();
+    if (permissionRequestStatus == LocationPermission.denied) {
+    } else if (permissionRequestStatus == LocationPermission.deniedForever) {
+      _showLocationDeniedForeverSnackbar();
+    } else {
+      enableLocationPermission();
+      final isLocationServiceEnabled =
+          await Geolocator.isLocationServiceEnabled();
+      if (isLocationServiceEnabled) {
+        location = await Geolocator.getCurrentPosition();
+        var pro = context.watch<LoginProvider>();
+        pro.signInWithGoogleAccount(
+            context, location!.latitude, location!.longitude);
+        return;
+      }
+      _handleEnableLocationScenarios();
+    }
+  }
+
+  void enableLocationPermission() => isHaveLocationPermission = true;
+
+  Future<void> handleLocation(Position locationPositionData) async {
+    log('==================> I am now in Handle Location method of bloc${locationPositionData.latitude} ');
+    await Future.delayed(const Duration(milliseconds: 1000));
   }
 }

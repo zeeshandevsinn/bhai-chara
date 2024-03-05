@@ -69,7 +69,7 @@ class LoginProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> signInWithGoogleAccount(context) async {
+  Future<void> signInWithGoogleAccount(context,lat,long) async {
     try {
       // if (GoogleSignIn().currentUser != null) {
       await GoogleSignIn().signOut();
@@ -77,8 +77,6 @@ class LoginProvider extends ChangeNotifier {
 
       isLoading = true;
       notifyListeners();
-    
-
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       final GoogleSignInAuthentication? googleAuth =
           await googleUser?.authentication;
@@ -101,7 +99,10 @@ log(" ${credential.accessToken}");
             password: '',
             uid: user?.uid,
             isEmailVerified: user?.emailVerified,
-            isPhoneVerify: false);
+            isPhoneVerify: false,
+            lat: lat,
+            long: long
+            );
         UID_Provider.uid = user?.uid.toString();
         log('google auth uid is ==>>> ${UID_Provider.uid}');
         var userData = await firebaseGetUserDetail(UID_Provider.uid);
