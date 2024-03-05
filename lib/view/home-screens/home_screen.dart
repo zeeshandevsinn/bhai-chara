@@ -92,7 +92,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 push(context, RootScreen());
               });
             },
-            child: Builder(builder: (context) {
+              );},
+             child: Builder(builder: (context) {
               // ignore: unused_local_variable
               var pro = context.watch<AuthProvider>();
               return Container(
@@ -702,7 +703,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               );
             }),
-          ),
+        
         ),
       ),
     );

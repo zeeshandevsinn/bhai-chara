@@ -43,7 +43,6 @@ class ProductDetailProvider extends ChangeNotifier {
       // debugger();
 
       // debugger();
-      log("product detail ===. ${data.data()}");
       if (data != null) {
         productDetailModel = ProductDetailModel.fromJson(data.data()!);
         donnerDetail = await getDonerDetail(productDetailModel!.uid);
