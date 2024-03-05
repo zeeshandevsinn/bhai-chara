@@ -2,6 +2,7 @@
 
 // ignore_for_file: unnecessary_null_comparison
 
+import 'package:bhai_chara/controller/provider/product/status.dart';
 import 'package:bhai_chara/controller/services/Firebase_Manager.dart';
 import 'package:bhai_chara/model/product_detail_model.dart';
 import 'package:bhai_chara/model/user_model.dart';
@@ -56,7 +57,7 @@ class ProductDetailProvider extends ChangeNotifier {
     }
   }
 
-  addRequest(context, {required productID}) async {
+  addRequest(context, {required productID,UserModel? user}) async {
     try {
         
       isLoading = true;
@@ -65,9 +66,10 @@ class ProductDetailProvider extends ChangeNotifier {
       var address = await Preferences.getAddress();
       data["product_id"] = productID;
       data["requester_id"] = FirebaseAuth.instance.currentUser!.uid;
-      data["request"] = "pending";
+      data["request"] = ProductStatus.pending.name;
       data["requester_address"] = address ?? "";
       data["request_time"] = DateTime.now();
+      data["requester_name"] = user!.name;
       print(data);
     
       await FirebaseFirestore.instance.collection(REQUEST_COLLECTION).add(data);

@@ -1,9 +1,11 @@
+import 'package:bhai_chara/controller/services/Firebase_Manager.dart';
 import 'package:bhai_chara/utils/app_colors.dart';
 import 'package:bhai_chara/utils/app_config.dart';
 import 'package:bhai_chara/utils/custom_loader.dart';
 import 'package:bhai_chara/utils/itemContainer.dart';
 import 'package:bhai_chara/utils/text-styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -84,7 +86,7 @@ class _ItemScreenState extends State<ItemScreen> {
                         // ),
                         StreamBuilder(
                             stream: FirebaseFirestore.instance
-                                .collection("Products")
+                                .collection(PRODUCT_COLLECTION).where("uid",isEqualTo: FirebaseAuth.instance.currentUser?.uid )
                                 .snapshots(),
                             builder: (context, AsyncSnapshot snapshot) {
                               var pro = context.watch<ProductProvider>();
@@ -93,7 +95,7 @@ class _ItemScreenState extends State<ItemScreen> {
     
                                 return pro.isLoading
                                     ? const Center(child: CustomLoader())
-                                    : ListView.builder(
+                                    : data.docs.isEmpty ? Center(child: Text("No Items Found"),) : ListView.builder(
                                         physics:
                                             const NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
@@ -105,6 +107,8 @@ class _ItemScreenState extends State<ItemScreen> {
                                               ? "Free"
                                               : dataDoc.get('price');
                                           return ItemContainer(
+                                            time: dataDoc.get('Time'),
+                                            title:dataDoc.get('title'),
                                             subcategory:
                                                 dataDoc.get('subcategory'),
                                             category: dataDoc.get('category'),
@@ -126,6 +130,7 @@ class _ItemScreenState extends State<ItemScreen> {
                                   child: CustomLoader(),
                                 );
                             }),
+                    
                       ],
                     ),
                   ),

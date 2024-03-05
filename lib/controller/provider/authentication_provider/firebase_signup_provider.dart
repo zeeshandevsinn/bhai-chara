@@ -1,6 +1,9 @@
 
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../../../view/authentication/otp_code_screen.dart';
 import '../../provider/phone_number.dart';
 import 'package:bhai_chara/controller/services/Firebase_Manager.dart';
 import 'package:bhai_chara/utils/push.dart';
@@ -55,22 +58,46 @@ class SignUpProvider extends ChangeNotifier {
       isLoading = true;
       notifyListeners();
 
-      var data =
-          await FirebaseManager.PhoneNumberVerification(context, phoneNumber);
-      verifiedID = FirebaseManager.verifyId;
-      if (data != null) {
-        showSnack(context: context, text: "Phone Verified SuccessFully");
+      var users =  await FirebaseFirestore.instance.collection(USER_COLLECTION).where("phoneNumber", isEqualTo: phoneNumber).get();
+
+      if(users.docs.isEmpty){
+
+    await FirebaseAuth.instance.verifyPhoneNumber(
+          phoneNumber: phoneNumber,
+          verificationCompleted: (PhoneAuthCredential credential) {},
+          verificationFailed: (FirebaseAuthException e) {},
+          codeSent: (String verificationId, int? resendToken) {
+            FirebaseManager.verifyId = verificationId;
+            verifiedID = FirebaseManager.verifyId;
+             showSnack(context: context, text: "OTP Sent");
         PhoneNumber = phoneNumber.toString();
-        return data;
-      }
-      isLoading = false;
+           isLoading = false;
       notifyListeners();
+        push(
+                                context,
+                                OTPScreen(
+                                  phone: PhoneProvider.phonenumber,
+                                ));
+            // debugger();
+          },
+          codeAutoRetrievalTimeout: (String verificationId) {});
+      
+    
+      }else{
+           isLoading = false;
+      notifyListeners();
+        showSnack(context: context, text: "Phone Number Already Exist. Please use another Number");
+      }
+
+   
     } catch (e) {
+         isLoading = false;
+      notifyListeners();
       showSnack(context: context, text: "Error! Something went wrong");
     }
   }
 
-  OTPVerify(context, String Otp) async {
+  OTPVerify(context, String Otp, phoneNumber) async {
     try {
       isLoading = true;
       notifyListeners();
@@ -79,13 +106,13 @@ class SignUpProvider extends ChangeNotifier {
       var isVerified = await FirebaseManager.VerifyOTP(verifiedID, Otp);
       // debugger();
       if (isVerified) {
-        String? uid = UID_Provider.uid;
+        String? uid = FirebaseAuth.instance.currentUser?.uid;
         if (uid != null) {
           FirebaseFirestore.instance
-              .collection("Client")
+              .collection(USER_COLLECTION)
               .doc(uid)
-              .update({"isPhoneVerified": true});
-          pushUntil(context, LocationScreen());
+              .update({"isPhoneVerified": true, "phoneNumber": phoneNumber});
+          pushUntil(context, const LocationScreen());
         }
       }
       isLoading = false;

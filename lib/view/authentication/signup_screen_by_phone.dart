@@ -34,6 +34,7 @@ class _SignUpScreenByPhoneState extends State<SignUpScreenByPhone> {
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
     var size = MediaQuery.of(context).size;
+    // Navigator.pop(context);
     return Scaffold(
       backgroundColor: AppColors.white,
       body: Builder(builder: (context) {
@@ -85,45 +86,30 @@ class _SignUpScreenByPhoneState extends State<SignUpScreenByPhone> {
                       ? size.height * .10
                       : size.height * .28,
                 ),
-                CustomButton(
-                  onTap: () async {
-                    if (numberController.text.isEmpty) {
-                      showSnack(
-                          context: context, text: "Please Enter Phone Field");
-                    } else {
-                      FocusScope.of(context).unfocus();
-                      showDialog(
-                        barrierDismissible: false,
-                        context: context,
-                        builder: (ctx) =>  AlertDialog(
-                          title: Text("Wait for Verification OTP"),
-                          content: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text("Never tab Back"),
-                            ],
-                          ),
-                          actions: <Widget>[
-                            CustomLoader(),
-                          ],
-                        ),
-                      );
-                      var data = context.read<SignUpProvider>();
+                
+                Consumer<SignUpProvider>(
+                  builder: (context, p, child) {
+                    return 
+                    p.isLoading ? const CustomLoader() :
+                    CustomButton(
+                      onTap: () async {
+                        if (numberController.text.isEmpty) {
+                          showSnack(
+                              context: context, text: "Please Enter Phone Field");
+                        } else {
+                          FocusScope.of(context).unfocus();
+                          var data = context.read<SignUpProvider>();
 
-                      await data.PhoneVerifyFireBase(
-                          context, PhoneProvider.phonenumber);
-                      data.isLoading
-                          ? null
-                          : push(
-                              context,
-                              OTPScreen(
-                                phone: PhoneProvider.phonenumber,
-                              ));
-                      // numberController =
-                      //     await CustomCountryPhoneField().controller;
-                    }
-                  },
-                  text: "Next",
+                        await data.PhoneVerifyFireBase(
+                              context, PhoneProvider.phonenumber);
+                       
+                          // numberController =
+                          //     await CustomCountryPhoneField().controller;
+                        }
+                      },
+                      text: "Next",
+                    );
+                  }
                 ),
                 Gap.h(10),
                 CustomButton(

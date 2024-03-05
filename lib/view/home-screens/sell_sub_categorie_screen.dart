@@ -176,21 +176,24 @@ class _SubCategorieScreenState extends State<SubCategorieScreen> {
                                     titletext: widget.text,
                                   ));
                             },
-                            child: Text(
-                                widget.text == "Animal"
-                                    ? animalCategories[i]
-                                    : widget.text == "Electronic"
-                                        ? electronics[i]
-                                        : widget.text == "Mobile"
-                                            ? mobilePhones[i]
-                                            : widget.text == "Furniture"
-                                                ? furniture[i]
-                                                : widget.text == "Bike"
-                                                    ? motorcycles[i]
-                                                    : widget.text == "Bell"
-                                                        ? BellsSubCategory[i]
-                                                        : "",
-                                style: AppTextStyles.textStyleNormalBodyMedium),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              child: Text(
+                                  widget.text == "Animal"
+                                      ? animalCategories[i]
+                                      : widget.text == "Electronic"
+                                          ? electronics[i]
+                                          : widget.text == "Mobile"
+                                              ? mobilePhones[i]
+                                              : widget.text == "Furniture"
+                                                  ? furniture[i]
+                                                  : widget.text == "Bike"
+                                                      ? motorcycles[i]
+                                                      : widget.text == "Bell"
+                                                          ? BellsSubCategory[i]
+                                                          : "",
+                                  style: AppTextStyles.textStyleNormalBodyMedium),
+                            ),
                           ),
                       ],
                     );

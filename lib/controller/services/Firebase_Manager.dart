@@ -139,42 +139,7 @@ class FirebaseManager {
     }
   }
 
-  static PhoneNumberVerification(context, String phoneNo) async {
-    try {
-      await FirebaseAuth.instance.verifyPhoneNumber(
-          phoneNumber: phoneNo,
-          verificationCompleted: (PhoneAuthCredential credential) {},
-          verificationFailed: (FirebaseAuthException e) {},
-          codeSent: (String verificationId, int? resendToken) {
-            FirebaseManager.verifyId = verificationId;
-          },
-          codeAutoRetrievalTimeout: (String verificationId) {});
-    } catch (e) {
-      showSnack(context: context, text: "Error SomeThing is Wrong");
-    }
-    // await _auth.verifyPhoneNumber(
-    //   phoneNumber: phoneNo,
-    //   verificationCompleted: (credentials) async {
-    //     await _auth.signInWithCredential(credentials);
-    //   },
-    //   codeSent: (verificationId, resendToken) async {
-    //     verifyId = verificationId;
-    //   },
-    //   codeAutoRetrievalTimeout: (verificationId) {
-    //     verifyId = verificationId;
-    //   },
-    //   verificationFailed: (e) {
-    //     if (e.code == "invalid-phone-number") {
-    //       showSnack(
-    //           context: context,
-    //           text: "Error, The Provider phone number is not valid");
-    //     } else {
-    //       showSnack(context: context, text: "Something went wrong, Try Again!");
-    //     }
-    //   },
-    // );
-  }
-
+ 
   // ignore: non_constant_identifier_names
   static VerifyOTP(String verificationID, String OTP) async {
     // try {
