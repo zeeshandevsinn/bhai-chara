@@ -14,6 +14,7 @@ import 'package:bhai_chara/view/home-screens/product_details_screen.dart';
 import 'package:bhai_chara/view/home-screens/root_screen.dart';
 import 'package:bhai_chara/view/home-screens/sell_sub_categorie_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -306,7 +307,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                         StreamBuilder(
                                           stream: FirebaseFirestore.instance
-                                              .collection("Products")
+                                              .collection("Products").where("uid", isNotEqualTo: FirebaseAuth.instance.currentUser?.uid)
                                               .snapshots(),
                                           builder:
                                               (context, AsyncSnapshot snapshot) {
