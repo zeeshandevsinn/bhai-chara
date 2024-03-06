@@ -37,12 +37,9 @@ class ProductDetailProvider extends ChangeNotifier {
        markersData.add(
           Marker(
             markerId: const MarkerId("1"),
-            position: LatLng(data.lat!.toDouble(), data.long!.toDouble()),
+            position: LatLng(data.lat?.toDouble()??233.004, data.long?.toDouble()??0.45454),
             icon: BitmapDescriptor.fromBytes(
                 await getBytesFromAsset('assets/images/location.png', 80)),
-            // infoWindow: InfoWindow(
-            //   title: location.address,
-            // ),
           ),
         );
       return donnerDetail;
@@ -73,10 +70,13 @@ Future<Uint8List> getBytesFromAsset(String path, int width) async {
           .collection(PRODUCT_COLLECTION)
           .doc(id)
           .get();
+          // debugger();
       if (data != null) {
         productDetailModel = ProductDetailModel.fromJson(data.data()!);
         donnerDetail = await getDonerDetail(productDetailModel!.uid);
 
+print(donnerDetail);
+// debugger();
         notifyListeners();
       }
       isLoading = false;

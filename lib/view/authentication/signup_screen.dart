@@ -100,7 +100,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       .then((value) async {
                     final permissionStatus = await Geolocator.checkPermission();
                     if (permissionStatus == LocationPermission.denied) {
-                      _handleDeniedLocationPermissionScenarios();
+                        _handleDeniedLocationPermissionScenarios();
                     } else if (permissionStatus ==
                         LocationPermission.deniedForever) {
                       _showLocationDeniedForeverSnackbar();

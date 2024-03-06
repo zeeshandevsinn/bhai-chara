@@ -233,6 +233,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           style_text:
                               AppTextStyles.textStyleNormalBoldXLBodySmall,
                           ontap: () {
+                         
                             Future.delayed(const Duration(microseconds: 200))
                                 .then((value) async {
                               final permissionStatus =

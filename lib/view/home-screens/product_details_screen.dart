@@ -34,6 +34,7 @@ class _ProductScreenState extends State<ProductScreen> {
   void initState() {
     super.initState();
     ProductDetailProvider provider = context.read<ProductDetailProvider>();
+    // debugger();
     provider.getProductDetail(context, widget.id).then((val){
     provider.getRequestedProduct(widget.id);
 
