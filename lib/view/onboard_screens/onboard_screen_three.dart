@@ -20,7 +20,7 @@ class _OnboardScreenThreeState extends State<OnboardScreenThree> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          backgroundColor: AppColors.black,
+          backgroundColor: AppColors.App,
           body: SingleChildScrollView(
             // physics: NeverScrollableScrollPhysics(),
             child: Padding(
