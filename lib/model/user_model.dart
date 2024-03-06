@@ -10,8 +10,9 @@ class UserModel {
   bool? isEmailVerified;
   bool? isPhoneVerified;
   String ?createdTime;
-  int?lat;
-  int?long;
+  dynamic lat;
+  dynamic long;
+  String? fcmToken;
 
   UserModel(
       {this.email,
@@ -24,9 +25,11 @@ class UserModel {
       this.phoneNumber,
       this.isEmailVerified,
       this.createdTime,
+      this.fcmToken,
       this.isPhoneVerified});
 
   UserModel.fromJson(Map<String, dynamic> json) {
+    fcmToken=json['fcm_token']??"";
     lat=json['latitude'];
     long=json['longitude'];
     email = json['Email'];
@@ -44,6 +47,7 @@ class UserModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
     data['createdTime']=createdTime;
+    data['fcm_token']=fcmToken;
     data['latitude']=lat;
     data['longitude']=long;
     data['Email'] = email;

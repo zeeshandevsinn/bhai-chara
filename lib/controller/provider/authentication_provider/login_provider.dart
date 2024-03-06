@@ -4,6 +4,7 @@ import 'package:bhai_chara/controller/services/Firebase_Manager.dart';
 import 'package:bhai_chara/controller/services/shared_prefrences.dart';
 import 'package:bhai_chara/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -17,7 +18,9 @@ class LoginProvider extends ChangeNotifier {
   final SharedPreferenceHelper _sharedPrefHelper =
       SharedPreferenceHelper.instance();
   bool isLoading = false;
-  Login(context, emailController, passwordController) async {
+  login(context, emailController, passwordController) async {
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+
     try {
       isLoading = true;
       notifyListeners();
@@ -26,11 +29,12 @@ class LoginProvider extends ChangeNotifier {
       // ignore: unused_local_variable
       var uid = await firebaseAuth.signInWithEmailAndPassword(
           email: emailController, password: passwordController);
-
       UID_Provider.uid = await FirebaseAuth.instance.currentUser!.uid;
 
+      FirebaseManager.updateProfile(uid: UID_Provider.uid!, fcmtoken: fcmToken);
       // Fetch user data from Firebase
       var userData = await firebaseGetUserDetail(UID_Provider.uid);
+
       await _sharedPrefHelper.insertUser(userData!);
       isLoading = false;
       notifyListeners();
@@ -69,11 +73,13 @@ class LoginProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> signInWithGoogleAccount(context,lat,long) async {
+  Future<void> signInWithGoogleAccount(context, lat, long) async {
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+
     try {
       // if (GoogleSignIn().currentUser != null) {
       await GoogleSignIn().signOut();
-    // }
+      // }
 
       isLoading = true;
       notifyListeners();
@@ -85,33 +91,33 @@ class LoginProvider extends ChangeNotifier {
         accessToken: googleAuth?.accessToken,
         idToken: googleAuth?.idToken,
       );
-log(" ${credential.accessToken}");
+      log(" ${credential.accessToken}");
       if (credential.accessToken != null) {
         UserCredential userCredential =
             await FirebaseAuth.instance.signInWithCredential(credential);
         log("credential is ${userCredential.user}");
         User? user = userCredential.user;
         var data = await FirebaseManager.signUpFirebaseStoreage(
-            context: context,
-            name: user?.displayName,
-            email: user?.email,
-            image: user?.photoURL,
-            password: '',
-            uid: user?.uid,
-            isEmailVerified: user?.emailVerified,
-            isPhoneVerify: false,
-            lat: lat,
-            long: long
-            );
+          context: context,
+          name: user?.displayName,
+          email: user?.email,
+          image: user?.photoURL,
+          password: '',
+          uid: user?.uid,
+          isEmailVerified: user?.emailVerified,
+          isPhoneVerify: false,
+          lat: lat,
+          long: long,
+          fcmToken: fcmToken,
+        );
         UID_Provider.uid = user?.uid.toString();
         log('google auth uid is ==>>> ${UID_Provider.uid}');
         var userData = await firebaseGetUserDetail(UID_Provider.uid);
         await _sharedPrefHelper.insertUser(userData!);
         if (user != null) {
-        showSnack(context: context, text: "SignUp SuccessFully");
-        pushUntil(context, RootScreen());
-        
-      }
+          showSnack(context: context, text: "SignUp SuccessFully");
+          pushUntil(context, RootScreen());
+        }
       } else {
         showSnack(context: context, text: "Try again");
       }

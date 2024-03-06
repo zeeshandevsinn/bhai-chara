@@ -40,8 +40,8 @@ class NotificationProvider {
         'notification': {"body": message},
         'data': {
           //  'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-          'body': 'FlutterFire Cloud Messaging!!!',
-          'title': '203'
+          'body': '$message',
+          'title': 'New Request'
         },
       },
     );

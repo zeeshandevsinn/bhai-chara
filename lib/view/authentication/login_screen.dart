@@ -173,7 +173,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   context: context, text: "Invalid Password");
                             } else {
                               var pro = context.read<LoginProvider>();
-                              await pro.Login(context, emailController.text,
+                              await pro.login(context, emailController.text,
                                   passwordController.text);
                             }
                           },
@@ -329,7 +329,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   bool? isHaveLocationPermission = false;
-
   void _handleEnableLocationScenarios() async {
     final requestServiceRequestValue =
         await Geolocator.isLocationServiceEnabled();

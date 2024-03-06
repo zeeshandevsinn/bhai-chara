@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:bhai_chara/controller/services/shared_prefrences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../../../view/authentication/otp_code_screen.dart';
 import '../../provider/phone_number.dart';
@@ -25,8 +26,13 @@ class SignUpProvider extends ChangeNotifier {
 
   final SharedPreferenceHelper _sharedPrefHelper =
       SharedPreferenceHelper.instance();
+
+  
   signUpFirebase(context, name, email, password,
       {isEmailVerified = false, isPhoneVerified = false, lat, long}) async {
+
+ final fcmToken = await FirebaseMessaging.instance.getToken();
+
     log(lat.toString());
     try {
       isLoading = true;
@@ -44,7 +50,9 @@ class SignUpProvider extends ChangeNotifier {
           isEmailVerified: isEmailVerified,
           isPhoneVerify: isPhoneVerified,
           lat: lat,
-          long: long);
+          long: long,
+          fcmToken: fcmToken,
+          );
       isLoading = false;
       notifyListeners();
       UID_Provider.uid = uid.toString();

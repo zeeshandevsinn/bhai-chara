@@ -2,11 +2,14 @@
 
 import 'dart:developer';
 
+import 'package:bhai_chara/controller/provider/notification_provider.dart';
 import 'package:bhai_chara/controller/provider/product/product_detail.dart';
 import 'package:bhai_chara/controller/services/Firebase_Manager.dart';
+import 'package:bhai_chara/controller/services/shared_prefrences.dart';
 import 'package:bhai_chara/model/user_model.dart';
 import 'package:bhai_chara/utils/custom_loader.dart';
 import 'package:bhai_chara/utils/push.dart';
+import 'package:bhai_chara/utils/refresh.dart';
 import 'package:bhai_chara/view/authentication/signup_screen_by_phone.dart';
 import 'package:bhai_chara/view/settings-screens/dialogBox.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -30,16 +33,29 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
+  final SharedPreferenceHelper _sharedPreferenceHelper =
+      SharedPreferenceHelper.instance();
+
   @override
   void initState() {
     super.initState();
+    fetchUserData();
     ProductDetailProvider provider = context.read<ProductDetailProvider>();
     // debugger();
-    provider.getProductDetail(context, widget.id).then((val){
-    provider.getRequestedProduct(widget.id);
-
+    provider.getProductDetail(context, widget.id).then((val) {
+      provider.getRequestedProduct(widget.id);
     });
   }
+
+  UserModel? userData;
+
+  void fetchUserData() async {
+    UserModel? userData = await _sharedPreferenceHelper.user();
+    setState(() {
+      userData = userData;
+    });
+  }
+
   bool isLoading = false;
 
   @override
@@ -49,7 +65,7 @@ class _ProductScreenState extends State<ProductScreen> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.white,
-        body:  SingleChildScrollView(
+        body: SingleChildScrollView(
           child: Consumer<ProductDetailProvider>(
               builder: (context, provider, child) {
             return provider.isLoading
@@ -224,7 +240,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       ),
                       const Divider(),
                       ListTile(
-                        leading:  CircleAvatar(
+                        leading: CircleAvatar(
                           backgroundImage:
                               NetworkImage(provider.donnerDetail!.image!),
                         ),
@@ -362,7 +378,11 @@ class _ProductScreenState extends State<ProductScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text("Already Requested", style: AppTextStyles.textStyleNormalBody_BlueColor,),
+                                Text(
+                                  "Already Requested",
+                                  style: AppTextStyles
+                                      .textStyleNormalBody_BlueColor,
+                                ),
                               ],
                             ),
                           )
@@ -370,52 +390,57 @@ class _ProductScreenState extends State<ProductScreen> {
                           Padding(
                             padding: const EdgeInsets.all(10),
                             child: Consumer<ProductDetailProvider>(
-                              builder: (context, p, child) {
-                                return 
-                               isLoading ? const CustomLoader() : 
-                                CustomButton(
-                                  onTap: () async {
-                                    isLoading = true;
-                                    setState(() {
-                                      
-                                    });
-                                    
-                                    var uid =
-                                        FirebaseAuth.instance.currentUser!.uid;
-                                    UserModel? user =
-                                        await firebaseGetUserDetail(uid);
-                                          isLoading = false;
-                                    setState(() {
-                                      
-                                    });
-                                    if (user?.isPhoneVerified == true) {
-                                      await provider.addRequest(context,
-                                          productID: widget.id, user: user);
-                                    } else {
-                                      showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return ErrorDialogBox(
-                                              title: "Verification Required!",
-                                              descrption:
-                                                  "Please Verify your Phone Number",
-                                              buttonText: "GO",
-                                              onTap: () {
-                                                pop(context);
-                                                push(context,
-                                                    const SignUpScreenByPhone());
-                                              },
-                                            );
-                                          });
-                                      // showSnack(
-                                      //     context: context,
-                                      //     text: "Please Verify your Phone Number");
-                                    }
-                                  },
-                                  text: "Request",
-                                );
-                              }
-                            ),
+                                builder: (context, p, child) {
+                              return isLoading
+                                  ? const CustomLoader()
+                                  : CustomButton(
+                                      onTap: () async {
+                                        isLoading = true;
+                                        setState(() {});
+
+                                        var uid = FirebaseAuth
+                                            .instance.currentUser!.uid;
+                                        UserModel? user =
+                                            await firebaseGetUserDetail(uid);
+                                        isLoading = false;
+                                        setState(() {});
+                                        if (user?.isPhoneVerified == true) {
+                                          await provider.addRequest(context,
+                                              productID: widget.id, user: user);
+
+                                          String token =
+                                              provider.donnerDetail!.fcmToken!;
+                                          NotificationProvider.sendNotification(
+                                              token: token,
+                                              message:
+                                                  "${userData!.name} New Request For Donation");
+                                          NotificationProvider.sendPushMessage(
+                                              token);
+                                        } else {
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return ErrorDialogBox(
+                                                  title:
+                                                      "Verification Required!",
+                                                  descrption:
+                                                      "Please Verify your Phone Number",
+                                                  buttonText: "GO",
+                                                  onTap: () {
+                                                    pop(context);
+                                                    push(context,
+                                                        const SignUpScreenByPhone());
+                                                  },
+                                                );
+                                              });
+                                          // showSnack(
+                                          //     context: context,
+                                          //     text: "Please Verify your Phone Number");
+                                        }
+                                      },
+                                      text: "Request",
+                                    );
+                            }),
                           ),
 
                       // SizedBox(

@@ -52,6 +52,7 @@ class FirebaseManager {
     String? name,
     String? email,
     File? profileImage,
+   String? fcmtoken,
   }) async {
     try {
       // Create a map to hold the updated user data
@@ -65,6 +66,9 @@ class FirebaseManager {
         userData['Email'] = email;
       }
 
+   if (fcmtoken != null) {
+        userData['fcm_token'] = fcmtoken;
+      }
       // Upload profile image if provided
       if (profileImage != null) {
         String imageUrl = await uploadProfileImage(profileImage);
@@ -215,7 +219,8 @@ class FirebaseManager {
     isEmailVerified,
     isPhoneVerify,
     image,
-    lat,long
+    lat,long,
+    fcmToken,
   }) async {
     try {
       var data =
@@ -230,6 +235,7 @@ class FirebaseManager {
         "createdTime": DateTime.now().toString(),
         "latitude":lat,
         "longitude":long,
+        "fcm_token":fcmToken
       },SetOptions(merge: true));
       return data;
     } catch (e) {
