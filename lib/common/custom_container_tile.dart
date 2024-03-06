@@ -114,25 +114,28 @@ class CustomTextFormField extends StatelessWidget {
 
 // ignore: must_be_immutable
 class CustomTextField extends StatelessWidget {
-  CustomTextField(
-      {super.key,
-      this.height,
-      this.width,
-      required this.controller,
-      required this.border,
-      this.suffixIcon,
-      this.suffixIconColor,
-      this.hintText,
-      required this.obsecuretext,
-      this.prefixcolor,
-      this.prfixicon,
-      this.labeltext,
-      this.keyboardtype = TextInputType.text
-      // this.pad_left = 20,
-      // this.pad_bottom,
-      // this.pad_right,
-      // this.pad_top,
-      });
+  CustomTextField({
+    super.key,
+    this.height,
+    this.width,
+    required this.controller,
+    required this.border,
+    this.suffixIcon,
+    this.suffixIconColor,
+    this.hintText,
+    required this.obsecuretext,
+    this.prefixcolor,
+    this.prfixicon,
+    this.labeltext,
+    this.onChange,
+    this.keyboardtype = TextInputType.text,
+    this.readOnly,
+    this.onTap,
+    // this.pad_left = 20,
+    // this.pad_bottom,
+    // this.pad_right,
+    // this.pad_top,
+  });
   dynamic height,
       width,
       controller,
@@ -145,6 +148,9 @@ class CustomTextField extends StatelessWidget {
       keyboardtype,
       labeltext;
   bool obsecuretext;
+  final Function(String value)? onChange;
+  final Function()? onTap;
+  final bool? readOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -154,6 +160,9 @@ class CustomTextField extends StatelessWidget {
             height: height,
             width: width,
             child: TextField(
+              readOnly: readOnly ?? false,
+              onTap: onTap,
+              onChanged: onChange,
               obscureText: obsecuretext,
               style: const TextStyle(
                   fontWeight: FontWeight.w400, color: AppColors.black),

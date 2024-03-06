@@ -5,8 +5,10 @@ import '../utils/text-styles.dart';
 
 // ignore: must_be_immutable
 class CustomContainerText extends StatelessWidget {
-  CustomContainerText({super.key, this.text, this.style, this.container_color});
+  CustomContainerText(
+      {super.key, this.text, this.style, this.container_color, this.image});
   var text, style, container_color;
+  final String? image;
   @override
   Widget build(BuildContext context) {
     return Container(

@@ -3,6 +3,7 @@ import 'package:bhai_chara/controller/provider/product/product_detail.dart';
 import 'package:bhai_chara/controller/services/shared_prefrences.dart';
 import 'package:bhai_chara/firebase_options.dart';
 import 'package:bhai_chara/view/chatting/controller/service/chatt_service.dart';
+import 'package:bhai_chara/view/home-screens/seachScreen.dart';
 import 'package:bhai_chara/view/onboard_screens/splash_screen.dart';
 // import 'package:bhai_chara/view/testfile.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -29,34 +30,30 @@ main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  
-  // await FirebaseMessaging.instance.setAutoInitEnabled(true);
 
+  // await FirebaseMessaging.instance.setAutoInitEnabled(true);
 
   runApp(const MyApp());
 }
 
-
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-setupFlutterNotifications();
+  setupFlutterNotifications();
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
   print('Handling a background message ${message.messageId}');
 }
 
-
 Future<void> setupFlutterNotifications() async {
   await FirebaseMessaging.instance.requestPermission(
-  alert: true,
-  announcement: false,
-  badge: true,
-  carPlay: false,
-  criticalAlert: false,
-  provisional: false,
-  sound: true,
-);
-
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -80,6 +77,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (context) => SignUpProvider()),
           ChangeNotifierProvider(create: (context) => LoginProvider()),
           ChangeNotifierProvider(create: (context) => ProductDetailProvider()),
+          ChangeNotifierProvider(create: (context) => SelectionProvider()),
 
           // ChangeNotifierProvider(create: (context) => ()),
         ],
