@@ -40,6 +40,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
     });
   }
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +49,7 @@ class _ProductScreenState extends State<ProductScreen> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.white,
-        body: SingleChildScrollView(
+        body:  SingleChildScrollView(
           child: Consumer<ProductDetailProvider>(
               builder: (context, provider, child) {
             return provider.isLoading
@@ -368,37 +369,52 @@ class _ProductScreenState extends State<ProductScreen> {
                         else
                           Padding(
                             padding: const EdgeInsets.all(10),
-                            child: CustomButton(
-                              onTap: () async {
-                                var uid =
-                                    FirebaseAuth.instance.currentUser!.uid;
-                                UserModel? user =
-                                    await firebaseGetUserDetail(uid);
-                                if (user?.isPhoneVerified == true) {
-                                  await provider.addRequest(context,
-                                      productID: widget.id, user: user);
-                                } else {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return ErrorDialogBox(
-                                          title: "Verification Required!",
-                                          descrption:
-                                              "Please Verify your Phone Number",
-                                          buttonText: "GO",
-                                          onTap: () {
-                                            pop(context);
-                                            push(context,
-                                                const SignUpScreenByPhone());
-                                          },
-                                        );
-                                      });
-                                  // showSnack(
-                                  //     context: context,
-                                  //     text: "Please Verify your Phone Number");
-                                }
-                              },
-                              text: "Request",
+                            child: Consumer<ProductDetailProvider>(
+                              builder: (context, p, child) {
+                                return 
+                               isLoading ? const CustomLoader() : 
+                                CustomButton(
+                                  onTap: () async {
+                                    isLoading = true;
+                                    setState(() {
+                                      
+                                    });
+                                    
+                                    var uid =
+                                        FirebaseAuth.instance.currentUser!.uid;
+                                    UserModel? user =
+                                        await firebaseGetUserDetail(uid);
+                                          isLoading = false;
+                                    setState(() {
+                                      
+                                    });
+                                    if (user?.isPhoneVerified == true) {
+                                      await provider.addRequest(context,
+                                          productID: widget.id, user: user);
+                                    } else {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return ErrorDialogBox(
+                                              title: "Verification Required!",
+                                              descrption:
+                                                  "Please Verify your Phone Number",
+                                              buttonText: "GO",
+                                              onTap: () {
+                                                pop(context);
+                                                push(context,
+                                                    const SignUpScreenByPhone());
+                                              },
+                                            );
+                                          });
+                                      // showSnack(
+                                      //     context: context,
+                                      //     text: "Please Verify your Phone Number");
+                                    }
+                                  },
+                                  text: "Request",
+                                );
+                              }
                             ),
                           ),
 

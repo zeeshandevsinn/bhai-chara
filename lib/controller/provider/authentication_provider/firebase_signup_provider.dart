@@ -1,7 +1,4 @@
-
 import 'dart:developer';
-
-
 
 import 'dart:developer';
 
@@ -26,12 +23,11 @@ class SignUpProvider extends ChangeNotifier {
   String OTPCode = "";
   var user;
 
-
- final SharedPreferenceHelper _sharedPrefHelper =
+  final SharedPreferenceHelper _sharedPrefHelper =
       SharedPreferenceHelper.instance();
   signUpFirebase(context, name, email, password,
-      {isEmailVerified = false, isPhoneVerified = false,lat,long}) async {
-        log(lat.toString());
+      {isEmailVerified = false, isPhoneVerified = false, lat, long}) async {
+    log(lat.toString());
     try {
       isLoading = true;
       notifyListeners();
@@ -39,12 +35,20 @@ class SignUpProvider extends ChangeNotifier {
       user = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
       var uid = FirebaseAuth.instance.currentUser!.uid;
-      var data = await FirebaseManager.signUpFirebaseStoreage(context:context, name:name,
-          email:email, password:password, uid:uid, isEmailVerified:isEmailVerified, isPhoneVerify:isPhoneVerified,lat:lat,long:long);
+      var data = await FirebaseManager.signUpFirebaseStoreage(
+          context: context,
+          name: name,
+          email: email,
+          password: password,
+          uid: uid,
+          isEmailVerified: isEmailVerified,
+          isPhoneVerify: isPhoneVerified,
+          lat: lat,
+          long: long);
       isLoading = false;
       notifyListeners();
       UID_Provider.uid = uid.toString();
-   var userData = await firebaseGetUserDetail(UID_Provider.uid);
+      var userData = await firebaseGetUserDetail(UID_Provider.uid);
       await _sharedPrefHelper.insertUser(userData!);
 
       print(UID_Provider.uid);
@@ -68,40 +72,41 @@ class SignUpProvider extends ChangeNotifier {
       isLoading = true;
       notifyListeners();
 
-      var users =  await FirebaseFirestore.instance.collection(USER_COLLECTION).where("phoneNumber", isEqualTo: phoneNumber).get();
-
-      if(users.docs.isEmpty){
-
-    await FirebaseAuth.instance.verifyPhoneNumber(
-          phoneNumber: phoneNumber,
-          verificationCompleted: (PhoneAuthCredential credential) {},
-          verificationFailed: (FirebaseAuthException e) {},
-          codeSent: (String verificationId, int? resendToken) {
-            FirebaseManager.verifyId = verificationId;
-            verifiedID = FirebaseManager.verifyId;
-             showSnack(context: context, text: "OTP Sent");
-        PhoneNumber = phoneNumber.toString();
-           isLoading = false;
+      var users = await FirebaseFirestore.instance
+          .collection(USER_COLLECTION)
+          .where("phoneNumber", isEqualTo: phoneNumber)
+          .get();
+    isLoading = false;
       notifyListeners();
-        push(
-                                context,
-                                OTPScreen(
-                                  phone: PhoneProvider.phonenumber,
-                                ));
-            // debugger();
-          },
-          codeAutoRetrievalTimeout: (String verificationId) {});
-      
-    
-      }else{
-           isLoading = false;
-      notifyListeners();
-        showSnack(context: context, text: "Phone Number Already Exist. Please use another Number");
+      if (users.docs.isEmpty) {
+        await FirebaseAuth.instance.verifyPhoneNumber(
+            phoneNumber: phoneNumber,
+            verificationCompleted: (PhoneAuthCredential credential) {},
+            verificationFailed: (FirebaseAuthException e) {},
+            codeSent: (String verificationId, int? resendToken) {
+              FirebaseManager.verifyId = verificationId;
+              verifiedID = FirebaseManager.verifyId;
+              showSnack(context: context, text: "OTP Sent");
+              PhoneNumber = phoneNumber.toString();
+              isLoading = false;
+              notifyListeners();
+              push(
+                  context,
+                  OTPScreen(
+                    phone: PhoneProvider.phonenumber,
+                  ));
+              // debugger();
+            },
+            codeAutoRetrievalTimeout: (String verificationId) {});
+      } else {
+        isLoading = false;
+        notifyListeners();
+        showSnack(
+            context: context,
+            text: "Phone Number Already Exist. Please use another Number");
       }
-
-   
     } catch (e) {
-         isLoading = false;
+      isLoading = false;
       notifyListeners();
       showSnack(context: context, text: "Error! Something went wrong");
     }

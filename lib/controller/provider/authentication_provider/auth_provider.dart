@@ -22,7 +22,7 @@ class AuthProvider extends ChangeNotifier {
       var data = await ScreenManager.geoLocation(
           context);
           log('aaaaaaaaaaaaaaaaaaaaaa');
-          // debugger();
+         
       if (data != null) {
         currentAddress = data;
         await Preferences.saveAddress(data);
@@ -30,6 +30,8 @@ class AuthProvider extends ChangeNotifier {
          notifyListeners();
         return currentAddress;
       }
+       isLoading=false;
+         notifyListeners();
      
     } catch (e) {
       isLoading = false;
