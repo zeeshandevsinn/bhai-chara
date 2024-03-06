@@ -47,12 +47,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: true,
-      onPopInvoked: (didPop) {
-        context.read<SelectionProvider>().clean();
-      },
-      child: Scaffold(
+    return Scaffold(
         body: Consumer<SelectionProvider>(
           builder: (context, provider, child) => SafeArea(
             child: Column(
@@ -65,9 +60,6 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                         margin: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 10),
                         child: CustomTextField(
-                            onChange: (value) {
-                              setState(() {});
-                            },
                             prfixicon: const Icon(Icons.search),
                             prefixcolor: AppColors.Grey,
                             controller: searchController,
@@ -169,8 +161,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 
   void _settingModalBottomSheet(BuildContext context) {
