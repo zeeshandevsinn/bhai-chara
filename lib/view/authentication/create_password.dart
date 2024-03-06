@@ -41,6 +41,15 @@ class _CreatePasswordState extends State<CreatePassword> {
         return pop(context);
       },
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: InkWell(
+            onTap: (){
+              pop(context);
+            },
+            child: Icon(Icons.arrow_back_ios)),
+        ),
         backgroundColor: AppColors.white,
         body: Builder(builder: (context) {
           var sign = context.watch<SignUpProvider>();
