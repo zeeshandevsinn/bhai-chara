@@ -68,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     var pro = context.read<AuthProvider>();
-    String currentAddress = "";
+    // String currentAddress = "";
     pro.Location(context);
     super.initState();
   }
@@ -77,17 +77,18 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            String? token = await FirebaseMessaging.instance.getToken();
-            log(" ${token}");
-            token =
-                'dyOye8eFRN-jw8YMTLr_LG:APA91bEKwtOPiwqcimjXgV8ABnfiYfxDv2pdxxboC_NhLOxPG7Y12tqzXb6SZZR6Hd_WitEx9VUwpdaZwNkB7-Upji0O7SAVd1AMXYlvTpOAm2nRFckU6vDJDPxB6UO_up88yWU_AM6b';
-            NotificationProvider.sendNotification(
-                token: token!, message: "Test notification");
-            // NotificationProvider.sendPushMessage(token);
-          },
-        ),
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () async {
+        //     context.read<AuthProvider>().Location(context);
+        //     // String? token = await FirebaseMessaging.instance.getToken();
+        //     // log(" ${token}");
+        //     // token =
+        //     //     'dyOye8eFRN-jw8YMTLr_LG:APA91bEKwtOPiwqcimjXgV8ABnfiYfxDv2pdxxboC_NhLOxPG7Y12tqzXb6SZZR6Hd_WitEx9VUwpdaZwNkB7-Upji0O7SAVd1AMXYlvTpOAm2nRFckU6vDJDPxB6UO_up88yWU_AM6b';
+        //     // NotificationProvider.sendNotification(
+        //     //     token: token!, message: "Test notification");
+        //     // NotificationProvider.sendPushMessage(token);
+        //   },
+        // ),
         backgroundColor: AppColors.white,
         body: RefreshIndicator(
           key: _refreshIndicatorKey,
