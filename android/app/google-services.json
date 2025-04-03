@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "952736500858",
-    "project_id": "bhai-chr",
-    "storage_bucket": "bhai-chr.appspot.com"
+    "project_number": "161107868917",
+    "project_id": "bhaicharag-17c95",
+    "storage_bucket": "bhaicharag-17c95.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:952736500858:android:859cd64c3dc8c0c2edffc3",
+        "mobilesdk_app_id": "1:161107868917:android:cbc2ae1321ef1e482fd9bc",
         "android_client_info": {
           "package_name": "com.example.bhai_chara"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBo8hJ8YVmxsA-UT_Ct8-ez9MwbThgJk6g"
+          "current_key": "AIzaSyBD-B8uV4OsGSK7BLARdB69Hy3Mdy2RC4A"
         }
       ],
       "services": {

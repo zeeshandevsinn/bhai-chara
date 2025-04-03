@@ -9,7 +9,7 @@ import 'package:bhai_chara/utils/showSnack.dart';
 import 'package:bhai_chara/view/authentication/signup_screen_by_phone.dart';
 import 'package:bhai_chara/view/request_screen.dart';
 import 'package:bhai_chara/view/settings-screens/dialogBox.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carousel_slider/carousel_slider.dart' as carousel_slider;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -56,9 +56,9 @@ class _ProductScreenState extends State<ProductScreen> {
                     children: [
                       Stack(children: [
                         // value = widget.index,
-                        CarouselSlider.builder(
-                          carouselController: CarouselController(),
-                          options: CarouselOptions(
+                        carousel_slider.CarouselSlider.builder(
+                          carouselController: carousel_slider.CarouselController(),
+                          options: carousel_slider.CarouselOptions(
                             height: 300,
                             aspectRatio: 16 / 9,
                             viewportFraction: 0.8,

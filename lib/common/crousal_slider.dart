@@ -1,11 +1,11 @@
-import 'package:carousel_slider/carousel_controller.dart';
+import 'package:carousel_slider/carousel_controller.dart' as carousel_slider_controller;
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class CarouselDemo extends StatelessWidget {
-  CarouselController buttonCarouselController = CarouselController();
+  carousel_slider_controller.CarouselController buttonCarouselController = carousel_slider_controller.CarouselController();
 
   @override
   Widget build(BuildContext context) => SafeArea(
@@ -22,7 +22,7 @@ class CarouselDemo extends StatelessWidget {
                     DocumentSnapshot dataDoc = data.docs[0];
 
                     return CarouselSlider.builder(
-                      carouselController: CarouselController(),
+                      carouselController: carousel_slider_controller.CarouselController(),
                       options: CarouselOptions(
                         height: 300,
                         aspectRatio: 16 / 9,

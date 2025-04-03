@@ -47,28 +47,30 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBuyqD8ERfCHI4KChb-9QvABBnvaBEo7gM',
-    appId: '1:952736500858:web:39cacf5e066a8148edffc3',
-    messagingSenderId: '952736500858',
-    projectId: 'bhai-chr',
-    authDomain: 'bhai-chr.firebaseapp.com',
-    storageBucket: 'bhai-chr.appspot.com',
+    apiKey: 'AIzaSyDScwC90FQy2LOYwpLipCkx0OEFFSWsQhY',
+    appId: '1:161107868917:web:1374053c366edeeb2fd9bc',
+    messagingSenderId: '161107868917',
+    projectId: 'bhaicharag-17c95',
+    authDomain: 'bhaicharag-17c95.firebaseapp.com',
+    storageBucket: 'bhaicharag-17c95.firebasestorage.app',
+    measurementId: 'G-P86CP76BD9',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBo8hJ8YVmxsA-UT_Ct8-ez9MwbThgJk6g',
-    appId: '1:952736500858:android:859cd64c3dc8c0c2edffc3',
-    messagingSenderId: '952736500858',
-    projectId: 'bhai-chr',
-    storageBucket: 'bhai-chr.appspot.com',
+    apiKey: 'AIzaSyBD-B8uV4OsGSK7BLARdB69Hy3Mdy2RC4A',
+    appId: '1:161107868917:android:cbc2ae1321ef1e482fd9bc',
+    messagingSenderId: '161107868917',
+    projectId: 'bhaicharag-17c95',
+    storageBucket: 'bhaicharag-17c95.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAVlMS-u4bmNSurGJW08jxhrdydBZ-rug4',
-    appId: '1:952736500858:ios:72dfef84a527f186edffc3',
-    messagingSenderId: '952736500858',
-    projectId: 'bhai-chr',
-    storageBucket: 'bhai-chr.appspot.com',
+    apiKey: 'AIzaSyBICG6sqVVcaNVKppYLqvypLvLnDFWdmjc',
+    appId: '1:161107868917:ios:aba310c23795aabf2fd9bc',
+    messagingSenderId: '161107868917',
+    projectId: 'bhaicharag-17c95',
+    storageBucket: 'bhaicharag-17c95.firebasestorage.app',
     iosBundleId: 'com.example.bhaiChara',
   );
+
 }
