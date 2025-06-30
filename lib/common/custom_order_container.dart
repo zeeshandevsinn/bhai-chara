@@ -65,7 +65,8 @@ class OrderContainer extends StatelessWidget {
               children: [
                  CircleAvatar(
                   radius: 20,
-                  backgroundImage: NetworkImage(receiverImage),
+                  // backgroundImage: NetworkImage(receiverImage),
+                   backgroundImage: AssetImage(receiverImage),
                 ),
                 const SizedBox(
                   width: 8,
@@ -135,29 +136,29 @@ class OrderContainer extends StatelessWidget {
                 const SizedBox(
                   width: 50,
                 ),
-                InkWell(
-                  onTap: () async {
-                    await FirebaseFirestore.instance
-                        .collection(REQUEST_COLLECTION)
-                        .doc(uid)
-                        .update({"request": ProductStatus.approved.name});
-                    startChat(context);
-                  },
-                  child: Container(
-                    height: 30,
-                    width: 100,
-                    child: Center(
-                      child: Text(
-                        "Accept",
-                        // textAlign: TextAlign.center,
-                        style: AppTextStyles.textStyleNormalBodySmall
-                            .copyWith(color: AppColors.white),
-                      ),
-                    ),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(7), color: color2),
-                  ),
-                )
+                // InkWell(
+                //   onTap: () async {
+                //     await FirebaseFirestore.instance
+                //         .collection(REQUEST_COLLECTION)
+                //         .doc(uid)
+                //         .update({"request": ProductStatus.approved.name});
+                //     startChat(context);
+                //   },
+                //   child: Container(
+                //     height: 30,
+                //     width: 100,
+                //     child: Center(
+                //       child: Text(
+                //         "Accept",
+                //         // textAlign: TextAlign.center,
+                //         style: AppTextStyles.textStyleNormalBodySmall
+                //             .copyWith(color: AppColors.white),
+                //       ),
+                //     ),
+                //     decoration: BoxDecoration(
+                //         borderRadius: BorderRadius.circular(7), color: color2),
+                //   ),
+                // )
               ],
             )
           ],
@@ -170,7 +171,7 @@ class OrderContainer extends StatelessWidget {
     final ChatService chatService = ChatService();
 
     await chatService.sendMessage(
-      receiverImage: receiverImage,
+      // receiverImage: receiverImage,
         recevierId: receiverID,
         message: "Are you Interested?",
         receiverEmail: receiverEmail,

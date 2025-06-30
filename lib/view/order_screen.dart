@@ -11,7 +11,6 @@ import '../controller/services/Firebase_Manager.dart';
 import '../utils/app_colors.dart';
 
 class OrderScreen extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -26,7 +25,7 @@ class OrderScreen extends StatelessWidget {
               style: AppTextStyles.textStyleBoldBodyMedium,
             ),
             centerTitle: true,
-            bottom: TabBar(
+            bottom: const TabBar(
               labelColor: AppColors.blue,
               tabs: [
                 Tab(text: "Pending"),
@@ -55,7 +54,8 @@ class OrderScreen extends StatelessWidget {
                             children: [
                               Center(
                                 child: Text(
-                                  "${snapshot.data.docs.length} New Requests",
+                                  // "${snapshot.data.docs.length} New Requests",
+                                   "${1} New Requests",
                                   //textAlign: TextAlign.center,
                                   style: AppTextStyles
                                       .textStyleNormalBody_BlueColor,
@@ -64,38 +64,57 @@ class OrderScreen extends StatelessWidget {
                               ListView.builder(
                                   physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
-                                  itemCount: snapshot.data.docs.length,
+                                  itemCount: 1,
+                                  // itemCount: snapshot.data.docs.length,
                                   itemBuilder: (context, index) {
-                                    var request = snapshot.data.docs[index];
+                                    // var request = snapshot.data.docs[index];
                                     return Padding(
                                       padding: const EdgeInsets.symmetric(
                                         horizontal: 10,
                                       ),
                                       child: OrderContainer(
-                                                                                status: ProductStatus.pending.name,
+                                        status: ProductStatus.pending.name,
+                                        receiverEmail: "john.doe@example.com",
+                                        receiverPhone: "+1234567890",
+                                        receiverImage:
+                                            "assets/images/car_product.png", // use your local image or URL
+                                        receiverName: "John Doe",
+                                        receiverID: "user123",
+                                        uid: "order456",
+                                        text: "Sample Product Title",
+                                        color1: AppColors.grey,
+                                        color2: AppColors.blue,
+                                        isFree: false,
+                                        address:
+                                            "123 Rainbow Street, WonderTown",
+                                        price: "Price:\t\t\t\$25.00",
+                                        time:
+                                            "Time:\t\t\t\t17-Jun-2025 04:45 PM", // manually formatted string
+                                      ),
 
-                                          receiverEmail:
-                                              request.get("requester_email"),
-                                              
-                                          receiverPhone:
-                                              request.get("requester_phone"),
-                                              receiverImage:
-                                              request.get("requester_image"),
-                                          receiverName:
-                                              request.get("requester_name"),
-                                              receiverID:
-                                              request.get("requester_id"),
-                                          uid: request.id,
-                                          text: request.get("title"),
-                                          color1: AppColors.grey,
-                                          color2: AppColors.blue,
-                                          isFree: request.get("isFree"),
-                                          address:
-                                              request.get("requester_address"),
-                                          price:
-                                              "Price:\t\t\t${request.get("price")}",
-                                          time:
-                                              "Time:\t\t\t\t${DateFormat("d-MMM-yyyy mm:ss a").format(request.get("request_time").toDate())}"),
+                                      // OrderContainer(
+                                      //     status: ProductStatus.pending.name,
+                                      //     receiverEmail:
+                                      //         request.get("requester_email"),
+                                      //     receiverPhone:
+                                      //         request.get("requester_phone"),
+                                      //     receiverImage:
+                                      //         request.get("requester_image"),
+                                      //     receiverName:
+                                      //         request.get("requester_name"),
+                                      //     receiverID:
+                                      //         request.get("requester_id"),
+                                      //     uid: request.id,
+                                      //     text: request.get("title"),
+                                      //     color1: AppColors.grey,
+                                      //     color2: AppColors.blue,
+                                      //     isFree: request.get("isFree"),
+                                      //     address:
+                                      //         request.get("requester_address"),
+                                      //     price:
+                                      //         "Price:\t\t\t${request.get("price")}",
+                                      //     time:
+                                      //         "Time:\t\t\t\t${DateFormat("d-MMM-yyyy mm:ss a").format(request.get("request_time").toDate())}"),
                                     );
                                   }),
                             ],
@@ -130,7 +149,8 @@ class OrderScreen extends StatelessWidget {
                                   "${snapshot.data.docs.length} Approved Requests",
                                   //textAlign: TextAlign.center,
                                   style: AppTextStyles
-                                      .textStyleNormalBody_BlueColor.copyWith(color: AppColors.Green),
+                                      .textStyleNormalBody_BlueColor
+                                      .copyWith(color: AppColors.Green),
                                 ),
                               ),
                               ListView.builder(
@@ -144,12 +164,12 @@ class OrderScreen extends StatelessWidget {
                                         horizontal: 10,
                                       ),
                                       child: OrderContainer(
-                                        status: ProductStatus.approved.name,
+                                          status: ProductStatus.approved.name,
                                           receiverEmail:
                                               request.get("requester_email"),
                                           receiverPhone:
                                               request.get("requester_phone"),
-                                              receiverImage:
+                                          receiverImage:
                                               request.get("requester_image"),
                                           receiverName:
                                               request.get("requester_name"),
@@ -200,7 +220,8 @@ class OrderScreen extends StatelessWidget {
                                   "${snapshot.data.docs.length} Rejected Requests",
                                   //textAlign: TextAlign.center,
                                   style: AppTextStyles
-                                      .textStyleNormalBody_BlueColor.copyWith(color: AppColors.red),
+                                      .textStyleNormalBody_BlueColor
+                                      .copyWith(color: AppColors.red),
                                 ),
                               ),
                               ListView.builder(
@@ -214,14 +235,14 @@ class OrderScreen extends StatelessWidget {
                                         horizontal: 10,
                                       ),
                                       child: OrderContainer(
-                                                                                status: ProductStatus.rejected.name,
+                                          status: ProductStatus.rejected.name,
                                           uid: request.id,
                                           text: request.get("title"),
                                           receiverImage:
                                               request.get("requester_image"),
                                           receiverEmail:
                                               request.get("requester_email"),
-                                              receiverID:
+                                          receiverID:
                                               request.get("requester_id"),
                                           receiverPhone:
                                               request.get("requester_phone"),

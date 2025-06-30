@@ -55,7 +55,7 @@ class _RecredentialAlertState extends State<RecredentialAlert> {
           ),
           Text(
             "BHI CHARA",
-            style: TextStyle(color: AppColors.blue),
+            style: TextStyle(color: AppColors.black),
           ),
         ],
       ),
@@ -66,8 +66,10 @@ class _RecredentialAlertState extends State<RecredentialAlert> {
             TextField(
               controller: widget.emailController,
               decoration: InputDecoration(
+                  labelStyle: TextStyle(color: AppColors.black),
                 labelText: 'Email',
                 errorText: isEmailValid ? null : 'Please enter a valid email',
+                 errorStyle: TextStyle(color: AppColors.grey),
               ),
               onChanged: (value) {
                 setState(() {
@@ -77,12 +79,15 @@ class _RecredentialAlertState extends State<RecredentialAlert> {
               },
             ),
             TextField(
+              
               controller: widget.passwordController,
               obscureText: true,
               decoration: InputDecoration(
+                labelStyle: TextStyle(color: AppColors.black),
                 labelText: 'Password',
                 errorText:
                     isPasswordValid ? null : 'Please enter a valid password',
+                     errorStyle: TextStyle(color: AppColors.grey),
               ),
               onChanged: (value) {
                 setState(() {
@@ -103,7 +108,7 @@ class _RecredentialAlertState extends State<RecredentialAlert> {
             },
             child: Text(
               widget.textbutton1!,
-              style: const TextStyle(color: AppColors.error),
+              style: const TextStyle(color: AppColors.black),
             )),
         TextButton(
             onPressed: () async {
@@ -111,7 +116,7 @@ class _RecredentialAlertState extends State<RecredentialAlert> {
             },
             child: const Text(
               "Cancel",
-              style: TextStyle(color: AppColors.blue),
+              style: TextStyle(color: AppColors.red),
             ))
       ],
     );

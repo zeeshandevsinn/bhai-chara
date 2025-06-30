@@ -28,7 +28,7 @@
     <!--#docregion android-queries-->
    </queries>
    <application
-        android:label="bhai_chara"
+        android:label="bhaichara"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         android:allowBackup="false"

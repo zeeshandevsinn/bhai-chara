@@ -91,38 +91,38 @@ class _SignUpScreenState extends State<SignUpScreen> {
               const SizedBox(
                 height: 20,
               ),
-              CustomContainerTile(
-                image: "assets/images/google.png",
-                text: "Continue with Google",
-                style_text: AppTextStyles.textStyleNormalBoldXLBodySmall,
-                ontap: () {
-                  Future.delayed(const Duration(microseconds: 200))
-                      .then((value) async {
-                    final permissionStatus = await Geolocator.checkPermission();
-                    if (permissionStatus == LocationPermission.denied) {
-                        _handleDeniedLocationPermissionScenarios();
-                    } else if (permissionStatus ==
-                        LocationPermission.deniedForever) {
-                      _showLocationDeniedForeverSnackbar();
-                    } else {
-                      enableLocationPermission();
-                      final isLocationServiceEnabled =
-                          await Geolocator.isLocationServiceEnabled();
-                      if (isLocationServiceEnabled) {
-                        location = await Geolocator.getCurrentPosition();
-                        // Handle the received location data
-                        context.read<LoginProvider>().signInWithGoogleAccount(
-                            context, location!.latitude, location!.longitude);
+              // CustomContainerTile(
+              //   image: "assets/images/google.png",
+              //   text: "Continue with Google",
+              //   style_text: AppTextStyles.textStyleNormalBoldXLBodySmall,
+              //   ontap: () {
+              //     Future.delayed(const Duration(microseconds: 200))
+              //         .then((value) async {
+              //       final permissionStatus = await Geolocator.checkPermission();
+              //       if (permissionStatus == LocationPermission.denied) {
+              //           _handleDeniedLocationPermissionScenarios();
+              //       } else if (permissionStatus ==
+              //           LocationPermission.deniedForever) {
+              //         _showLocationDeniedForeverSnackbar();
+              //       } else {
+              //         enableLocationPermission();
+              //         final isLocationServiceEnabled =
+              //             await Geolocator.isLocationServiceEnabled();
+              //         if (isLocationServiceEnabled) {
+              //           location = await Geolocator.getCurrentPosition();
+              //           // Handle the received location data
+              //           context.read<LoginProvider>().signInWithGoogleAccount(
+              //               context, location!.latitude, location!.longitude);
 
-                        // handleLocation(await Geolocator.getCurrentPosition());
+              //           // handleLocation(await Geolocator.getCurrentPosition());
 
-                        return;
-                      }
-                      _handleEnableLocationScenarios();
-                    }
-                  });
-                },
-              ),
+              //           return;
+              //         }
+              //         _handleEnableLocationScenarios();
+              //       }
+              //     });
+              //   },
+              // ),
               const SizedBox(
                 height: 20,
               ),

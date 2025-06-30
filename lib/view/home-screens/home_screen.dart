@@ -10,6 +10,7 @@ import 'package:bhai_chara/utils/custom_loader.dart';
 import 'package:bhai_chara/utils/push.dart';
 import 'package:bhai_chara/utils/refresh.dart';
 import 'package:bhai_chara/utils/text-styles.dart';
+import 'package:bhai_chara/view/chatting/view/chat_view.dart';
 import 'package:bhai_chara/view/home-screens/product_details_screen.dart';
 import 'package:bhai_chara/view/home-screens/root_screen.dart';
 import 'package:bhai_chara/view/home-screens/search_deligate.dart';
@@ -18,6 +19,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import '../../common/custom_container_children.dart';
 import '../../controller/provider/authentication_provider/auth_provider.dart';
@@ -44,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
     AppColors.Green,
     AppColors.pink,
     AppColors.blue,
-    AppColors.blue,
+    AppColors.Green,
   ];
   List<String> SellCategory = [
     "Animal",
@@ -52,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
     "Mobile",
     "Furniture",
     "Bike",
-    "Bell",
+    "Car",
   ];
   List<String> Selling = [
     'assets/images/fluent_animal-cat-28-filled.png',
@@ -60,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
     'assets/images/fontisto_mobile.png',
     'assets/images/map_furniture-store.png',
     'assets/images/ri_motorbike-fill.png',
-    'assets/images/solar_bell-bold.png',
+    'assets/images/colorcar.png'
   ];
 
   var selected = "All";
@@ -68,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     var pro = context.read<AuthProvider>();
-    // String currentAddress = "";
+    String currentAddress = "";
     pro.Location(context);
     super.initState();
   }
@@ -112,13 +114,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
+                        horizontal: 10,
                       ),
                       height: 80,
                       width: double.infinity,
                       decoration: const BoxDecoration(color: AppColors.App),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Image(
                             image: AssetImage(
@@ -126,53 +127,78 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: 45,
                             width: 45,
                           ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(Icons.my_location_outlined,
-                                  size: 24, color: AppColors.primary),
-                              pro.isLoading
-                                  ? Container(
-                                      // height: 40,
-                                      width: 80,
-                                      child: const CustomLoader())
-                                  : pro.currentAddress.isEmpty
-                                      ? MaterialButton(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20)),
-                                          color: AppColors.blueLight,
-                                          onPressed: () async {
-                                            pro = context.read<AuthProvider>();
-                                            String currentAddress = "";
-                                            await pro.Location(context);
-                                          },
-                                          child: const Text(
-                                            "Location",
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w500,
-                                                color: AppColors.primary),
-                                            textAlign: TextAlign.center,
-                                          ))
-                                      : Text(
-                                          pro.currentAddress,
-                                          style: const TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w500,
-                                              color: AppColors.primary),
-                                          textAlign: TextAlign.center,
-                                        )
-                            ],
-                          ),
-                          // const Icon(
-                          //   Icons.notifications,
-                          //   size: 24,
+                          Spacer(),
+
+                          /// Popup menu icon (vertical dot)
+                          // PopupMenuButton<String>(
                           //   color: AppColors.black,
-                          // )
-                          SizedBox(
-                            width: 30,
-                          )
+                          //   icon: const Icon(Icons.more_vert,
+                          //       color: AppColors.primary),
+                          //   onSelected: (value) async {
+                          //     if (value == 'location') {
+                          //       final pro = context.read<AuthProvider>();
+                          //       await pro.Location(context);
+                          //     }
+                          //   },
+                          //   itemBuilder: (BuildContext context) => [
+                          //     PopupMenuItem<String>(
+                          //       value: 'location',
+                          //       child: Column(
+                          //         mainAxisAlignment: MainAxisAlignment.center,
+                          //         children: [
+                          //           const Icon(Icons.my_location_outlined,
+                          //               size: 24, color: AppColors.primary),
+                          //           pro.isLoading
+                          //               ? Container(
+                          //                   // height: 40,
+                          //                   width: 80,
+                          //                   child: const CustomLoader())
+                          //               : pro.currentAddress.isEmpty
+                          //                   ? MaterialButton(
+                          //                       shape: RoundedRectangleBorder(
+                          //                           borderRadius:
+                          //                               BorderRadius.circular(
+                          //                                   20)),
+                          //                       color: AppColors.black,
+                          //                       onPressed: () async {
+                          //                         pro = context
+                          //                             .read<AuthProvider>();
+                          //                         String currentAddress = "";
+                          //                         await pro.Location(context);
+                          //                       },
+                          //                       child: const Text(
+                          //                         "Location",
+                          //                         style: TextStyle(
+                          //                             fontSize: 15,
+                          //                             fontWeight:
+                          //                                 FontWeight.w500,
+                          //                             color: AppColors.primary),
+                          //                         textAlign: TextAlign.center,
+                          //                       ))
+                          //                   : Text(
+                          //                       pro.currentAddress,
+                          //                       style: const TextStyle(
+                          //                           fontSize: 15,
+                          //                           fontWeight: FontWeight.w500,
+                          //                           color: AppColors.primary),
+                          //                       textAlign: TextAlign.center,
+                          //                     )
+                          //         ],
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
+
+                          //  InkWell(
+                          //   onTap: (){
+                          //     Navigator.push(context, MaterialPageRoute(builder: (context)=> const ChatView(),));
+                          //   },
+                          //    child: const Icon(
+                          //     Icons.chat,
+                          //     size: 24,
+                          //     color: AppColors.white,
+                          //                              ),
+                          //  ),
                         ],
                       ),
                     ),
@@ -208,8 +234,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 padding: const EdgeInsets.only(bottom: 255),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Padding(
                                         padding: const EdgeInsets.only(
@@ -265,13 +290,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ? AppTextStyles
                                                     .textStyleNormalBodySmall
                                                     .copyWith(
-                                                        color:
-                                                            AppColors.white)
+                                                        color: AppColors.white)
                                                 : AppTextStyles
                                                     .textStyleNormalBodyXSmall
                                                     .copyWith(
-                                                        color:
-                                                            AppColors.black),
+                                                        color: AppColors.black),
                                             container_color: selected == "All"
                                                 ? AppColors.blue
                                                 : null,
@@ -288,17 +311,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ? AppTextStyles
                                                     .textStyleNormalBodySmall
                                                     .copyWith(
-                                                        color:
-                                                            AppColors.white)
+                                                        color: AppColors.white)
                                                 : AppTextStyles
                                                     .textStyleNormalBodyXSmall
                                                     .copyWith(
-                                                        color:
-                                                            AppColors.black),
-                                            container_color:
-                                                selected == "Free"
-                                                    ? AppColors.blue
-                                                    : null,
+                                                        color: AppColors.black),
+                                            container_color: selected == "Free"
+                                                ? AppColors.blue
+                                                : null,
                                             text: "Free",
                                           ),
                                         ),
@@ -312,17 +332,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ? AppTextStyles
                                                     .textStyleNormalBodySmall
                                                     .copyWith(
-                                                        color:
-                                                            AppColors.white)
+                                                        color: AppColors.white)
                                                 : AppTextStyles
                                                     .textStyleNormalBodyXSmall
                                                     .copyWith(
-                                                        color:
-                                                            AppColors.black),
-                                            container_color:
-                                                selected == "Paid"
-                                                    ? AppColors.blue
-                                                    : null,
+                                                        color: AppColors.black),
+                                            container_color: selected == "Paid"
+                                                ? AppColors.blue
+                                                : null,
                                             text: "Paid",
                                           ),
                                         ),
@@ -342,16 +359,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                           (context, AsyncSnapshot snapshot) {
                                         if (snapshot.hasData) {
                                           QuerySnapshot data = snapshot.data;
-                                          List<DocumentSnapshot>
-                                              filteredData = [];
+                                          List<DocumentSnapshot> filteredData =
+                                              [];
 
                                           for (int index = 0;
                                               index < data.docs.length;
                                               index++) {
                                             DocumentSnapshot dataDoc =
                                                 data.docs[index];
-                                            bool isFree =
-                                                dataDoc.get('isFree');
+                                            bool isFree = dataDoc.get('isFree');
                                             if (selected == "All" ||
                                                 (selected == "Free" &&
                                                     isFree) ||
@@ -373,10 +389,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                               return CustomContainerBox(
                                                 isfree: dataDoc.get('isFree'),
                                                 text: dataDoc.get('title'),
-                                                secondText: dataDoc
-                                                    .get('description'),
-                                                imgLink: NetworkImage(dataDoc
-                                                    .get('urlImage')[0]),
+                                                secondText:
+                                                    dataDoc.get('description'),
+                                                imgLink: NetworkImage(
+                                                    dataDoc.get('urlImage')[0]),
                                                 ontap: () {
                                                   push(
                                                     context,

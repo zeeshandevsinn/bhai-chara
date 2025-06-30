@@ -97,16 +97,11 @@ class _SubCategorieScreenState extends State<SubCategorieScreen> {
     'Indian Motorcycle',
   ];
   List<String> BellsSubCategory = [
-    'Crane Bell Co.',
-    'Spurcycle',
-    'Knog',
-    'Timber!',
-    'Mirrycle',
-    'Lezyne',
-    'Incredibell',
-    'Electra',
-    'Cateye',
-    'RockBros',
+    'Mercedies',
+    'Elantra',
+    'Totota',
+    'Corolla',
+    'Civic',
   ];
   var lengthSide = 0;
   @override
@@ -144,7 +139,7 @@ class _SubCategorieScreenState extends State<SubCategorieScreen> {
                       lengthSide = furniture.length;
                     } else if (widget.text == "Bike") {
                       lengthSide = motorcycles.length;
-                    } else if (widget.text == "Bell") {
+                    } else if (widget.text == "Car") {
                       lengthSide = BellsSubCategory.length;
                     }
                     return Column(
@@ -167,7 +162,7 @@ class _SubCategorieScreenState extends State<SubCategorieScreen> {
                                                     ? furniture[i]
                                                     : widget.text == "Bike"
                                                         ? motorcycles[i]
-                                                        : widget.text == "Bell"
+                                                        : widget.text == "Car"
                                                             ? BellsSubCategory[
                                                                 i]
                                                             : "",
@@ -189,7 +184,7 @@ class _SubCategorieScreenState extends State<SubCategorieScreen> {
                                                   ? furniture[i]
                                                   : widget.text == "Bike"
                                                       ? motorcycles[i]
-                                                      : widget.text == "Bell"
+                                                      : widget.text == "Car"
                                                           ? BellsSubCategory[i]
                                                           : "",
                                   style: AppTextStyles.textStyleNormalBodyMedium),

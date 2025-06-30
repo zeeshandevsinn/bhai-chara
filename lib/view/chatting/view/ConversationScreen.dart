@@ -12,11 +12,11 @@ class ConversationScreen extends StatefulWidget {
   ConversationScreen(
       {super.key,
       required this.reciverUserID,
-      required this.receiverImage,
+      // required this.receiverImage,
       required this.reciverUserEmail,
       required this.receiverName});
   final String reciverUserID;
-  final String receiverImage;
+  // final String receiverImage;
   final String receiverName;
   final String reciverUserEmail;
 
@@ -31,7 +31,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
   sendMessage() async {
     if (messageController.text.isNotEmpty) {
       await chatService.sendMessage(
-        receiverImage:widget.receiverImage,
+        // receiverImage:widget.receiverImage,
           recevierId: widget.reciverUserID,
           message: messageController.text,
           receiverEmail: widget.reciverUserEmail,

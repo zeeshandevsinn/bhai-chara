@@ -404,7 +404,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                             await firebaseGetUserDetail(uid);
                                         isLoading = false;
                                         setState(() {});
-                                        if (user?.isPhoneVerified == true) {
+                                        // if (user?.isPhoneVerified == true) {
                                           await provider.addRequest(context,
                                               productID: widget.id, user: user);
 
@@ -416,27 +416,28 @@ class _ProductScreenState extends State<ProductScreen> {
                                                   "${userData!.name} New Request For Donation");
                                           NotificationProvider.sendPushMessage(
                                               token);
-                                        } else {
-                                          showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                return ErrorDialogBox(
-                                                  title:
-                                                      "Verification Required!",
-                                                  descrption:
-                                                      "Please Verify your Phone Number",
-                                                  buttonText: "GO",
-                                                  onTap: () {
-                                                    pop(context);
-                                                    push(context,
-                                                        const SignUpScreenByPhone());
-                                                  },
-                                                );
-                                              });
-                                          // showSnack(
-                                          //     context: context,
-                                          //     text: "Please Verify your Phone Number");
-                                        }
+                                        // } 
+                                        // else {
+                                        //   showDialog(
+                                        //       context: context,
+                                        //       builder: (context) {
+                                        //         return ErrorDialogBox(
+                                        //           title:
+                                        //               "Verification Required!",
+                                        //           descrption:
+                                        //               "Please Verify your Phone Number",
+                                        //           buttonText: "GO",
+                                        //           onTap: () {
+                                        //             pop(context);
+                                        //             push(context,
+                                        //                 const SignUpScreenByPhone());
+                                        //           },
+                                        //         );
+                                        //       });
+                                        //   // showSnack(
+                                        //   //     context: context,
+                                        //   //     text: "Please Verify your Phone Number");
+                                        // }
                                       },
                                       text: "Request",
                                     );

@@ -16,7 +16,7 @@ class RootScreen extends StatelessWidget {
 
   var iconsList = [
     Icons.home,
-    Icons.chat,
+    // Icons.chat,
     Icons.sell,
     Icons.sell,
     Icons.person
@@ -24,7 +24,7 @@ class RootScreen extends StatelessWidget {
 
   var screensList = [
     HomeScreen(),
-    ChatView(),
+    // ChatView(),
     SellScreen(),
     OrderScreen(),
     AccountScreen(),
@@ -32,7 +32,7 @@ class RootScreen extends StatelessWidget {
 
   var textList = [
     "Home",
-    "Chat",
+    // "Chat",
     "Donate",
     "Request",
     "Account",

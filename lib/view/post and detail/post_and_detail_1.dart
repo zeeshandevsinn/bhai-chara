@@ -53,6 +53,93 @@ class _PostDetailScreen1State extends State<PostDetailScreen1> {
     });
   }
 
+final List<String> cities = [
+  "Abbottabad",
+  "Ahmadpur East",
+  "Attock",
+  "Bahawalnagar",
+  "Bahawalpur",
+  "Bannu",
+  "Bhakkar",
+  "Burewala",
+  "Chakwal",
+  "Chaman",
+  "Charsadda",
+  "Chiniot",
+  "Dadu",
+  "Dera Ghazi Khan",
+  "Dera Ismail Khan",
+  "Faisalabad",
+  "Ghotki",
+  "Gujranwala",
+  "Gujrat",
+  "Gwadar",
+  "Hafizabad",
+  "Hangu",
+  "Haripur",
+  "Hyderabad",
+  "Islamabad",
+  "Jacobabad",
+  "Jafarabad",
+  "Jhang",
+  "Jhelum",
+  "Kahuta",
+  "Kamalia",
+  "Kamoke",
+  "Karachi",
+  "Kasur",
+  "Khanewal",
+  "Kharian",
+  "Khushab",
+  "Khuzdar",
+  "Kohat",
+  "Kot Adu",
+  "Kotli",
+  "Lahore",
+  "Larkana",
+  "Layyah",
+  "Lodhran",
+  "Malakand",
+  "Mansehra",
+  "Mardan",
+  "Mianwali",
+  "Mirpur",
+  "Mirpur Khas",
+  "Multan",
+  "Murree",
+  "Muzaffarabad",
+  "Muzaffargarh",
+  "Nawabshah",
+  "Nowshera",
+  "Okara",
+  "Pakpattan",
+  "Peshawar",
+  "Quetta",
+  "Rahim Yar Khan",
+  "Rajanpur",
+  "Rawalpindi",
+  "Sadiqabad",
+  "Sahiwal",
+  "Sargodha",
+  "Sheikhupura",
+  "Shikarpur",
+  "Sialkot",
+  "Sukkur",
+  "Swabi",
+  "Swat",
+  "Tando Adam",
+  "Tando Allahyar",
+  "Taxila",
+  "Thatta",
+  "Toba Tek Singh",
+  "Turbat",
+  "Vehari",
+  "Wah Cantt",
+  "Zhob",
+  "Ziarat"
+];
+
+
   @override
   void initState() {
     super.initState();
@@ -98,13 +185,13 @@ class _PostDetailScreen1State extends State<PostDetailScreen1> {
       child: Scaffold(
         backgroundColor: AppColors.white,
         appBar: AppBar(
-        backgroundColor: AppColors.white,
-        foregroundColor: AppColors.black,
-        title: Text(
-                "Include some details",
-                style: AppTextStyles.textStyleBoldBodyMedium,
-              ),
-        centerTitle: true,
+          backgroundColor: AppColors.white,
+          foregroundColor: AppColors.black,
+          title: Text(
+            "Include some details",
+            style: AppTextStyles.textStyleBoldBodyMedium,
+          ),
+          centerTitle: true,
         ),
         body: SingleChildScrollView(
           child: Container(
@@ -114,7 +201,6 @@ class _PostDetailScreen1State extends State<PostDetailScreen1> {
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        
                         const CustomLoader(),
                         Text(
                           "Please Wait ......",
@@ -140,8 +226,7 @@ class _PostDetailScreen1State extends State<PostDetailScreen1> {
                                 children: [
                                   Text(
                                     "UPLOAD UP TO 10 PHOTOS",
-                                    style:
-                                        AppTextStyles.textStyleBoldBodySmall,
+                                    style: AppTextStyles.textStyleBoldBodySmall,
                                   ),
                                   const Spacer(),
                                   selectedImages.isNotEmpty &&
@@ -183,7 +268,7 @@ class _PostDetailScreen1State extends State<PostDetailScreen1> {
                                               borderRadius:
                                                   BorderRadius.circular(20),
                                               color: AppColors.blue),
-                                          child:  Column(
+                                          child: Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             crossAxisAlignment:
@@ -226,8 +311,7 @@ class _PostDetailScreen1State extends State<PostDetailScreen1> {
                                                     context,
                                                     ImageScreen(
                                                         imagePath:
-                                                            selectedImages[
-                                                                i]));
+                                                            selectedImages[i]));
                                               },
                                               child: Container(
                                                 margin: const EdgeInsets.only(
@@ -271,8 +355,8 @@ class _PostDetailScreen1State extends State<PostDetailScreen1> {
                                             fit: BoxFit.cover,
                                           ))),
                                       titletext: widget.titletext,
-                                      titleStyle: AppTextStyles
-                                          .textStyleBoldBodyMedium,
+                                      titleStyle:
+                                          AppTextStyles.textStyleBoldBodyMedium,
                                       subtitleText: widget.subtext,
                                       subtitleStyle:
                                           AppTextStyles.textStyleSubtitleBody)
@@ -300,8 +384,7 @@ class _PostDetailScreen1State extends State<PostDetailScreen1> {
                                       style: isFree
                                           ? AppTextStyles
                                               .textStyleNormalBodySmall
-                                              .copyWith(
-                                                  color: AppColors.white)
+                                              .copyWith(color: AppColors.white)
                                           : null,
                                       container_color:
                                           isFree ? AppColors.blue : null,
@@ -320,8 +403,7 @@ class _PostDetailScreen1State extends State<PostDetailScreen1> {
                                       style: isFree == false
                                           ? AppTextStyles
                                               .textStyleNormalBodySmall
-                                              .copyWith(
-                                                  color: AppColors.white)
+                                              .copyWith(color: AppColors.white)
                                           : null,
                                       container_color: isFree == false
                                           ? AppColors.blue
@@ -340,8 +422,8 @@ class _PostDetailScreen1State extends State<PostDetailScreen1> {
                                   controller: priceController,
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(20),
-                                      borderSide:
-                                          const BorderSide(color: AppColors.grey)),
+                                      borderSide: const BorderSide(
+                                          color: AppColors.grey)),
                                   hintText: "RS:",
                                   obsecuretext: false,
                                   width: size.width,
@@ -430,35 +512,85 @@ class _PostDetailScreen1State extends State<PostDetailScreen1> {
                               // const SizedBox(
                               //   height: 20,
                               // ),
+
                               Consumer<AuthProvider>(
-                                  
-                                  builder: (context, pro,child) {
-                                    
-                                  return  GestureDetector(
-                                  onTap: () async {
-                              
-                                    pro.Location(context);
-                                  },
-                                  child: Builder(builder: (context) {
-                                    // var pro = context.read<AuthProvider>();
-                                    return CutomListTileUser(
-                                      title_text: "Location",
-                                      title_style:
-                                          AppTextStyles.textStyleTitleBodySmall,
-                                      subtitle_text: pro.currentAddress != Null
-                                          ? pro.currentAddress
-                                          : "Choose",
-                                      subtitle_style:
-                                          AppTextStyles.textStyleSubtitleBody,
-                                      trailing_widget: const Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: Color(0xfa000000),
-                                        size: 20,
+                                builder: (context, pro, child) {
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Location",
+                                        style: AppTextStyles
+                                            .textStyleTitleBodySmall,
                                       ),
-                                    );
-                                  }),
-                                );}
+                                      const SizedBox(height: 8),
+                                      Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 12, vertical: 4),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            border: Border.all(
+                                                color: Colors.grey.shade300),
+                                          ),
+                                          child: DropdownButton<String>(
+                                            value: cities.contains(
+                                                    pro.currentAddress)
+                                                ? pro.currentAddress
+                                                : null,
+                                            hint: const Text("Choose a city"),
+                                            isExpanded: true,
+                                            underline: const SizedBox(),
+                                            icon: const Icon(
+                                                Icons.arrow_drop_down),
+                                            items: cities.map((city) {
+                                              return DropdownMenuItem<String>(
+                                                value: city,
+                                                child: Text(city),
+                                              );
+                                            }).toList(),
+                                            onChanged: (value) {
+                                              if (value != null) {
+                                                pro.setAddress(value);
+                                              }
+                                            },
+                                          )),
+                                    ],
+                                  );
+                                },
                               ),
+
+                              // Consumer<AuthProvider>(
+
+                              //     builder: (context, pro,child) {
+
+                              //     return  GestureDetector(
+                              //     onTap: () async {
+
+                              //       pro.Location(context);
+                              //     },
+                              //     child: Builder(builder: (context) {
+                              //       // var pro = context.read<AuthProvider>();
+                              //       return CutomListTileUser(
+                              //         title_text: "Location",
+                              //         title_style:
+                              //             AppTextStyles.textStyleTitleBodySmall,
+                              //         subtitle_text: pro.currentAddress != Null
+                              //             ? pro.currentAddress
+                              //             : "Choose",
+                              //         subtitle_style:
+                              //             AppTextStyles.textStyleSubtitleBody,
+                              //         trailing_widget: const Icon(
+                              //           Icons.arrow_forward_ios,
+                              //           color: Color(0xfa000000),
+                              //           size: 20,
+                              //         ),
+                              //       );
+                              //     }),
+                              //   );}
+                              // ),
                               const SizedBox(
                                 height: 10,
                               ),
@@ -478,8 +610,8 @@ class _PostDetailScreen1State extends State<PostDetailScreen1> {
                                 controller: titlleController,
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(20),
-                                    borderSide:
-                                        const BorderSide(color: AppColors.grey)),
+                                    borderSide: const BorderSide(
+                                        color: AppColors.grey)),
                                 hintText: "Title",
                                 obsecuretext: false,
                                 width: size.width,
@@ -503,8 +635,8 @@ class _PostDetailScreen1State extends State<PostDetailScreen1> {
                                 controller: describeController,
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(20),
-                                    borderSide:
-                                        const BorderSide(color: AppColors.grey)),
+                                    borderSide: const BorderSide(
+                                        color: AppColors.grey)),
                                 hintText: "Selling",
                                 obsecuretext: false,
                                 width: size.width,
@@ -522,12 +654,10 @@ class _PostDetailScreen1State extends State<PostDetailScreen1> {
                                     showSnack(
                                         context: context,
                                         text: "Enter Please Title Field");
-                                  } else if (describeController
-                                      .text.isEmpty) {
+                                  } else if (describeController.text.isEmpty) {
                                     showSnack(
                                         context: context,
-                                        text:
-                                            "Enter Please Description Field");
+                                        text: "Enter Please Description Field");
                                   } else if (!isFree &&
                                       priceController.text.isEmpty) {
                                     showSnack(
@@ -537,8 +667,7 @@ class _PostDetailScreen1State extends State<PostDetailScreen1> {
                                     if (selectedImages.isNotEmpty) {
                                       var comp =
                                           context.read<CompressProvider>();
-                                      await comp
-                                          .compressImages(selectedImages);
+                                      await comp.compressImages(selectedImages);
                                       String datetime =
                                           DateTime.now().toString();
                                       var data =
@@ -556,25 +685,23 @@ class _PostDetailScreen1State extends State<PostDetailScreen1> {
                                         dateTime: datetime,
                                         uid: FirebaseAuth
                                             .instance.currentUser!.uid,
-      
+
                                         // categoryID: "",
                                         // subcategoryID:"",
-      
+
                                         // itemAddress: "",
-      
+
                                         // ownerID:ownerID,
                                         // itemLocation:""
                                       );
-                                       FocusScope.of(context).nextFocus();
-                                    // uploadImage(selectedImages);
-                                    push(context, RootScreen());
-                                    }else{
-                                       showSnack(
-                                        context: context,
-                                        text: "Please! Select Images!");
+                                      FocusScope.of(context).nextFocus();
+                                      // uploadImage(selectedImages);
+                                      push(context, RootScreen());
+                                    } else {
+                                      showSnack(
+                                          context: context,
+                                          text: "Please! Select Images!");
                                     }
-      
-                                   
                                   }
                                 },
                                 text: "Post Now",

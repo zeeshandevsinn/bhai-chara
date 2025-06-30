@@ -15,7 +15,9 @@ class ChatService extends ChangeNotifier {
 
 final SharedPreferenceHelper _sharedPrefHelper =
       SharedPreferenceHelper.instance();
-  Future<void> sendMessage({required receiverImage, required recevierId,required message,required  receiverEmail,required receiverName })async{
+  Future<void> sendMessage({
+    // required receiverImage, 
+    required recevierId,required message,required  receiverEmail,required receiverName })async{
 
       UserModel? user =   await _sharedPrefHelper.user();
   DateTime now = new DateTime.now();
@@ -24,11 +26,11 @@ final SharedPreferenceHelper _sharedPrefHelper =
 
     final Timestamp timestamp = Timestamp.now();
     Message newMessage = Message(
-      receiverImage: receiverImage,
-      senderImage: user!.image!,
+      // receiverImage: receiverImage,
+      // senderImage: user!.image!,
       senderId: currentUserId,
       senderEmail: curentUserEmail,
-      senderName: user.name!,
+      senderName: user!.name!,
       receverId: recevierId,
       recevierEmail: receiverEmail,
       recevierName: receiverName,

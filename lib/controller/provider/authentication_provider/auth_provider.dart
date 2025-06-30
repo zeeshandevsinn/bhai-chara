@@ -11,8 +11,17 @@ class AuthProvider extends ChangeNotifier {
   bool isLoading = false;
 
   String currentAddress = "";
+  
   // ignore: unused_field
   Position? _currentPosition;
+
+
+  void setAddress(String value) {
+  currentAddress = value;
+  notifyListeners();
+}
+
+
   Location(context) async {
     // debugger();
     try {

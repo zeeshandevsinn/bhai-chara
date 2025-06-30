@@ -48,7 +48,7 @@ class _SellScreenState extends State<SellScreen> {
     "Mobile",
     "Furniture",
     "Bike",
-    "Bell",
+    "Car",
   ];
   List<String> Selling = [
     'assets/images/fluent_animal-cat-28-filled.png',
@@ -56,7 +56,7 @@ class _SellScreenState extends State<SellScreen> {
     'assets/images/fontisto_mobile.png',
     'assets/images/map_furniture-store.png',
     'assets/images/ri_motorbike-fill.png',
-    'assets/images/solar_bell-bold.png',
+   'assets/images/colorcar.png'
   ];
   bool selected = false;
   void toggleTextFieldVisibility() {

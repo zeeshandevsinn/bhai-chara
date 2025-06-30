@@ -174,19 +174,19 @@ class _AccountScreenState extends State<AccountScreen> {
 
                     Column(
                       children: [
-                        SettingsItem(
-                          onTap: () {
-                            push(context, const ItemScreen());
-                          },
-                          icons: Icons.ads_click,
-                          iconStyle: IconStyle(
-                            iconsColor: Colors.white,
-                            withBackground: true,
-                            backgroundColor: Colors.red,
-                          ),
-                          title: 'My Ads',
-                          // subtitle: "",
-                        ),
+                        // SettingsItem(
+                        //   onTap: () {
+                        //     push(context, const ItemScreen());
+                        //   },
+                        //   icons: Icons.ads_click,
+                        //   iconStyle: IconStyle(
+                        //     iconsColor: Colors.white,
+                        //     withBackground: true,
+                        //     backgroundColor: Colors.red,
+                        //   ),
+                        //   title: 'My Ads',
+                        //   // subtitle: "",
+                        // ),
                         // const Padding(
                         //   padding: EdgeInsets.symmetric(horizontal: 12),
                         //   child: Divider(),
@@ -332,8 +332,8 @@ class _AccountScreenState extends State<AccountScreen> {
                             context: context,
                             builder: (context) {
                               return RecredentialAlert(
-                                buttoncolor: Colors.red,
-                                buttoncolor2: Colors.blue,
+                                buttoncolor: Colors.black,
+                                buttoncolor2: Colors.black,
                                 textbutton1: 'Confirm',
                                 emailController:
                                     emailController, // Pass email controller
