@@ -2,6 +2,7 @@
 
 import 'dart:developer';
 
+import 'package:bhai_chara/chatt/chat_list_screen.dart';
 import 'package:bhai_chara/common/custom_container_tile.dart';
 import 'package:bhai_chara/controller/provider/notification_provider.dart';
 import 'package:bhai_chara/utils/app_colors.dart';
@@ -189,16 +190,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           //   ],
                           // ),
 
-                          //  InkWell(
-                          //   onTap: (){
-                          //     Navigator.push(context, MaterialPageRoute(builder: (context)=> const ChatView(),));
-                          //   },
-                          //    child: const Icon(
-                          //     Icons.chat,
-                          //     size: 24,
-                          //     color: AppColors.white,
-                          //                              ),
-                          //  ),
+                           InkWell(
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=> const  ChattListScreen(),));
+                            },
+                             child: const Icon(
+                              Icons.chat,
+                              size: 24,
+                              color: AppColors.white,
+                                                       ),
+                           ),
                         ],
                       ),
                     ),
