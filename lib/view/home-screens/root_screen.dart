@@ -11,28 +11,30 @@ import '../../view/chatting/view/chat_view.dart';
 import '../account/account_screen.dart';
 import 'package:bhai_chara/view/order_screen.dart';
 
+import 'favouritescreen.dart';
+
 class RootScreen extends StatelessWidget {
   RootScreen({super.key});
 
   var iconsList = [
     Icons.home,
-    // Icons.chat,
+    Icons.favorite_outline,
     Icons.sell,
     Icons.sell,
     Icons.person
   ];
 
   var screensList = [
-    HomeScreen(),
-    // ChatView(),
-    SellScreen(),
+    const HomeScreen(),
+    FavouriteScreen(),
+    const SellScreen(),
     OrderScreen(),
-    AccountScreen(),
+    const AccountScreen(),
   ];
 
   var textList = [
     "Home",
-    // "Chat",
+    "favourites",
     "Donate",
     "Request",
     "Account",

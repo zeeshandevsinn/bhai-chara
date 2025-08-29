@@ -79,40 +79,51 @@ class _SignUpScreenByPhoneState extends State<SignUpScreenByPhone> {
                   style: AppTextStyles.textStyleNormalBodyXSmall,
                 )),
                 Gap.h(20),
-                CustomCountryPhoneField(
+                TextFormField(
                   controller: numberController,
-                  completePhoneNumber: completePhoneNumber,
+                  keyboardType: TextInputType.phone,
+                  decoration: InputDecoration(
+                    labelText: "Phone Number",
+                    hintText: "+923001234567", // 🔑 E.164 format
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    prefixIcon: const Icon(Icons.phone),
+                  ),
                 ),
+                // CustomCountryPhoneField(
+                //   controller: numberController,
+                //   completePhoneNumber: completePhoneNumber,
+                // ),
                 SizedBox(
                   height: (size.height < 300)
                       ? size.height * .10
                       : size.height * .28,
                 ),
-                
-                Consumer<SignUpProvider>(
-                  builder: (context, p, child) {
-                    return 
-                    p.isLoading ? const CustomLoader() :
-                    CustomButton(
-                      onTap: () async {
-                        if (numberController.text.isEmpty) {
-                          showSnack(
-                              context: context, text: "Please Enter Phone Field");
-                        } else {
-                          FocusScope.of(context).unfocus();
-                          var data = context.read<SignUpProvider>();
 
-                        await data.PhoneVerifyFireBase(
-                              context, PhoneProvider.phonenumber);
-                       
-                          // numberController =
-                          //     await CustomCountryPhoneField().controller;
-                        }
-                      },
-                      text: "Next",
-                    );
-                  }
-                ),
+                Consumer<SignUpProvider>(builder: (context, p, child) {
+                  return p.isLoading
+                      ? const CustomLoader()
+                      : CustomButton(
+                          onTap: () async {
+                            if (numberController.text.isEmpty) {
+                              showSnack(
+                                  context: context,
+                                  text: "Please Enter Phone Field");
+                            } else {
+                              FocusScope.of(context).unfocus();
+                              var data = context.read<SignUpProvider>();
+
+                              await data.PhoneVerifyFireBase(
+                                  context, numberController.text.trim());
+
+                              // numberController =
+                              //     await CustomCountryPhoneField().controller;
+                            }
+                          },
+                          text: "Next",
+                        );
+                }),
                 Gap.h(10),
                 CustomButton(
                   colorBox: AppColors.grey,

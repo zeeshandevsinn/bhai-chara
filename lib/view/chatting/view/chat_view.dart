@@ -51,61 +51,63 @@ class _ChatViewState extends State<ChatView> {
         //   }, icon: Icon(Icons.star)),
         // ],
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(12),
-        itemCount: messages.length,
-        itemBuilder: (context, index) {
-          final message = messages[index];
-          return Card(
-            elevation: 2,
-            margin: const EdgeInsets.symmetric(vertical: 6),
-            child: ListTile(
-              leading: const CircleAvatar(
-                child: Icon(Icons.person),
-              ),
-              title: Text(
-                message['name']!,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              subtitle: Text(message['text']!),
-              trailing: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.delete, color: Colors.redAccent),
-                    onPressed: () {
-                      setState(() {
-                        messages.removeAt(index);
-                      });
-                    },
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
+      body: 
+      
+      // ListView.builder(
+      //   padding: const EdgeInsets.all(12),
+      //   itemCount: messages.length,
+      //   itemBuilder: (context, index) {
+      //     final message = messages[index];
+      //     return Card(
+      //       elevation: 2,
+      //       margin: const EdgeInsets.symmetric(vertical: 6),
+      //       child: ListTile(
+      //         leading: const CircleAvatar(
+      //           child: Icon(Icons.person),
+      //         ),
+      //         title: Text(
+      //           message['name']!,
+      //           style: const TextStyle(fontWeight: FontWeight.bold),
+      //         ),
+      //         subtitle: Text(message['text']!),
+      //         trailing: Column(
+      //           mainAxisAlignment: MainAxisAlignment.center,
+      //           children: [
+      //             IconButton(
+      //               icon: const Icon(Icons.delete, color: Colors.redAccent),
+      //               onPressed: () {
+      //                 setState(() {
+      //                   messages.removeAt(index);
+      //                 });
+      //               },
+      //             ),
+      //           ],
+      //         ),
+      //       ),
+      //     );
+      //   },
+      // ),
 
-      //  StreamBuilder<QuerySnapshot>(
-      //     stream: FirebaseFirestore.instance
-      //         .collection(CHAT_COLLECTION)
-      //         .where(Filter.or(
-      //           Filter("senderId", isEqualTo: auth.currentUser?.uid),
-      //           Filter("receverId", isEqualTo: auth.currentUser?.uid),
-      //         ))
-      //         .snapshots(),
-      //     builder: (context, snapshot) {
-      //       if (snapshot.hasData) {
-      //         print("Document count: ${snapshot.data!.docs.length}");
+       StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection(CHAT_COLLECTION)
+              .where(Filter.or(
+                Filter("senderId", isEqualTo: auth.currentUser?.uid),
+                Filter("receverId", isEqualTo: auth.currentUser?.uid),
+              ))
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              print("Document count: ${snapshot.data!.docs.length}");
 
-      //         // return Column(
-      //         //     children: snapshot.data!.docs
-      //         //         .map((docs) => buildUserListItems(docs))
-      //         //         .toList());
-      //       }
+              return Column(
+                  children: snapshot.data!.docs
+                      .map((docs) => buildUserListItems(docs))
+                      .toList());
+            }
 
-      //       return const Text("Loading . . .");
-      //     }),
+            return const Text("Loading . . .");
+          }),
     );
     // }
 

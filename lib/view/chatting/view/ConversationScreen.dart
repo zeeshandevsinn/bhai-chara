@@ -28,6 +28,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
   final TextEditingController messageController = TextEditingController();
   final ChatService chatService = ChatService();
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  
   sendMessage() async {
     if (messageController.text.isNotEmpty) {
       await chatService.sendMessage(

@@ -23,6 +23,8 @@ import 'package:flutter/widgets.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 
+import '../home-screens/premiumscreen.dart';
+
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
 
@@ -238,6 +240,17 @@ class _AccountScreenState extends State<AccountScreen> {
                             backgroundColor: Colors.purple,
                           ),
                           title: 'About',
+                        ),
+
+                         SettingsItem(
+                          onTap: () {
+                            push(context, const PremiumScreen());
+                          },
+                          icons: Icons.workspace_premium_rounded,
+                          iconStyle: IconStyle(
+                            backgroundColor: Colors.purple,
+                          ),
+                          title: 'Unlock premium',
                         ),
                       ],
                     ),

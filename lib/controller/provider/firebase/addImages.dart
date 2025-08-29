@@ -6,8 +6,9 @@ import '../../services/Firebase_Manager.dart';
 
 class FireStoreProvider extends ChangeNotifier {
   bool isLoading = false;
-  addImage(List<File> selectedImages,
-      {price,
+  addImage(
+      {selectedImages,
+      price,
       age,
       title,
       description,

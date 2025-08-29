@@ -27,11 +27,9 @@ class SignUpProvider extends ChangeNotifier {
   final SharedPreferenceHelper _sharedPrefHelper =
       SharedPreferenceHelper.instance();
 
-  
   signUpFirebase(context, name, email, password,
       {isEmailVerified = false, isPhoneVerified = false, lat, long}) async {
-
- final fcmToken = await FirebaseMessaging.instance.getToken();
+    final fcmToken = await FirebaseMessaging.instance.getToken();
 
     log(lat.toString());
     try {
@@ -42,17 +40,17 @@ class SignUpProvider extends ChangeNotifier {
           .createUserWithEmailAndPassword(email: email, password: password);
       var uid = FirebaseAuth.instance.currentUser!.uid;
       var data = await FirebaseManager.signUpFirebaseStoreage(
-          context: context,
-          name: name,
-          email: email,
-          password: password,
-          uid: uid,
-          isEmailVerified: isEmailVerified,
-          isPhoneVerify: isPhoneVerified,
-          lat: lat,
-          long: long,
-          fcmToken: fcmToken,
-          );
+        context: context,
+        name: name,
+        email: email,
+        password: password,
+        uid: uid,
+        isEmailVerified: isEmailVerified,
+        isPhoneVerify: isPhoneVerified,
+        lat: lat,
+        long: long,
+        fcmToken: fcmToken,
+      );
       isLoading = false;
       notifyListeners();
       UID_Provider.uid = uid.toString();
@@ -84,7 +82,7 @@ class SignUpProvider extends ChangeNotifier {
           .collection(USER_COLLECTION)
           .where("phoneNumber", isEqualTo: phoneNumber)
           .get();
-    isLoading = false;
+      isLoading = false;
       notifyListeners();
       if (users.docs.isEmpty) {
         await FirebaseAuth.instance.verifyPhoneNumber(
@@ -97,12 +95,20 @@ class SignUpProvider extends ChangeNotifier {
               showSnack(context: context, text: "OTP Sent");
               PhoneNumber = phoneNumber.toString();
               isLoading = false;
+              
               notifyListeners();
-              push(
+              Navigator.push(
                   context,
-                  OTPScreen(
-                    phone: PhoneProvider.phonenumber,
-                  ));
+                  MaterialPageRoute(
+                      builder: (context) => OTPScreen(
+                            phone: PhoneProvider.phonenumber,
+                          )));
+              //  push(
+              //     context,
+              //     OTPScreen(
+              //       phone: PhoneProvider.phonenumber,
+              //     )
+              //     );
               // debugger();
             },
             codeAutoRetrievalTimeout: (String verificationId) {});

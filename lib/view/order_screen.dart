@@ -42,11 +42,11 @@ class OrderScreen extends StatelessWidget {
                   Gap.h(10),
                   StreamBuilder(
                       stream: FirebaseFirestore.instance
-                          .collection(REQUEST_COLLECTION)
+                          .collection('requests')
                           .where("uid",
                               isEqualTo: FirebaseAuth.instance.currentUser?.uid)
                           .where("request",
-                              isEqualTo: ProductStatus.pending.name)
+                              isEqualTo: 'pending')
                           .snapshots(),
                       builder: (context, AsyncSnapshot snapshot) {
                         if (snapshot.hasData) {
@@ -54,67 +54,71 @@ class OrderScreen extends StatelessWidget {
                             children: [
                               Center(
                                 child: Text(
-                                  // "${snapshot.data.docs.length} New Requests",
-                                   "${1} New Requests",
+                                  "${snapshot.data.docs.length} New Requests",
+                                  //  "${1} New Requests",
                                   //textAlign: TextAlign.center,
                                   style: AppTextStyles
                                       .textStyleNormalBody_BlueColor,
                                 ),
                               ),
                               ListView.builder(
-                                  physics: const NeverScrollableScrollPhysics(),
+                                  // physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
-                                  itemCount: 1,
-                                  // itemCount: snapshot.data.docs.length,
+                                  // itemCount: 1,
+                                  itemCount: snapshot.data.docs.length,
                                   itemBuilder: (context, index) {
-                                    // var request = snapshot.data.docs[index];
-                                    return Padding(
+                                    var request = snapshot.data.docs[index];
+                                    return 
+                                    
+                                    Padding(
                                       padding: const EdgeInsets.symmetric(
                                         horizontal: 10,
                                       ),
-                                      child: OrderContainer(
-                                        status: ProductStatus.pending.name,
-                                        receiverEmail: "john.doe@example.com",
-                                        receiverPhone: "+1234567890",
-                                        receiverImage:
-                                            "assets/images/car_product.png", // use your local image or URL
-                                        receiverName: "John Doe",
-                                        receiverID: "user123",
-                                        uid: "order456",
-                                        text: "Sample Product Title",
-                                        color1: AppColors.grey,
-                                        color2: AppColors.blue,
-                                        isFree: false,
-                                        address:
-                                            "123 Rainbow Street, WonderTown",
-                                        price: "Price:\t\t\t\$25.00",
-                                        time:
-                                            "Time:\t\t\t\t17-Jun-2025 04:45 PM", // manually formatted string
-                                      ),
-
+                                      child: 
+                                      
                                       // OrderContainer(
-                                      //     status: ProductStatus.pending.name,
-                                      //     receiverEmail:
-                                      //         request.get("requester_email"),
-                                      //     receiverPhone:
-                                      //         request.get("requester_phone"),
-                                      //     receiverImage:
-                                      //         request.get("requester_image"),
-                                      //     receiverName:
-                                      //         request.get("requester_name"),
-                                      //     receiverID:
-                                      //         request.get("requester_id"),
-                                      //     uid: request.id,
-                                      //     text: request.get("title"),
-                                      //     color1: AppColors.grey,
-                                      //     color2: AppColors.blue,
-                                      //     isFree: request.get("isFree"),
-                                      //     address:
-                                      //         request.get("requester_address"),
-                                      //     price:
-                                      //         "Price:\t\t\t${request.get("price")}",
-                                      //     time:
-                                      //         "Time:\t\t\t\t${DateFormat("d-MMM-yyyy mm:ss a").format(request.get("request_time").toDate())}"),
+                                      //   status: ProductStatus.pending.name,
+                                      //   receiverEmail: "john.doe@example.com",
+                                      //   receiverPhone: "+1234567890",
+                                      //   receiverImage:
+                                      //       "assets/images/car_product.png", // use your local image or URL
+                                      //   receiverName: "John Doe",
+                                      //   receiverID: "user123",
+                                      //   uid: "order456",
+                                      //   text: "Sample Product Title",
+                                      //   color1: AppColors.grey,
+                                      //   color2: AppColors.blue,
+                                      //   isFree: false,
+                                      //   address:
+                                      //       "123 Rainbow Street, WonderTown",
+                                      //   price: "Price:\t\t\t\$25.00",
+                                      //   time:
+                                      //       "Time:\t\t\t\t17-Jun-2025 04:45 PM", // manually formatted string
+                                      // ),
+
+                                      OrderContainer(
+                                          status: ProductStatus.pending.name,
+                                          receiverEmail:
+                                              request.get("requester_email"),
+                                          receiverPhone:
+                                              request.get("requester_phone"),
+                                          receiverImage:
+                                              request['urlImage'][0],
+                                          receiverName:
+                                              request.get("requester_name"),
+                                          receiverID:
+                                              request.get("requester_id"),
+                                          uid: request.id,
+                                          text: request.get("title"),
+                                          color1: AppColors.grey,
+                                          color2: AppColors.blue,
+                                          isFree: request.get("isFree"),
+                                          address:
+                                              request.get("requester_address"),
+                                          price:
+                                              "Price:\t\t\t${request.get("price")}",
+                                          time:
+                                              "Time:\t\t\t\t${DateFormat("d-MMM-yyyy mm:ss a").format(request.get("request_time").toDate())}"),
                                     );
                                   }),
                             ],
@@ -170,7 +174,7 @@ class OrderScreen extends StatelessWidget {
                                           receiverPhone:
                                               request.get("requester_phone"),
                                           receiverImage:
-                                              request.get("requester_image"),
+                                               request['urlImage'][0],
                                           receiverName:
                                               request.get("requester_name"),
                                           uid: request.id,
@@ -239,7 +243,7 @@ class OrderScreen extends StatelessWidget {
                                           uid: request.id,
                                           text: request.get("title"),
                                           receiverImage:
-                                              request.get("requester_image"),
+                                               request['urlImage'][0],
                                           receiverEmail:
                                               request.get("requester_email"),
                                           receiverID:

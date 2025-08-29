@@ -36,7 +36,7 @@ class _PostDetailScreen1State extends State<PostDetailScreen1> {
   TextEditingController ageController = TextEditingController();
   TextEditingController titlleController = TextEditingController();
   TextEditingController describeController = TextEditingController();
-  List<File> selectedImages = [];
+  List<File> selectedImages = [] ;
   List<File> compressedImage = [];
   List<String> urlImage = [];
   ImagePicker picker = ImagePicker();
@@ -674,7 +674,7 @@ final List<String> cities = [
                                           context.read<FireStoreProvider>();
                                       // debugger();
                                       await data.addImage(
-                                        selectedImages,
+                                        selectedImages: selectedImages, // Pass an empty list to not post any images
                                         price: priceController.text,
                                         age: ageController.text,
                                         title: titlleController.text,

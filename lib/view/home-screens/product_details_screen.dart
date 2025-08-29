@@ -6,12 +6,12 @@ import 'package:bhai_chara/controller/provider/notification_provider.dart';
 import 'package:bhai_chara/controller/provider/product/product_detail.dart';
 import 'package:bhai_chara/controller/services/Firebase_Manager.dart';
 import 'package:bhai_chara/controller/services/shared_prefrences.dart';
+import 'package:bhai_chara/model/product_detail_model.dart';
 import 'package:bhai_chara/model/user_model.dart';
 import 'package:bhai_chara/utils/custom_loader.dart';
 import 'package:bhai_chara/utils/push.dart';
-import 'package:bhai_chara/utils/refresh.dart';
-import 'package:bhai_chara/view/authentication/signup_screen_by_phone.dart';
-import 'package:bhai_chara/view/settings-screens/dialogBox.dart';
+import 'package:carousel_slider/carousel_controller.dart';
+import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -26,8 +26,9 @@ import 'mapScreen.dart';
 
 // ignore: must_be_immutable
 class ProductScreen extends StatefulWidget {
-  ProductScreen({super.key, this.id});
+  ProductScreen({super.key, this.id, this.userid});
   var id;
+  var userid;
   @override
   State<ProductScreen> createState() => _ProductScreenState();
 }
@@ -108,7 +109,36 @@ class _ProductScreenState extends State<ProductScreen> {
                             ),
                           ),
                         ),
+                        Positioned(
+                          right: 10,
+                          top: 10,
+                          child: InkWell(
+                              onTap: () {
+                                ProductDetailModel product = ProductDetailModel(
+                                    isFree: provider.productDetailModel!.isFree,
+                                    time: provider.productDetailModel!.time,
+                                    title: provider.productDetailModel!.title,
+                                    uid: provider.productDetailModel!.uid,
+                                    category:
+                                        provider.productDetailModel!.category,
+                                    description: provider
+                                        .productDetailModel!.description,
+                                    urlImage:
+                                        provider.productDetailModel!.urlImage,
+                                    subcategory: provider
+                                        .productDetailModel!.subcategory,
+                                    age: provider.productDetailModel!.age,
+                                    price: provider.productDetailModel!.price);
 
+                                provider.toggleFavourite(product, widget.id);
+                              },
+                              child: provider.isfavourite
+                                  ? const Icon(Icons.favorite_outlined)
+                                  : const Icon(
+                                      Icons.favorite_border,
+                                      size: 35,
+                                    )),
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(left: 12),
                           child: Row(
@@ -263,33 +293,33 @@ class _ProductScreenState extends State<ProductScreen> {
                           style: AppTextStyles.textStyleBoldBodySmall,
                         ),
                       ),
-                      // Padding(
-                      //   padding:
-                      //       EdgeInsets.symmetric(horizontal: 20, vertical: 25),
-                      //   child: Row(
-                      //     //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //     crossAxisAlignment: CrossAxisAlignment.start,
-                      //     children: [
-                      //       Icon(
-                      //         Icons.location_on_outlined,
-                      //         size: 30,
-                      //       ),
-                      //       // Builder(builder: (context) {
-                      //       //   var loc2 = context.watch<AuthProvider>();
-                      //       //   return Container(
-                      //       //       width: 180,
-                      //       //       child: Text(
-                      //       //         loc2.currentAddress,
-                      //       //         style: AppTextStyles.textStyleBoldBodySmall
-                      //       //             .copyWith(
-                      //       //           fontSize: 16,
-                      //       //           fontWeight: FontWeight.bold,
-                      //       //         ),
-                      //       //       ));
-                      //       // }),
-                      //     ],
-                      //   ),
-                      // ),
+                      Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+                        child: Row(
+                          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(
+                              Icons.location_on_outlined,
+                              size: 30,
+                            ),
+                            // Builder(builder: (context) {
+                            //   var loc2 = context.watch<AuthProvider>();
+                            //   return Container(
+                            //       width: 180,
+                            //       child: Text(
+                            //         loc2.currentAddress,
+                            //         style: AppTextStyles.textStyleBoldBodySmall
+                            //             .copyWith(
+                            //           fontSize: 16,
+                            //           fontWeight: FontWeight.bold,
+                            //         ),
+                            //       ));
+                            // }),
+                          ],
+                        ),
+                      ),
 
                       Container(
                         height: 190,
@@ -405,18 +435,21 @@ class _ProductScreenState extends State<ProductScreen> {
                                         isLoading = false;
                                         setState(() {});
                                         // if (user?.isPhoneVerified == true) {
-                                          await provider.addRequest(context,
-                                              productID: widget.id, user: user);
+                                        await provider.addRequest(context,
+                                            productID: widget.id,
+                                            user: user,
+                                            idofuser: widget.userid);
+                                        // 🔽 Create Chat Room and Default Message
 
-                                          String token =
-                                              provider.donnerDetail!.fcmToken!;
-                                          NotificationProvider.sendNotification(
-                                              token: token,
-                                              message:
-                                                  "${userData!.name} New Request For Donation");
-                                          NotificationProvider.sendPushMessage(
-                                              token);
-                                        // } 
+                                        String token =
+                                            provider.donnerDetail!.fcmToken!;
+                                        NotificationProvider.sendNotification(
+                                            token: token,
+                                            message:
+                                                "${userData!.name} New Request For Donation");
+                                        NotificationProvider.sendPushMessage(
+                                            token);
+                                        // }
                                         // else {
                                         //   showDialog(
                                         //       context: context,

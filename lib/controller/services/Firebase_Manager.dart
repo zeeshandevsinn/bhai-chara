@@ -11,16 +11,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
+import '../../model/product_detail_model.dart';
+
 const USER_COLLECTION = "Client";
 const CHAT_COLLECTION = "chat";
 const REQUEST_COLLECTION = "requests";
 const PRODUCT_COLLECTION = "Products";
+const Favourites = "favourites";
 
 class FirebaseManager {
   static final _auth = FirebaseAuth.instance;
   static String verifyId = '';
   static String code = '';
 // /////////////////////DELETE ACCOUNT ////////////////////////
+
+  // 
 
   static Future<void> deleteAccount(String email, String password) async {
     try {
@@ -52,7 +57,7 @@ class FirebaseManager {
     String? name,
     String? email,
     File? profileImage,
-   String? fcmtoken,
+    String? fcmtoken,
   }) async {
     try {
       // Create a map to hold the updated user data
@@ -66,7 +71,7 @@ class FirebaseManager {
         userData['Email'] = email;
       }
 
-   if (fcmtoken != null) {
+      if (fcmtoken != null) {
         userData['fcm_token'] = fcmtoken;
       }
       // Upload profile image if provided
@@ -219,7 +224,8 @@ class FirebaseManager {
     isEmailVerified,
     isPhoneVerify,
     image,
-    lat,long,
+    lat,
+    long,
     fcmToken,
   }) async {
     try {
@@ -231,12 +237,12 @@ class FirebaseManager {
         "image": image ?? "",
         "UID": uid.toString(),
         "isEmailVerified": isEmailVerified,
-        "isPhoneVerified": isPhoneVerify,      
+        "isPhoneVerified": isPhoneVerify,
         "createdTime": DateTime.now().toString(),
-        "latitude":lat,
-        "longitude":long,
-        "fcm_token":fcmToken
-      },SetOptions(merge: true));
+        "latitude": lat,
+        "longitude": long,
+        "fcm_token": fcmToken
+      }, SetOptions(merge: true));
       return data;
     } catch (e) {
       debugger();

@@ -26,23 +26,37 @@ import 'controller/provider/visibility_provider.dart';
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPreferenceHelper.initializeSharedPreferences();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  for (var app in Firebase.apps) {
+    print("Initialized Firebase app: ${app.name}");
+  }
+
+   try {
+    if (Firebase.apps.isEmpty) {
+
+      await Firebase.initializeApp(
+         name: 'primaryApp',
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+    }
+  } catch (e) {
+    print('Firebase initialization error: $e');
+  }
+
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   // await FirebaseMessaging.instance.setAutoInitEnabled(true);
 
   runApp(const MyApp());
 }
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  setupFlutterNotifications();
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
-  print('Handling a background message ${message.messageId}');
-}
+// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+//   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+//   setupFlutterNotifications();
+//   // If you're going to use other Firebase services in the background, such as Firestore,
+//   // make sure you call `initializeApp` before using other Firebase services.
+//   print('Handling a background message ${message.messageId}');
+// }
 
 Future<void> setupFlutterNotifications() async {
   await FirebaseMessaging.instance.requestPermission(
