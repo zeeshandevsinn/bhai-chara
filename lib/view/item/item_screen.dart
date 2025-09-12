@@ -103,6 +103,8 @@ class _ItemScreenState extends State<ItemScreen> {
                                         itemBuilder: (context, index) {
                                           DocumentSnapshot dataDoc =
                                               data.docs[index];
+
+                                           String docid = dataDoc.id;
                                           var isFree = dataDoc.get('isFree')
                                               ? "Free"
                                               : dataDoc.get('price');
@@ -115,10 +117,12 @@ class _ItemScreenState extends State<ItemScreen> {
                                             imageLink:
                                                 dataDoc.get('urlImage')[0],
                                             titleText: isFree,
+                                            docid: docid,
                                             ontap: () {
                                               push(
                                                   context,
                                                   ProductScreen(
+                                                    where: 'yes',
                                                     id: dataDoc.id,
                                                   ));
                                             },

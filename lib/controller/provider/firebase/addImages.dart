@@ -16,7 +16,11 @@ class FireStoreProvider extends ChangeNotifier {
       subcategory,
       isFree,
       uid,
-      dateTime}) async {
+      dateTime,
+      lat,
+      lng,
+      currentAdress
+      }) async {
     isLoading = true;
     notifyListeners();
     var data = await FirebaseManager.AddImages(selectedImages,
@@ -28,7 +32,11 @@ class FireStoreProvider extends ChangeNotifier {
         subcategory: subcategory,
         isFree: isFree,
         datetime: dateTime,
-        uid: uid);
+        uid: uid,
+        lat : lat,
+        lng : lng,
+        currentadress : currentAdress
+        );
 
     if (data != null) {
       return data;

@@ -9,18 +9,23 @@ import '../../services/Screen_Manager.dart';
 
 class AuthProvider extends ChangeNotifier {
   bool isLoading = false;
-
+  double lats = 0.0;
+  double lngs = 0.0;
   String currentAddress = "";
-  
+
   // ignore: unused_field
   Position? _currentPosition;
 
-
   void setAddress(String value) {
-  currentAddress = value;
-  notifyListeners();
-}
+    currentAddress = value;
+    notifyListeners();
+  }
 
+  void setlatnadlng(lat, lng) {
+    lats = lat;
+    lngs = lng;
+    notifyListeners();
+  }
 
   Location(context) async {
     // debugger();
@@ -28,20 +33,18 @@ class AuthProvider extends ChangeNotifier {
       isLoading = true;
       notifyListeners();
 
-      var data = await ScreenManager.geoLocation(
-          context);
-          log('aaaaaaaaaaaaaaaaaaaaaa');
-         
+      var data = await ScreenManager.geoLocation(context);
+      log('aaaaaaaaaaaaaaaaaaaaaa');
+
       if (data != null) {
         currentAddress = data;
         await Preferences.saveAddress(data);
-         isLoading=false;
-         notifyListeners();
+        isLoading = false;
+        notifyListeners();
         return currentAddress;
       }
-       isLoading=false;
-         notifyListeners();
-     
+      isLoading = false;
+      notifyListeners();
     } catch (e) {
       isLoading = false;
       notifyListeners();

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -14,9 +15,10 @@ class ItemContainer extends StatelessWidget {
     required this.imageLink,
     required this.category,
     required this.subcategory,
+    required this.docid,
     this.ontap,
   });
-  var imageLink, titleText, time,title, ontap, category = "", subcategory = "";
+  var imageLink, titleText, time,title, ontap, category = "", subcategory = "", docid;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -43,10 +45,20 @@ class ItemContainer extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "From: ${DateFormat.yMd().add_jm().format(DateTime.parse(time))}",
-              style: AppTextStyles.textStyleSubtitleSmallBody,
-            ),
+            Row(
+
+              children: [Text(
+                "From: ${DateFormat.yMd().add_jm().format(DateTime.parse(time))}",
+                style: AppTextStyles.textStyleSubtitleSmallBody,
+              ),
+              const Spacer(),
+              InkWell(
+                onTap: ()async{
+                  await FirebaseFirestore.instance.collection('Products').doc(docid).delete();
+                  await FirebaseFirestore.instance.collection('favourites').doc(docid).delete();
+                   },
+                child: const  Icon(Icons.delete, color:  Colors.red,))
+          ]),
             Row(
               children: [
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

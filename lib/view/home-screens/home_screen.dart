@@ -411,6 +411,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   push(
                                                     context,
                                                     ProductScreen(
+                                                      where: 'no',
                                                       userid:
                                                           dataDoc.get('uid'),
                                                       id: dataDoc.id,

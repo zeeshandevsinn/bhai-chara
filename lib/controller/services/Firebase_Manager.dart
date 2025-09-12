@@ -25,7 +25,7 @@ class FirebaseManager {
   static String code = '';
 // /////////////////////DELETE ACCOUNT ////////////////////////
 
-  // 
+  //
 
   static Future<void> deleteAccount(String email, String password) async {
     try {
@@ -131,7 +131,11 @@ class FirebaseManager {
       subcategory,
       List<String>? urlImage,
       isFree,
-      datetime}) async {
+      datetime,
+      lat,
+      lng,
+      currentadress
+      }) async {
     try {
       var data = await FirebaseFirestore.instance.collection("Products").add({
         "price": price,
@@ -143,7 +147,10 @@ class FirebaseManager {
         "urlImage": urlImage,
         "isFree": isFree,
         "Time": datetime,
-        "uid": uid
+        "uid": uid,
+        "lat": lat,
+        "lng": lng,
+        "currentadress":currentadress
       });
       return data;
     } catch (e) {
@@ -152,16 +159,21 @@ class FirebaseManager {
     }
   }
 
-  static AddImages(List<File> selectedimages,
-      {price,
-      title,
-      age,
-      description,
-      category,
-      subcategory,
-      uid,
-      isFree,
-      datetime}) async {
+  static AddImages(
+    List<File> selectedimages, {
+    price,
+    title,
+    age,
+    description,
+    category,
+    subcategory,
+    uid,
+    isFree,
+    datetime,
+    lat,
+    lng,
+    currentadress
+  }) async {
     try {
       List<String> urlImage = [];
 
@@ -199,16 +211,20 @@ class FirebaseManager {
       //   urlImage.add(await referenceImageToUpload.getDownloadURL());
       // }
       await addProduct(
-          urlImage: urlImage,
-          price: price,
-          age: age,
-          title: title,
-          description: description,
-          category: category,
-          subcategory: subcategory,
-          uid: uid,
-          isFree: isFree,
-          datetime: datetime);
+        urlImage: urlImage,
+        price: price,
+        age: age,
+        title: title,
+        description: description,
+        category: category,
+        subcategory: subcategory,
+        uid: uid,
+        isFree: isFree,
+        datetime: datetime,
+        lat: lat,
+        lng: lng,
+        currentadress : currentadress
+      );
     } catch (e) {
       // showSnack(text: e.toString());
       return null;

@@ -23,6 +23,8 @@ import 'controller/provider/switch_provider.dart';
 import 'controller/provider/timer_provider.dart';
 import 'controller/provider/visibility_provider.dart';
 
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPreferenceHelper.initializeSharedPreferences();
@@ -96,12 +98,13 @@ class MyApp extends StatelessWidget {
           // ChangeNotifierProvider(create: (context) => ()),
         ],
         child: Sizer(builder: (context, orientation, deviceType) {
-          return const MaterialApp(
+          return  MaterialApp(
+            navigatorKey: navigatorKey,
             debugShowCheckedModeBanner: false,
             // theme: ThemeData(
             //   fontFamily: "Lora-Regular",
             // ),
-            home: SplashScreen(),
+            home: const SplashScreen(),
           );
         }));
   }

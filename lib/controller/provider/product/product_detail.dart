@@ -28,39 +28,61 @@ class ProductDetailProvider extends ChangeNotifier {
   bool isProductRequested = false;
   bool isfavourite = false;
 
-
- Future<void> toggleFavourite(ProductDetailModel product, String productId) async {
-  try {
+  Future<void> toggleFavourite(
+      ProductDetailModel product, String productId) async {
     final userId = FirebaseAuth.instance.currentUser?.uid;
-    if (userId == null) return;
+    try {
+      if (userId == null) return;
 
-    final docRef = FirebaseFirestore.instance
-        .collection('favourites')
-        .doc(productId);
+      print('user id is: ${userId}');
+      final docRef =
+          FirebaseFirestore.instance.collection('favourites').doc(productId);
 
-    final docSnapshot = await docRef.get();
+      final docSnapshot = await docRef.get();
 
-    if (docSnapshot.exists) {
-      // If already favourited, remove it
-      await docRef.delete();
-      isfavourite = false;
-      notifyListeners();
-      print('Removed from favourites.');
-    } else {
-      // Else, add to favourites
-      final data = product.toJson();
-      data['favouritedBy'] = userId;
+      if (docSnapshot.exists) {
+        // If already favourited, remove it
+        await docRef.delete();
 
-      await docRef.set(data);
-      isfavourite = true;
-      print('Added to favourites successfully.');
-      notifyListeners();
+        isfavourite = false;
+        notifyListeners();
+        print('Removed from favourites.');
+      } else {
+        // Else, add to favourites
+        final data = product.toJson();
+        data['favouritedBy'] = userId;
+
+        await docRef.set(data);
+        isfavourite = true;
+        print('Added to favourites successfully.');
+        notifyListeners();
+      }
+    } catch (e) {
+      print('Error toggling favourite: ${e.toString()}');
     }
-  } catch (e) {
-    print('Error toggling favourite: ${e.toString()}');
   }
-}
 
+  Future<void> isProductFavourite(String productId) async {
+    try {
+      final userId = FirebaseAuth.instance.currentUser?.uid;
+      if (userId == null) return;
+
+      final docSnapshot = await FirebaseFirestore.instance
+          .collection('favourites')
+          .doc(productId)
+          .get();
+
+      if (docSnapshot.exists && docSnapshot.data()?['favouritedBy'] == userId) {
+        isfavourite = true;
+        notifyListeners();
+      } else {
+        isfavourite = false;
+        notifyListeners();
+      }
+    } catch (e) {
+      print("Error checking favourite: $e");
+    }
+  }
 
   getDonerDetail(uid) async {
     // debugger();
@@ -137,7 +159,6 @@ class ProductDetailProvider extends ChangeNotifier {
     } catch (e) {}
   }
 
-
   addRequest(context,
       {required productID, UserModel? user, required idofuser}) async {
     try {
@@ -160,40 +181,41 @@ class ProductDetailProvider extends ChangeNotifier {
       await FirebaseFirestore.instance.collection(REQUEST_COLLECTION).add(data);
       await getRequestedProduct(productID);
 
-      String currentUserId = FirebaseAuth.instance.currentUser!.uid;
-      String receiverUserId = idofuser;
+      // String currentUserId = FirebaseAuth.instance.currentUser!.uid;
+      // String receiverUserId = idofuser;
 
-      List<String> ids = [currentUserId, receiverUserId];
-      ids.sort();
-      String chatRoomId = ids.join("_");
-      print('chatroomId : $chatRoomId ');
-      try {
-        await FirebaseFirestore.instance
-            .collection('chats')
-            .doc(chatRoomId)
-            .set({
-          'users': [currentUserId, receiverUserId],
-          'lastMessage': "Hello! I'm requesting this product",
-          'lastUpdated': FieldValue.serverTimestamp(),
-        }, SetOptions(merge: true));
+      // List<String> ids = [currentUserId, receiverUserId];
+      // ids.sort();
+      // String chatRoomId = ids.join("_");
+      // print('chatroomId : $chatRoomId ');
+      // try {
+      //   await FirebaseFirestore.instance
+      //       .collection('chats')
+      //       .doc(chatRoomId)
+      //       .set({
+      //     'users': [currentUserId, receiverUserId],
+      //     'lastMessage': "Hello! I'm requesting this product",
+      //     'lastUpdated': FieldValue.serverTimestamp(),
+      //   }, SetOptions(merge: true));
 
-        await FirebaseFirestore.instance
-            .collection('chats')
-            .doc(chatRoomId)
-            .collection('messages')
-            .add({
-          'senderId': currentUserId,
-          'receiverId': receiverUserId,
-          'text': "Hello! I'm requesting this product",
-          'timestamp': FieldValue.serverTimestamp(),
-        });
+      //   await FirebaseFirestore.instance
+      //       .collection('chats')
+      //       .doc(chatRoomId)
+      //       .collection('messages')
+      //       .add({
+      //     'senderId': currentUserId,
+      //     'receiverId': receiverUserId,
+      //     'text': "Hello! I'm requesting this product",
+      //     'timestamp': FieldValue.serverTimestamp(),
+      //   });
 
-        print("Chat room and default message created!");
+      //   print("Chat room and default message created!");
 
-        Navigator.push(context, MaterialPageRoute(builder: (context)=> const  ChatListScreen()));
-      } catch (e) {
-        print("🔥 Chat creation error: $e");
-      }
+      //   Navigator.push(context,
+      //       MaterialPageRoute(builder: (context) => const ChatListScreen()));
+      // } catch (e) {
+      //   print("🔥 Chat creation error: $e");
+      // }
 
       isLoading = false;
       notifyListeners();

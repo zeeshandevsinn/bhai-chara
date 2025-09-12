@@ -152,6 +152,7 @@ class CustomSearchDelegate extends SearchDelegate<String> {
                   push(
                     context,
                     ProductScreen(
+                      where: 'no',
                       id: dataDoc.id,
                     ),
                   );
@@ -232,6 +233,7 @@ class CustomSearchDelegate extends SearchDelegate<String> {
                   push(
                     context,
                     ProductScreen(
+                      where: 'no',
                       id: dataDoc.id,
                     ),
                   );

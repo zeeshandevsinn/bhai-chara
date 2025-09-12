@@ -138,6 +138,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                                   push(
                                     context,
                                     ProductScreen(
+                                      where: 'no',
                                       id: dataDoc.id,
                                     ),
                                   );

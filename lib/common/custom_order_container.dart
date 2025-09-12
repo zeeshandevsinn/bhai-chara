@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:bhai_chara/chatt/chat_list_screen.dart';
 import 'package:bhai_chara/controller/services/Firebase_Manager.dart';
 import 'package:bhai_chara/utils/showSnack.dart';
 import 'package:bhai_chara/utils/text-styles.dart';
@@ -8,10 +9,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../controller/provider/product/status.dart';
+import '../main.dart';
 import '../utils/app_colors.dart';
 import '../view/chatting/controller/service/chatt_service.dart';
 
-class OrderContainer extends StatelessWidget {
+class OrderContainer extends StatefulWidget {
   OrderContainer(
       {super.key,
       required this.status,
@@ -44,6 +46,11 @@ class OrderContainer extends StatelessWidget {
       status;
 
   @override
+  State<OrderContainer> createState() => _OrderContainerState();
+}
+
+class _OrderContainerState extends State<OrderContainer> {
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -63,26 +70,26 @@ class OrderContainer extends StatelessWidget {
           children: [
             Row(
               children: [
-                 CircleAvatar(
+                CircleAvatar(
                   radius: 20,
-                  backgroundImage: NetworkImage(receiverImage),
+                  backgroundImage: NetworkImage(widget.receiverImage),
                   //  backgroundImage: AssetImage(receiverImage),
                 ),
                 const SizedBox(
                   width: 8,
                 ),
                 Text(
-                  receiverName,
+                  widget.receiverName,
                   // text,
                   style: AppTextStyles.textStyleBoldBodySmall,
                 ),
               ],
             ),
-            if (!isFree)
+            if (!widget.isFree)
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Text(
-                  price,
+                  widget.price,
                   style: AppTextStyles.textStyleBoldBodyXSmall,
                   textAlign: TextAlign.start,
                 ),
@@ -90,7 +97,7 @@ class OrderContainer extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child: Text(
-                time,
+                widget.time,
                 style: AppTextStyles.textStyleBoldBodyXSmall,
                 textAlign: TextAlign.start,
               ),
@@ -103,64 +110,66 @@ class OrderContainer extends StatelessWidget {
                   SizedBox(
                     width: 8,
                   ),
-                  Text(address ?? ""),
+                  Text(widget.address ?? ""),
                 ],
               ),
             ),
-            if(status == ProductStatus.pending.name)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                InkWell(
-                  onTap: () {
-                    FirebaseFirestore.instance
-                        .collection(REQUEST_COLLECTION)
-                        .doc(uid)
-                        .update({"request": ProductStatus.rejected.name});
-                  },
-                  child: Container(
-                    height: 30,
-                    width: 100,
-                    child: Center(
-                      child: Text(
-                        "Decline",
-                        // textAlign: TextAlign.center,
-                        style: AppTextStyles.textStyleNormalBodySmall
-                            .copyWith(color: AppColors.white),
+            if (widget.status == ProductStatus.pending.name)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      FirebaseFirestore.instance
+                          .collection(REQUEST_COLLECTION)
+                          .doc(widget.uid)
+                          .update({"request": ProductStatus.rejected.name});
+                    },
+                    child: Container(
+                      height: 30,
+                      width: 100,
+                      child: Center(
+                        child: Text(
+                          "Decline",
+                          // textAlign: TextAlign.center,
+                          style: AppTextStyles.textStyleNormalBodySmall
+                              .copyWith(color: AppColors.white),
+                        ),
                       ),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(7),
+                          color: widget.color1),
                     ),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(7), color: color1),
                   ),
-                ),
-                const SizedBox(
-                  width: 50,
-                ),
-                InkWell(
-                  onTap: () async {
-                    await FirebaseFirestore.instance
-                        .collection(REQUEST_COLLECTION)
-                        .doc(uid)
-                        .update({"request": ProductStatus.approved.name});
-                    // startChat(context);
-                  },
-                  child: Container(
-                    height: 30,
-                    width: 100,
-                    child: Center(
-                      child: Text(
-                        "Accept",
-                        // textAlign: TextAlign.center,
-                        style: AppTextStyles.textStyleNormalBodySmall
-                            .copyWith(color: AppColors.white),
+                  const SizedBox(
+                    width: 50,
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      await FirebaseFirestore.instance
+                          .collection(REQUEST_COLLECTION)
+                          .doc(widget.uid)
+                          .update({"request": ProductStatus.approved.name});
+                      startChat(context);
+                    },
+                    child: Container(
+                      height: 30,
+                      width: 100,
+                      child: Center(
+                        child: Text(
+                          "Accept",
+                          // textAlign: TextAlign.center,
+                          style: AppTextStyles.textStyleNormalBodySmall
+                              .copyWith(color: AppColors.white),
+                        ),
                       ),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(7),
+                          color: widget.color2),
                     ),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(7), color: color2),
-                  ),
-                )
-              ],
-            )
+                  )
+                ],
+              )
           ],
         ),
       ),
@@ -168,15 +177,57 @@ class OrderContainer extends StatelessWidget {
   }
 
   startChat(context) async {
-    final ChatService chatService = ChatService();
+    bool chatCreated = await requestProduct();
+    if (chatCreated) {
+      print('chat created successfully');
+          navigatorKey.currentState?.push(
+      MaterialPageRoute(builder: (_) => const ChatListScreen()),
+    );
+    } else {
+      showSnack(context: context, text: "failed to Sent Message !");
+    }
 
-    await chatService.sendMessage(
-      // receiverImage: receiverImage,
-        recevierId: receiverID,
-        message: "Are you Interested?",
-        receiverEmail: receiverEmail,
-        receiverName: receiverName);
+    // final ChatService chatService = ChatService();
 
-    showSnack(context: context, text: "Message Sent!");
+    // await chatService.sendMessage(
+    //   // receiverImage: receiverImage,
+    //     recevierId: receiverID,
+    //     message: "Are you Interested?",
+    //     receiverEmail: receiverEmail,
+    //     receiverName: receiverName);
+  }
+
+  Future<bool> requestProduct() async {
+    String currentUserId = FirebaseAuth.instance.currentUser!.uid;
+    String receiverUserId = widget.receiverID;
+
+    List<String> ids = [currentUserId, receiverUserId];
+    ids.sort();
+    String chatRoomId = ids.join("_");
+    print('chatroomId : $chatRoomId ');
+    try {
+      await FirebaseFirestore.instance.collection('chats').doc(chatRoomId).set({
+        'users': [currentUserId, receiverUserId],
+        'lastMessage': "Hello! I'm requesting this product",
+        'lastUpdated': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+
+      await FirebaseFirestore.instance
+          .collection('chats')
+          .doc(chatRoomId)
+          .collection('messages')
+          .add({
+        'senderId': currentUserId,
+        'receiverId': receiverUserId,
+        'text': "Hello! I'm requesting this product",
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+
+      print("Chat room and default message created!");
+      return true;
+    } catch (e) {
+      print("🔥 Chat creation error: $e");
+      return false;
+    }
   }
 }

@@ -19,16 +19,21 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:bhai_chara/common/custom_button.dart';
+import '../../controller/provider/authentication_provider/auth_provider.dart';
 import '../../utils/app_colors.dart';
+import '../../utils/showSnack.dart';
 import '../../utils/text-styles.dart';
 import '../../utils/utils.dart';
+import '../authentication/signup_screen_by_phone.dart';
+import '../settings-screens/dialogBox.dart';
 import 'mapScreen.dart';
 
 // ignore: must_be_immutable
 class ProductScreen extends StatefulWidget {
-  ProductScreen({super.key, this.id, this.userid});
+  ProductScreen({super.key, this.id, this.userid, this.where});
   var id;
   var userid;
+  String? where;
   @override
   State<ProductScreen> createState() => _ProductScreenState();
 }
@@ -46,6 +51,7 @@ class _ProductScreenState extends State<ProductScreen> {
     provider.getProductDetail(context, widget.id).then((val) {
       provider.getRequestedProduct(widget.id);
     });
+    provider.isProductFavourite(widget.id);
   }
 
   UserModel? userData;
@@ -109,7 +115,7 @@ class _ProductScreenState extends State<ProductScreen> {
                             ),
                           ),
                         ),
-                        Positioned(
+                        widget.where == 'no' ?  Positioned(
                           right: 10,
                           top: 10,
                           child: InkWell(
@@ -128,7 +134,9 @@ class _ProductScreenState extends State<ProductScreen> {
                                     subcategory: provider
                                         .productDetailModel!.subcategory,
                                     age: provider.productDetailModel!.age,
-                                    price: provider.productDetailModel!.price);
+                                    price: provider.productDetailModel!.price,
+                                    currentLocation: provider.productDetailModel!.currentLocation,
+                                    );
 
                                 provider.toggleFavourite(product, widget.id);
                               },
@@ -138,7 +146,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                       Icons.favorite_border,
                                       size: 35,
                                     )),
-                        ),
+                        ) : SizedBox() ,
                         Padding(
                           padding: const EdgeInsets.only(left: 12),
                           child: Row(
@@ -300,23 +308,23 @@ class _ProductScreenState extends State<ProductScreen> {
                           //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(
+                          const  Icon(
                               Icons.location_on_outlined,
                               size: 30,
                             ),
-                            // Builder(builder: (context) {
-                            //   var loc2 = context.watch<AuthProvider>();
-                            //   return Container(
-                            //       width: 180,
-                            //       child: Text(
-                            //         loc2.currentAddress,
-                            //         style: AppTextStyles.textStyleBoldBodySmall
-                            //             .copyWith(
-                            //           fontSize: 16,
-                            //           fontWeight: FontWeight.bold,
-                            //         ),
-                            //       ));
-                            // }),
+                            Builder(builder: (context) {
+                              var loc2 = context.watch<AuthProvider>();
+                              return Container(
+                                  width: 180,
+                                  child: Text(
+                                   "Pakistan, ${provider.productDetailModel!.currentLocation} "?? 'Lahore',
+                                    style: AppTextStyles.textStyleBoldBodySmall
+                                        .copyWith(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ));
+                            }),
                           ],
                         ),
                       ),
@@ -336,6 +344,8 @@ class _ProductScreenState extends State<ProductScreen> {
                               initialCameraPosition: CameraPosition(
                                   zoom: 14,
                                   target: LatLng(
+                                    // provider.productDetailModel!.lat!.toDouble(),
+                                    // provider.productDetailModel!.lng!.toDouble(),
                                     provider.donnerDetail!.lat!.toDouble(),
                                     provider.donnerDetail!.long!.toDouble(),
                                   )),
@@ -434,43 +444,43 @@ class _ProductScreenState extends State<ProductScreen> {
                                             await firebaseGetUserDetail(uid);
                                         isLoading = false;
                                         setState(() {});
-                                        // if (user?.isPhoneVerified == true) {
+                                        if (user?.isPhoneVerified == true) {
                                         await provider.addRequest(context,
                                             productID: widget.id,
                                             user: user,
                                             idofuser: widget.userid);
                                         // 🔽 Create Chat Room and Default Message
 
-                                        String token =
-                                            provider.donnerDetail!.fcmToken!;
-                                        NotificationProvider.sendNotification(
-                                            token: token,
-                                            message:
-                                                "${userData!.name} New Request For Donation");
-                                        NotificationProvider.sendPushMessage(
-                                            token);
-                                        // }
-                                        // else {
-                                        //   showDialog(
-                                        //       context: context,
-                                        //       builder: (context) {
-                                        //         return ErrorDialogBox(
-                                        //           title:
-                                        //               "Verification Required!",
-                                        //           descrption:
-                                        //               "Please Verify your Phone Number",
-                                        //           buttonText: "GO",
-                                        //           onTap: () {
-                                        //             pop(context);
-                                        //             push(context,
-                                        //                 const SignUpScreenByPhone());
-                                        //           },
-                                        //         );
-                                        //       });
-                                        //   // showSnack(
-                                        //   //     context: context,
-                                        //   //     text: "Please Verify your Phone Number");
-                                        // }
+                                        // String token =
+                                        //     provider.donnerDetail!.fcmToken!;
+                                        // NotificationProvider.sendNotification(
+                                        //     token: token,
+                                        //     message:
+                                        //         "${userData!.name} New Request For Donation");
+                                        // NotificationProvider.sendPushMessage(
+                                        //     token);
+                                        }
+                                        else {
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return ErrorDialogBox(
+                                                  title:
+                                                      "Verification Required!",
+                                                  descrption:
+                                                      "Please Verify your Phone Number",
+                                                  buttonText: "GO",
+                                                  onTap: () {
+                                                    pop(context);
+                                                    push(context,
+                                                        const SignUpScreenByPhone());
+                                                  },
+                                                );
+                                              });
+                                          showSnack(
+                                              context: context,
+                                              text: "Please Verify your Phone Number");
+                                        }
                                       },
                                       text: "Request",
                                     );

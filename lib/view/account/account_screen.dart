@@ -17,6 +17,7 @@ import 'package:bhai_chara/view/settings-screens/edit_profile.dart';
 
 import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
 import 'package:bhai_chara/view/settings-screens/privacy_policy.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -176,19 +177,19 @@ class _AccountScreenState extends State<AccountScreen> {
 
                     Column(
                       children: [
-                        // SettingsItem(
-                        //   onTap: () {
-                        //     push(context, const ItemScreen());
-                        //   },
-                        //   icons: Icons.ads_click,
-                        //   iconStyle: IconStyle(
-                        //     iconsColor: Colors.white,
-                        //     withBackground: true,
-                        //     backgroundColor: Colors.red,
-                        //   ),
-                        //   title: 'My Ads',
-                        //   // subtitle: "",
-                        // ),
+                        SettingsItem(
+                          onTap: () {
+                            push(context, const ItemScreen());
+                          },
+                          icons: Icons.ads_click,
+                          iconStyle: IconStyle(
+                            iconsColor: Colors.white,
+                            withBackground: true,
+                            backgroundColor: Colors.red,
+                          ),
+                          title: 'My Ads',
+                          // subtitle: "",
+                        ),
                         // const Padding(
                         //   padding: EdgeInsets.symmetric(horizontal: 12),
                         //   child: Divider(),
@@ -209,7 +210,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         //   title: 'Contact Support',
                         //   // subtitle: "",
                         // ),
-                      
+
                         const Padding(
                           padding: EdgeInsets.symmetric(horizontal: 12),
                           child: Divider(),
@@ -242,7 +243,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           title: 'About',
                         ),
 
-                         SettingsItem(
+                        SettingsItem(
                           onTap: () {
                             push(context, const PremiumScreen());
                           },
@@ -272,7 +273,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           context: context,
                           builder: (context) {
                             return CupertinoAlertDialog(
-                              title:  Column(
+                              title: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.min,
@@ -306,8 +307,9 @@ class _AccountScreenState extends State<AccountScreen> {
                                       style: TextStyle(color: AppColors.error),
                                     ),
                                     onPressed: () async {
-                                      _sharedPreferenceHelper
-                                          .clear()
+                                      _sharedPreferenceHelper.clear();
+                                      await FirebaseAuth.instance
+                                          .signOut()
                                           .then((value) {
                                         context
                                             .read<RootProvider>()

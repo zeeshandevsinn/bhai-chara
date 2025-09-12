@@ -1,3 +1,5 @@
+import 'package:bhai_chara/view/home-screens/mapScreen.dart';
+
 class ProductDetailModel {
   String? price;
   String? age;
@@ -9,7 +11,9 @@ class ProductDetailModel {
   bool? isFree;
   String? time;
   String? uid;
-
+  double? lat;
+  double? lng;
+  String? currentLocation;
   ProductDetailModel(
       {this.price,
       this.age,
@@ -20,7 +24,10 @@ class ProductDetailModel {
       this.urlImage,
       this.isFree,
       this.time,
-      this.uid});
+      this.uid,
+      this.lat,
+      this.lng,
+      this.currentLocation});
 
   ProductDetailModel.fromJson(Map<String, dynamic> json) {
     price = json['price'];
@@ -33,6 +40,9 @@ class ProductDetailModel {
     isFree = json['isFree'];
     time = json['Time'];
     uid = json['uid'];
+    lat = json['lat'];
+    lng = json['lng'];
+    currentLocation = json['currentadress'];
   }
 
   Map<String, dynamic> toJson() {
@@ -47,6 +57,7 @@ class ProductDetailModel {
     data['isFree'] = this.isFree;
     data['Time'] = this.time;
     data['uid'] = this.uid;
+    data['currentadress'] = this.currentLocation;
     return data;
   }
 }
