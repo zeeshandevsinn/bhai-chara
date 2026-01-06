@@ -1,22 +1,13 @@
-// ignore_for_file: use_build_context_synchronously, avoid_unnecessary_containers
-
-import 'dart:developer';
-
-import 'package:bhai_chara/common/custonPhoneTextField.dart';
 import 'package:bhai_chara/controller/provider/authentication_provider/firebase_signup_provider.dart';
 import 'package:bhai_chara/utils/app_colors.dart';
 import 'package:bhai_chara/utils/app_config.dart';
 import 'package:bhai_chara/utils/push.dart';
 import 'package:bhai_chara/utils/showSnack.dart';
 import 'package:bhai_chara/utils/text-styles.dart';
-import 'package:bhai_chara/view/authentication/otp_code_screen.dart';
 import 'package:bhai_chara/view/home-screens/root_screen.dart';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../common/custom_button.dart';
-import '../../controller/provider/phone_number.dart';
 import '../../utils/custom_loader.dart';
 
 class SignUpScreenByPhone extends StatefulWidget {
@@ -71,7 +62,7 @@ class _SignUpScreenByPhoneState extends State<SignUpScreenByPhone> {
                   style: AppTextStyles.textStyleBoldSubTitleLarge,
                 ),
                 Gap.h(10),
-                Container(
+                SizedBox(
                     child: Text(
                   "We will send a confirmation code to your phone",
                   maxLines: 3,
@@ -114,7 +105,7 @@ class _SignUpScreenByPhoneState extends State<SignUpScreenByPhone> {
                               FocusScope.of(context).unfocus();
                               var data = context.read<SignUpProvider>();
 
-                              await data.PhoneVerifyFireBase(
+                              await data.phoneVerifyFireBase(
                                   context, numberController.text.trim());
 
                               // numberController =

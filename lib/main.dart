@@ -11,18 +11,21 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-
 import 'controller/provider/Image_Picker/compress_provider.dart';
+import 'controller/provider/amountprovider/amountprovider.dart';
 import 'controller/provider/authentication_provider/auth_provider.dart';
 import 'controller/provider/authentication_provider/login_provider.dart';
+import 'controller/provider/authentication_provider/variable.dart';
 import 'controller/provider/firebase/addImages.dart';
 import 'controller/provider/firebase/addproduct.dart';
+import 'controller/provider/premiumprovider/premiumprovider.dart';
+import 'controller/provider/priceprovider/select_type_provider.dart';
 import 'controller/provider/root_provider.dart';
+import 'controller/provider/sellscreen_provider/sellscreenprovider.dart';
 import 'controller/provider/slider_provider.dart';
 import 'controller/provider/switch_provider.dart';
 import 'controller/provider/timer_provider.dart';
 import 'controller/provider/visibility_provider.dart';
-
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 main() async {
@@ -33,11 +36,10 @@ main() async {
     print("Initialized Firebase app: ${app.name}");
   }
 
-   try {
+  try {
     if (Firebase.apps.isEmpty) {
-
       await Firebase.initializeApp(
-         name: 'primaryApp',
+        name: 'primaryApp',
         options: DefaultFirebaseOptions.currentPlatform,
       );
     }
@@ -94,11 +96,15 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (context) => LoginProvider()),
           ChangeNotifierProvider(create: (context) => ProductDetailProvider()),
           ChangeNotifierProvider(create: (context) => SelectionProvider()),
-
-          // ChangeNotifierProvider(create: (context) => ()),
+          ChangeNotifierProvider(create: (context) => SelectedType()),
+          ChangeNotifierProvider(create: (context) => SellScreenProvider()),
+          ChangeNotifierProvider(create: (context) => Amountprovider()),
+          ChangeNotifierProvider(create: (context) => VariableProvider()),
+          ChangeNotifierProvider(create: (context) => Premiumprovider())
+          // ChangeNotifierProvider(create: (context) => ProfileEditProvider()),
         ],
         child: Sizer(builder: (context, orientation, deviceType) {
-          return  MaterialApp(
+          return MaterialApp(
             navigatorKey: navigatorKey,
             debugShowCheckedModeBanner: false,
             // theme: ThemeData(

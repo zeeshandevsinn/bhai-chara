@@ -26,7 +26,7 @@ class RootScreen extends StatelessWidget {
 
   var screensList = [
     const HomeScreen(),
-    FavouriteScreen(),
+    const FavouriteScreen(),
     const SellScreen(),
     OrderScreen(),
     const AccountScreen(),
@@ -45,18 +45,18 @@ class RootScreen extends StatelessWidget {
           //the return value will be from "Yes" or "No" options
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Exit App'),
-            content: Text('Do you want to exit Bhai Chara App?'),
+            title: const Text('Exit App'),
+            content: const Text('Do you want to exit Bhai Chara App?'),
             actions: [
               ElevatedButton(
                 onPressed: () => Navigator.of(context).pop(false),
                 //return false when click on "NO"
-                child: Text('No'),
+                child:const Text('No'),
               ),
               ElevatedButton(
                 onPressed: () => SystemNavigator.pop(),
                 //return true when click on "Yes"
-                child: Text('Yes'),
+                child: const Text('Yes'),
               ),
             ],
           ),
@@ -81,10 +81,10 @@ class RootScreen extends StatelessWidget {
                 BoxShadow(
                     spreadRadius: 5,
                     blurRadius: 7,
-                    offset: Offset(0, -1),
+                    offset:const Offset(0, -1),
                     color: AppColors.lightblue),
               ],
-              color: Color(0xfaFFFFFF),
+              color: const Color(0xfaFFFFFF),
             ),
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: Row(

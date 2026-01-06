@@ -485,7 +485,7 @@ class _PostDetailScreen1State extends State<PostDetailScreen1> {
                                               Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
-                                                children: [
+                                                children: const [
                                                   Icon(
                                                     Icons.photo_camera,
                                                     color: AppColors.primary,
@@ -493,7 +493,7 @@ class _PostDetailScreen1State extends State<PostDetailScreen1> {
                                                   ),
                                                 ],
                                               ),
-                                              SizedBox(
+                                             const SizedBox(
                                                 height: 10,
                                               ),
                                               Row(

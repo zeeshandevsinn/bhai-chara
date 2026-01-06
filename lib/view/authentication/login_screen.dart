@@ -111,46 +111,59 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(
                           height: 15,
                         ),
-                        CustomTextField(
-                          obsecuretext: x % 2 == 0 ? false : true,
-                          // height: 30,
-                          width: size.width * .90,
-                          controller: passwordController,
-                          border: OutlineInputBorder(
-                            borderSide: const BorderSide(color: AppColors.grey),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          labeltext: "Password",
-                          suffixIcon: x % 2 != 0
-                              ? IconButton(
-                                  onPressed: () {
-                                    setState(() {});
+                        Consumer<VariableProvider>(
+                          builder: (context, value, _) {
+                            return CustomTextField(
+                              obsecuretext: value.x % 2 == 0 ? false : true,
+                              // height: 30,
+                              width: size.width * .90,
+                              controller: passwordController,
+                              border: OutlineInputBorder(
+                                borderSide:
+                                    const BorderSide(color: AppColors.grey),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              labeltext: "Password",
+                              suffixIcon: value.x % 2 != 0
+                                  ? IconButton(
+                                      onPressed: () {
+                                        // setState(() {});
 
-                                    x = VariableProvider.IncrementVariable(x);
-                                  },
-                                  icon: const Icon(
-                                    Icons.visibility_off,
-                                    size: 20,
-                                  ))
-                              : IconButton(
-                                  onPressed: () {
-                                    setState(() {});
-                                    x = VariableProvider.IncrementVariable(x);
-                                  },
-                                  icon: const Icon(
-                                    Icons.visibility,
-                                    size: 20,
-                                  )),
-                          suffixIconColor: AppColors.grey,
+                                        // x = VariableProvider.IncrementVariable(
+                                        //     x);
+                                             double values =
+                                                value.setIncrement(value.x);
+                                            value.setincrementX(values);
+                                      },
+                                      icon: const Icon(
+                                        Icons.visibility_off,
+                                        size: 20,
+                                      ))
+                                  : IconButton(
+                                      onPressed: () {
+                                        // setState(() {});
+                                        // x = VariableProvider.IncrementVariable(
+                                        //     x);
+                                             double values =
+                                                value.setIncrement(value.x);
+                                            value.setincrementX(values);
+                                      },
+                                      icon: const Icon(
+                                        Icons.visibility,
+                                        size: 20,
+                                      )),
+                              suffixIconColor: AppColors.grey,
+                            );
+                          },
                         ),
 
                         Align(
                             alignment: Alignment.centerRight,
                             child: TextButton(
                                 onPressed: () {
-                                  push(context, ForgetScreen());
+                                  push(context, const ForgetScreen());
                                 },
-                                child: Text("Forget Password"))),
+                                child: const Text("Forget Password"))),
                         const SizedBox(
                           height: 15,
                         ),
@@ -233,7 +246,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           style_text:
                               AppTextStyles.textStyleNormalBoldXLBodySmall,
                           ontap: () {
-                         
                             Future.delayed(const Duration(microseconds: 200))
                                 .then((value) async {
                               final permissionStatus =
@@ -253,6 +265,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       await Geolocator.getCurrentPosition();
                                   // Handle the received location data
 
+                                  if (!mounted) return;
                                   pro.signInWithGoogleAccount(context,
                                       location!.latitude, location!.longitude);
 
@@ -287,7 +300,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                       .textStyleNormalBody_BlueColor_Underline,
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () async {
-                                      push(context, TermsAndConditionsScreen());
+                                      push(context,
+                                          const TermsAndConditionsScreen());
                                     },
                                 ),
                                 TextSpan(
@@ -334,6 +348,7 @@ class _LoginScreenState extends State<LoginScreen> {
         await Geolocator.isLocationServiceEnabled();
     if (!requestServiceRequestValue) {}
     location = await Geolocator.getCurrentPosition();
+    if (!mounted) return;
     var pro = context.watch<LoginProvider>();
     pro.signInWithGoogleAccount(
         context, location!.latitude, location!.longitude);
@@ -359,6 +374,14 @@ class _LoginScreenState extends State<LoginScreen> {
           await Geolocator.isLocationServiceEnabled();
       if (isLocationServiceEnabled) {
         location = await Geolocator.getCurrentPosition();
+        if (!mounted) return;
+// Time: 0s - User on Screen A, taps "Load Data"
+// Time: 1s - Async operation starts (API call)
+// Time: 2s - User gets impatient, goes to Screen B
+// Time: 3s - Screen A gets destroyed
+// Time: 4s - API call finally returns with data
+// Time: 4s - Check: if (!mounted) return; ✅
+// Time: 4s - Stop! Don't try to update dead widget
         var pro = context.watch<LoginProvider>();
         pro.signInWithGoogleAccount(
             context, location!.latitude, location!.longitude);

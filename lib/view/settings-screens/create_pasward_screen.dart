@@ -8,14 +8,14 @@ import 'package:provider/provider.dart';
 
 import '../../common/custom_button.dart';
 import '../../controller/provider/visibility_provider.dart';
-import '../../utils/container.dart';
+
 
 import '../../utils/custom_textfield.dart';
 import '../../utils/push.dart';
 
 // ignore: must_be_immutable
 class CreatePasswardScreen extends StatelessWidget {
-  CreatePasswardScreen({Key? key});
+  CreatePasswardScreen({super.key,});
   var passwordController = TextEditingController();
   var confirmPasswordController = TextEditingController();
   final VisibilityProvider1 passwordVisibilityProvider = VisibilityProvider1();

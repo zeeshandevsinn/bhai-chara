@@ -23,6 +23,8 @@ class CustomButton extends StatelessWidget {
         child: Container(
           height: height,
           width: width,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20), color: colorBox),
           child: Center(
             child: Text(
               text,
@@ -30,8 +32,6 @@ class CustomButton extends StatelessWidget {
                   .copyWith(color: AppColors.white),
             ),
           ),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20), color: colorBox),
         ));
   }
 }

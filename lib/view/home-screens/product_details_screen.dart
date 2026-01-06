@@ -1,17 +1,14 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:developer';
-
-import 'package:bhai_chara/controller/provider/notification_provider.dart';
 import 'package:bhai_chara/controller/provider/product/product_detail.dart';
 import 'package:bhai_chara/controller/services/Firebase_Manager.dart';
-import 'package:bhai_chara/controller/services/shared_prefrences.dart';
+
 import 'package:bhai_chara/model/product_detail_model.dart';
 import 'package:bhai_chara/model/user_model.dart';
 import 'package:bhai_chara/utils/custom_loader.dart';
 import 'package:bhai_chara/utils/push.dart';
-import 'package:carousel_slider/carousel_controller.dart';
-import 'package:carousel_slider/carousel_options.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -39,43 +36,46 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
-  final SharedPreferenceHelper _sharedPreferenceHelper =
-      SharedPreferenceHelper.instance();
+  // final SharedPreferenceHelper _sharedPreferenceHelper =
+  //     SharedPreferenceHelper.instance();
 
   @override
   void initState() {
     super.initState();
-    fetchUserData();
-    ProductDetailProvider provider = context.read<ProductDetailProvider>();
-    // debugger();
-    provider.getProductDetail(context, widget.id).then((val) {
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
+
+      final provider = context.read<ProductDetailProvider>();
+
+      await provider.getProductDetail(context, widget.id);
+
+      if (!mounted) return;
+
       provider.getRequestedProduct(widget.id);
-    });
-    provider.isProductFavourite(widget.id);
-  }
-
-  UserModel? userData;
-
-  void fetchUserData() async {
-    UserModel? userData = await _sharedPreferenceHelper.user();
-    setState(() {
-      userData = userData;
+      provider.isProductFavourite(widget.id);
     });
   }
+
+  // UserModel? userData;
+
+  // void fetchUserData() async {
+  //   UserModel? userData = await _sharedPreferenceHelper.user();
+  //   setState(() {
+  //     userData = userData;
+  //   });
+  // }
 
   bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
-    // ignore: unused_local_variable
-    var size = MediaQuery.of(context).size;
+    final provider = context.watch<ProductDetailProvider>();
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.white,
         body: SingleChildScrollView(
-          child: Consumer<ProductDetailProvider>(
-              builder: (context, provider, child) {
-            return provider.isLoading
+            child: provider.isLoading || provider.productDetailModel == null
                 ? const Center(child: CustomLoader())
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,51 +102,66 @@ class _ProductScreenState extends State<ProductScreen> {
                             scrollDirection: Axis.horizontal,
                           ),
                           itemCount:
-                              provider.productDetailModel!.urlImage!.length,
+                              provider.productDetailModel?.urlImage?.length ??
+                                  1,
                           itemBuilder: (BuildContext context, int itemIndex,
                                   int pageViewIndex) =>
-                              Container(
+                              SizedBox(
                             height: 300,
                             width: double.infinity,
-                            child: Image(
-                              image: NetworkImage(provider
-                                  .productDetailModel!.urlImage![itemIndex]),
+                            child: CachedNetworkImage(
+                              imageUrl: provider.productDetailModel
+                                      ?.urlImage?[itemIndex] ??
+                                  'https://www.google.com/imgres?q=cat&imgurl=https%3A%2F%2Fi.natgeofe.com%2Fn%2F548467d8-c5f1-4551-9f58-6817a8d2c45e%2FNationalGeographic_2572187_16x9.jpg%3Fw%3D1200&imgrefurl=https%3A%2F%2Fwww.nationalgeographic.com%2Fanimals%2Fmammals%2Ffacts%2Fdomestic-cat&docid=K6Qd9XWnQFQCoM&tbnid=VCezPSgAAsDM2M&vet=12ahUKEwjE5t3nktiOAxUI6wIHHb-RHnoQM3oECAwQAA..i&w=1200&h=675&hcb=2&ved=2ahUKEwjE5t3nktiOAxUI6wIHHb-RHnoQM3oECAwQAA',
                               fit: BoxFit.cover,
+                              placeholder: (context, url) => const Center(
+                                  child: CircularProgressIndicator()),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.broken_image, size: 40),
                             ),
                           ),
                         ),
-                        widget.where == 'no' ?  Positioned(
-                          right: 10,
-                          top: 10,
-                          child: InkWell(
-                              onTap: () {
-                                ProductDetailModel product = ProductDetailModel(
-                                    isFree: provider.productDetailModel!.isFree,
-                                    time: provider.productDetailModel!.time,
-                                    title: provider.productDetailModel!.title,
-                                    uid: provider.productDetailModel!.uid,
-                                    category:
-                                        provider.productDetailModel!.category,
-                                    description: provider
-                                        .productDetailModel!.description,
-                                    urlImage:
-                                        provider.productDetailModel!.urlImage,
-                                    subcategory: provider
-                                        .productDetailModel!.subcategory,
-                                    age: provider.productDetailModel!.age,
-                                    price: provider.productDetailModel!.price,
-                                    currentLocation: provider.productDetailModel!.currentLocation,
-                                    );
+                        widget.where == 'no'
+                            ? Positioned(
+                                right: 10,
+                                top: 10,
+                                child: InkWell(
+                                    onTap: () {
+                                      ProductDetailModel product =
+                                          ProductDetailModel(
+                                        isFree:
+                                            provider.productDetailModel!.isFree,
+                                        time: provider.productDetailModel!.time,
+                                        title:
+                                            provider.productDetailModel!.title,
+                                        uid: provider.productDetailModel!.uid,
+                                        category: provider
+                                            .productDetailModel!.category,
+                                        description: provider
+                                            .productDetailModel!.description,
+                                        urlImage: provider
+                                            .productDetailModel!.urlImage,
+                                        subcategory: provider
+                                            .productDetailModel!.subcategory,
+                                        age: provider.productDetailModel!.age,
+                                        price:
+                                            provider.productDetailModel!.price,
+                                        currentLocation: provider
+                                            .productDetailModel!
+                                            .currentLocation,
+                                      );
 
-                                provider.toggleFavourite(product, widget.id);
-                              },
-                              child: provider.isfavourite
-                                  ? const Icon(Icons.favorite_outlined)
-                                  : const Icon(
-                                      Icons.favorite_border,
-                                      size: 35,
-                                    )),
-                        ) : SizedBox() ,
+                                      provider.toggleFavourite(
+                                          product, widget.id);
+                                    },
+                                    child: provider.isfavourite
+                                        ? const Icon(Icons.favorite_outlined)
+                                        : const Icon(
+                                            Icons.favorite_border,
+                                            size: 35,
+                                          )),
+                              )
+                            : const SizedBox(),
                         Padding(
                           padding: const EdgeInsets.only(left: 12),
                           child: Row(
@@ -195,7 +210,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       Padding(
                         padding: const EdgeInsets.only(left: 20, top: 8),
                         child: Text(
-                          provider.productDetailModel!.category!,
+                          provider.productDetailModel?.category ?? 'category',
                           style: AppTextStyles.textStyleBoldBodySmall.copyWith(
                               fontSize: 16, fontWeight: FontWeight.w400),
                         ),
@@ -278,10 +293,10 @@ class _ProductScreenState extends State<ProductScreen> {
                       ),
                       const Divider(),
                       ListTile(
-                        leading: CircleAvatar(
-                          backgroundImage:
-                              NetworkImage(provider.donnerDetail!.image!),
-                        ),
+                        // leading: CircleAvatar(
+                        //   backgroundImage:
+                        //       NetworkImage(provider.donnerDetail!.image!),
+                        // ),
                         title: Text(provider.donnerDetail?.name ?? '',
                             style: AppTextStyles.textStyleBoldBodySmall
                                 .copyWith(
@@ -302,13 +317,13 @@ class _ProductScreenState extends State<ProductScreen> {
                         ),
                       ),
                       Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 25),
                         child: Row(
                           //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                          const  Icon(
+                            const Icon(
                               Icons.location_on_outlined,
                               size: 30,
                             ),
@@ -317,7 +332,7 @@ class _ProductScreenState extends State<ProductScreen> {
                               return Container(
                                   width: 180,
                                   child: Text(
-                                   "Pakistan, ${provider.productDetailModel!.currentLocation} "?? 'Lahore',
+                                    "Pakistan, ${provider.productDetailModel!.currentLocation} ",
                                     style: AppTextStyles.textStyleBoldBodySmall
                                         .copyWith(
                                       fontSize: 16,
@@ -427,73 +442,74 @@ class _ProductScreenState extends State<ProductScreen> {
                             ),
                           )
                         else
-                          Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Consumer<ProductDetailProvider>(
-                                builder: (context, p, child) {
-                              return isLoading
-                                  ? const CustomLoader()
-                                  : CustomButton(
-                                      onTap: () async {
-                                        isLoading = true;
-                                        setState(() {});
+                          Consumer<ProductDetailProvider>(
+                            builder: (context, p, _) {
+                              return Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: p.isloading
+                                      ? const CustomLoader()
+                                      : CustomButton(
+                                          onTap: () async {
+                                            p.setbool(true);
+                                            // isLoading = true;
+                                            // setState(() {});
 
-                                        var uid = FirebaseAuth
-                                            .instance.currentUser!.uid;
-                                        UserModel? user =
-                                            await firebaseGetUserDetail(uid);
-                                        isLoading = false;
-                                        setState(() {});
-                                        if (user?.isPhoneVerified == true) {
-                                        await provider.addRequest(context,
-                                            productID: widget.id,
-                                            user: user,
-                                            idofuser: widget.userid);
-                                        // 🔽 Create Chat Room and Default Message
+                                            var uid = FirebaseAuth
+                                                .instance.currentUser!.uid;
+                                            UserModel? user =
+                                                await firebaseGetUserDetail(
+                                                    uid);
+                                            p.setbool(false);
+                                            // isLoading = false;
+                                            // setState(() {});
+                                            if (user?.isPhoneVerified == true) {
+                                              await p.addRequest(context,
+                                                  productID: widget.id,
+                                                  user: user,
+                                                  idofuser: widget.userid);
+                                              // 🔽 Create Chat Room and Default Message
 
-                                        // String token =
-                                        //     provider.donnerDetail!.fcmToken!;
-                                        // NotificationProvider.sendNotification(
-                                        //     token: token,
-                                        //     message:
-                                        //         "${userData!.name} New Request For Donation");
-                                        // NotificationProvider.sendPushMessage(
-                                        //     token);
-                                        }
-                                        else {
-                                          showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                return ErrorDialogBox(
-                                                  title:
-                                                      "Verification Required!",
-                                                  descrption:
-                                                      "Please Verify your Phone Number",
-                                                  buttonText: "GO",
-                                                  onTap: () {
-                                                    pop(context);
-                                                    push(context,
-                                                        const SignUpScreenByPhone());
-                                                  },
-                                                );
-                                              });
-                                          showSnack(
-                                              context: context,
-                                              text: "Please Verify your Phone Number");
-                                        }
-                                      },
-                                      text: "Request",
-                                    );
-                            }),
+                                              // String token =
+                                              //     provider.donnerDetail!.fcmToken!;
+                                              // NotificationProvider.sendNotification(
+                                              //     token: token,
+                                              //     message:
+                                              //         "${userData!.name} New Request For Donation");
+                                              // NotificationProvider.sendPushMessage(
+                                              //     token);
+                                            } else {
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return ErrorDialogBox(
+                                                      title:
+                                                          "Verification Required!",
+                                                      descrption:
+                                                          "Please Verify your Phone Number",
+                                                      buttonText: "GO",
+                                                      onTap: () {
+                                                        pop(context);
+                                                        push(context,
+                                                            const SignUpScreenByPhone());
+                                                      },
+                                                    );
+                                                  });
+                                              showSnack(
+                                                  context: context,
+                                                  text:
+                                                      "Please Verify your Phone Number");
+                                            }
+                                          },
+                                          text: "Request",
+                                        ));
+                            },
                           ),
 
                       // SizedBox(
                       //     height: 20,
                       //   ),
                     ],
-                  );
-          }),
-        ),
+                  )),
       ),
     );
   }

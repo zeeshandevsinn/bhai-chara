@@ -17,16 +17,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../../../main.dart';
 import '../../../utils/push.dart';
 import '../../../view/request_screen.dart';
 
 class ProductDetailProvider extends ChangeNotifier {
   bool isLoading = false;
+  bool isloading = false;
   UserModel? donnerDetail;
   ProductDetailModel? productDetailModel;
   List<Marker> markersData = [];
   bool isProductRequested = false;
   bool isfavourite = false;
+
+  setbool(bool value) {
+    isloading = value;
+    notifyListeners();
+  }
 
   Future<void> toggleFavourite(
       ProductDetailModel product, String productId) async {
@@ -181,6 +188,16 @@ class ProductDetailProvider extends ChangeNotifier {
       await FirebaseFirestore.instance.collection(REQUEST_COLLECTION).add(data);
       await getRequestedProduct(productID);
 
+      bool chatCreated = await requestProduct(idofuser);
+      if (chatCreated) {
+        print('chat created successfully');
+        navigatorKey.currentState?.push(
+          MaterialPageRoute(builder: (_) => const ChatListScreen()),
+        );
+      } else {
+        showSnack(context: context, text: "failed to Sent Message !");
+      }
+
       // String currentUserId = FirebaseAuth.instance.currentUser!.uid;
       // String receiverUserId = idofuser;
 
@@ -219,12 +236,45 @@ class ProductDetailProvider extends ChangeNotifier {
 
       isLoading = false;
       notifyListeners();
-
-      push(context, RequestScreen());
+      push(context, const RequestScreen());
     } catch (e) {
       isLoading = false;
       notifyListeners();
       showSnack(context: context, text: e.toString());
+    }
+  }
+
+  Future<bool> requestProduct(String receiverID) async {
+    String currentUserId = FirebaseAuth.instance.currentUser!.uid;
+    String receiverUserId = receiverID;
+
+    List<String> ids = [currentUserId, receiverUserId];
+    ids.sort();
+    String chatRoomId = ids.join("_");
+    print('chatroomId : $chatRoomId ');
+    try {
+      await FirebaseFirestore.instance.collection('chats').doc(chatRoomId).set({
+        'users': [currentUserId, receiverUserId],
+        'lastMessage': "Hello! I'm requesting this product",
+        'lastUpdated': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+
+      await FirebaseFirestore.instance
+          .collection('chats')
+          .doc(chatRoomId)
+          .collection('messages')
+          .add({
+        'senderId': currentUserId,
+        'receiverId': receiverUserId,
+        'text': "Hello! I'm requesting this product",
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+
+      print("Chat room and default message created!");
+      return true;
+    } catch (e) {
+      print("🔥 Chat creation error: $e");
+      return false;
     }
   }
 }

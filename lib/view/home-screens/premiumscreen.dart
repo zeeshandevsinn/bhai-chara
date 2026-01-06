@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../controller/provider/premiumprovider/premiumprovider.dart';
 
 class PremiumScreen extends StatefulWidget {
   const PremiumScreen({Key? key}) : super(key: key);
@@ -8,8 +10,8 @@ class PremiumScreen extends StatefulWidget {
 }
 
 class _PremiumScreenState extends State<PremiumScreen> {
-  bool _isFreeExpanded = false;
-  bool _isPremiumExpanded = false;
+  // bool _isFreeExpanded = false;
+  // bool _isPremiumExpanded = false;
 
   final List<Map<String, dynamic>> freeFeatures = [
     {"icon": Icons.check_circle, "text": "Access to basic features"},
@@ -18,18 +20,31 @@ class _PremiumScreenState extends State<PremiumScreen> {
   ];
 
   final List<Map<String, dynamic>> premiumFeatures = [
-    {"icon": Icons.campaign, "text": "Advertisement Integration (Meta & In-App Ads)"},
+    {
+      "icon": Icons.campaign,
+      "text": "Advertisement Integration (Meta & In-App Ads)"
+    },
     {"icon": Icons.public, "text": "SEO Optimization & Landing Page"},
     {"icon": Icons.verified, "text": "Verified Profiles & Premium Badges"},
     {"icon": Icons.storefront, "text": "Premium Storefronts with Branding"},
-    {"icon": Icons.chat, "text": "Advanced Chat (Files, Voice Notes, AI Support)"},
-    {"icon": Icons.receipt_long, "text": "Donation Transparency & Impact Reports"},
-    {"icon": Icons.notifications_active, "text": "Push Notifications & Targeted Campaigns"},
+    {
+      "icon": Icons.chat,
+      "text": "Advanced Chat (Files, Voice Notes, AI Support)"
+    },
+    {
+      "icon": Icons.receipt_long,
+      "text": "Donation Transparency & Impact Reports"
+    },
+    {
+      "icon": Icons.notifications_active,
+      "text": "Push Notifications & Targeted Campaigns"
+    },
     {"icon": Icons.headset_mic, "text": "Priority Support"},
   ];
 
   @override
   Widget build(BuildContext context) {
+    print('isRebuilding');
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
@@ -40,42 +55,55 @@ class _PremiumScreenState extends State<PremiumScreen> {
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            const SizedBox(height: 10),
-            const Text(
-              "Choose Your Plan",
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            _buildDropdownSection(
-              title: "Free Limited Plan",
-              expanded: _isFreeExpanded,
-              onTap: () {
-                setState(() {
-                  _isFreeExpanded = !_isFreeExpanded;
-                  _isPremiumExpanded = false;
-                });
-              },
-              features: freeFeatures,
-              gradient: [Colors.blue.shade400, Colors.blue.shade700],
-              price: "0\$ / mo",
-            ),
-            const SizedBox(height: 20),
-            _buildDropdownSection(
-              title: "Premium Plan",
-              expanded: _isPremiumExpanded,
-              onTap: () {
-                setState(() {
-                  _isPremiumExpanded = !_isPremiumExpanded;
-                  _isFreeExpanded = false;
-                });
-              },
-              features: premiumFeatures,
-              gradient: [Colors.deepPurple.shade400, Colors.purple.shade700],
-              price: "19.99\$ / mo",
-            ),
-          ],
+        child: Consumer<Premiumprovider>(
+          builder: (context, provider, _) {
+            print('notRebuilding');
+            return Column(
+              children: [
+                const SizedBox(height: 10),
+                const Text(
+                  "Choose Your Plan",
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 20),
+                _buildDropdownSection(
+                  title: "Free Limited Plan",
+                  expanded: provider.isFreeExpanded,
+                  onTap: () {
+                    provider.setisFreeExpanded(!provider.isFreeExpanded);
+                    provider.setisPremiumExpanded(false);
+                    // setState(() {
+                    //   _isFreeExpanded = !_isFreeExpanded;
+                    //   _isPremiumExpanded = false;
+                    // });
+                  },
+                  features: freeFeatures,
+                  gradient: [Colors.blue.shade400, Colors.blue.shade700],
+                  price: "0\$ / mo",
+                ),
+                const SizedBox(height: 20),
+                _buildDropdownSection(
+                  title: "Premium Plan",
+                  expanded: provider.isPremiumExpanded,
+                  onTap: () {
+                    provider.setisPremiumExpanded(!provider.isPremiumExpanded);
+                    provider.setisFreeExpanded(false);
+
+                    // setState(() {
+                    //   _isPremiumExpanded = !_isPremiumExpanded;
+                    //   _isFreeExpanded = false;
+                    // });
+                  },
+                  features: premiumFeatures,
+                  gradient: [
+                    Colors.deepPurple.shade400,
+                    Colors.purple.shade700
+                  ],
+                  price: "19.99\$ / mo",
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
@@ -111,12 +139,16 @@ class _PremiumScreenState extends State<PremiumScreen> {
               title: Text(
                 title,
                 style: const TextStyle(
-                    fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               ),
               subtitle: Text(
                 price,
                 style: const TextStyle(
-                    fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white70),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white70),
               ),
               trailing: Icon(
                 expanded ? Icons.expand_less : Icons.expand_more,
@@ -128,9 +160,9 @@ class _PremiumScreenState extends State<PremiumScreen> {
               Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.white,
-                  borderRadius: const BorderRadius.vertical(
+                  borderRadius: BorderRadius.vertical(
                     bottom: Radius.circular(15),
                   ),
                 ),

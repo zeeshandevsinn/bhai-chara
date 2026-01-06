@@ -1,5 +1,4 @@
 import 'package:bhai_chara/utils/app_colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class RecredentialAlert extends StatefulWidget {
@@ -44,7 +43,7 @@ class _RecredentialAlertState extends State<RecredentialAlert> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
-        children: [
+        children: const [
           Image(
             image: AssetImage('assets/images/Bhai Chara svg 1.png'),
             height: 45,

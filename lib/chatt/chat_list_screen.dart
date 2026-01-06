@@ -1,13 +1,7 @@
-import 'package:bhai_chara/utils/push.dart';
-import 'package:bhai_chara/utils/text-styles.dart';
 import 'package:bhai_chara/chatt/live_chatt_screen.dart';
 import 'package:flutter/material.dart';
-
-import '../utils/app_colors.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 
 class ChatListScreen extends StatelessWidget {
   const ChatListScreen({super.key});
@@ -18,8 +12,13 @@ class ChatListScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: const Text("Chats")),
+          elevation: 1,
+          centerTitle: true,
+          backgroundColor: Colors.black87,
+          title: const Text(
+            "Chats",
+            style: TextStyle(color: Colors.white),
+          )),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('chats')
@@ -61,27 +60,47 @@ class ChatListScreen extends StatelessWidget {
                   final userData =
                       userSnapshot.data!.data() as Map<String, dynamic>;
 
-                  return ListTile(
-                    title: Text(userData['Name'] ?? 'Unknown'),
-                    subtitle: Text(lastMessage),
-                    trailing: Text(
-                      timestamp != null ? _formatTimestamp(timestamp) : '',
-                      style: const TextStyle(fontSize: 12),
+                  return Container(
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.black
+                          .withOpacity(0.05), // 👈 light black / dark grey
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    onTap: () {
-                      // Navigate to ChatScreen
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => ChatScreen(
-                            chatRoomId: chat.id,
-                            otherUserId: otherUserId,
-                            otherUserName: userData['Name'],
-                            otherUserImage: userData['image'],
-                          ),
+                    child: ListTile(
+                      title: Text(
+                        userData['Name'] ?? 'Unknown',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
                         ),
-                      );
-                    },
+                      ),
+                      subtitle: Text(
+                        lastMessage,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      trailing: Text(
+                        timestamp != null ? _formatTimestamp(timestamp) : '',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.black54,
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ChatScreen(
+                              chatRoomId: chat.id,
+                              otherUserId: otherUserId,
+                              otherUserName: userData['Name'],
+                              otherUserImage: userData['image'],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   );
                 },
               );

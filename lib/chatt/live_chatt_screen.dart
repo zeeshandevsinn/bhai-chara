@@ -54,7 +54,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.otherUserName)),
+      appBar: AppBar(title: Text(widget.otherUserName), backgroundColor: Colors.black54,elevation: 1,),
       body: Column(
         children: [
           Expanded(
@@ -89,7 +89,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
                           color: isMe
-                              ? Colors.blueAccent.withOpacity(0.8)
+                              ? Colors.black.withOpacity(0.8)
                               : Colors.grey.shade300,
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -120,7 +120,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.send),
+                  icon: const Icon(Icons.send, color: Colors.grey,),
                   onPressed: _sendMessage,
                 ),
               ],

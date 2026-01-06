@@ -9,8 +9,10 @@ import 'package:bhai_chara/utils/text-styles.dart';
 import 'package:bhai_chara/view/home-screens/sell_sub_categorie_screen.dart';
 import 'package:bhai_chara/view/post%20and%20detail/post_and_detail_1.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 // import '../../common/custom_container_tile.dart';
 import '../../common/custom_container_tile.dart';
+import '../../controller/provider/sellscreen_provider/sellscreenprovider.dart';
 import '../../utils/circle_avatar_row.dart';
 
 class SellScreen extends StatefulWidget {
@@ -42,7 +44,8 @@ class _SellScreenState extends State<SellScreen> {
     const Color(0xff000000),
     const Color.fromARGB(249, 70, 2, 17),
   ];
-  List<String> SellCategory = [
+
+  final List<String> sellCategory = [
     "Animal",
     "Electronic",
     "Mobile",
@@ -50,148 +53,124 @@ class _SellScreenState extends State<SellScreen> {
     "Bike",
     "Car",
   ];
-  List<String> Selling = [
+
+  final List<String> selling = [
     'assets/images/fluent_animal-cat-28-filled.png',
     'assets/images/basil_camera-solid.png',
     'assets/images/fontisto_mobile.png',
     'assets/images/map_furniture-store.png',
     'assets/images/ri_motorbike-fill.png',
-   'assets/images/colorcar.png'
+    'assets/images/colorcar.png',
   ];
-  bool selected = false;
-  void toggleTextFieldVisibility() {
-    setState(() {
-      selected = !selected;
-    });
-  }
-
-  TextEditingController otherController = TextEditingController();
-  bool isTextFieldEmpty = true;
-
-  @override
-  void initState() {
-    super.initState();
-
-    // Listen to changes in the text field and update the button visibility accordingly.
-    otherController.addListener(() {
-      setState(() {
-        isTextFieldEmpty = otherController.text.isEmpty;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    otherController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
-    Random random = Random();
-    List<Color> randomColorList = [];
+    final provider = context.watch<SellScreenProvider>();
+    final size = MediaQuery.of(context).size;
 
-    for (int i = 0; i < SellCategory.length; i++) {
-      Color randomColor = myColors[random.nextInt(myColors.length)];
-      randomColorList.add(randomColor);
-    }
-    var size = MediaQuery.of(context).size;
+    Random random = Random();
+    List<Color> randomColorList = List.generate(
+      sellCategory.length,
+      (_) => myColors[random.nextInt(myColors.length)],
+    );
+
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: AppBar(
-      backgroundColor: AppColors.white,
-      foregroundColor: AppColors.white,
-      title: Text(
-                "What are you offering?",
-                style: AppTextStyles.textStyleBoldBodyMedium,
-              ),
-      centerTitle: true,
-      // actions: [
-      //   IconButton(onPressed: (){
-      //     FirebaseAuth.instance.signOut();
-      //   }, icon: Icon(Icons.star)),
-      // ],
-    ),
+        backgroundColor: AppColors.white,
+        centerTitle: true,
+        title: Text(
+          "What are you offering?",
+          style: AppTextStyles.textStyleBoldBodyMedium,
+        ),
+      ),
       body: SingleChildScrollView(
-        child:
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-             children: [
-          Padding(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
               padding: const EdgeInsets.only(left: 20, top: 15, bottom: 15),
               child: Text(
                 "Categories",
                 style: AppTextStyles.textStyleBoldBodyMedium,
-              )),
-          for (int i = 0; i < Selling.length; i++)
-            CustomCircleAvatarRow(
-              selected: false,
-              link: Selling[i],
-              col: randomColorList[i],
-              txt: SellCategory[i],
-              ontap: () {
-                push(
+              ),
+            ),
+
+            /// Categories
+            for (int i = 0; i < selling.length; i++)
+              CustomCircleAvatarRow(
+                selected: false,
+                link: selling[i],
+                col: randomColorList[i],
+                txt: sellCategory[i],
+                ontap: () {
+                  push(
                     context,
                     SubCategorieScreen(
-                      link: Selling[i],
+                      link: selling[i],
                       color: randomColorList[i],
-                      text: SellCategory[i],
-                    ));
-              },
-            ),
-          CustomCircleAvatarRow(
-              selected: selected,
+                      text: sellCategory[i],
+                    ),
+                  );
+                },
+              ),
+
+            /// Other option
+            CustomCircleAvatarRow(
+              selected: provider.selected,
               link: 'assets/images/logo.png',
               txt: 'Other',
               col: AppColors.white,
-              ontap: () {
-                toggleTextFieldVisibility();
-              }),
-          const SizedBox(
-            height: 10,
-          ),
-          if (selected)
-            Center(
-              child: CustomTextField(
-                width: size.width * .80,
-                        
-                // height: 30.00,
-                hintText: "Category",
-                // prfixicon: Icons.edit,
-                border: OutlineInputBorder(
-                    borderSide: const BorderSide(color: AppColors.black),
-                    borderRadius: BorderRadius.circular(20.0)),
-                controller: otherController,
-                obsecuretext: false,
-              ),
+              ontap: provider.toggleTextFieldVisibility,
             ),
-          const SizedBox(
-            height: 5,
-          ),
-          Visibility(
-            visible: !isTextFieldEmpty,
-            child: CustomButton(
-              width: size.width * .30,
-              text: "Next",
-              onTap: () {
-                toggleTextFieldVisibility();
-                SellCategory.add(otherController.text);
-                Selling.add('assets/images/logo.png');
-                push(
+
+            const SizedBox(height: 10),
+
+            /// Text field
+            if (provider.selected)
+              Center(
+                child: CustomTextField(
+                  width: size.width * .80,
+                  hintText: "Category",
+                  border: OutlineInputBorder(
+                    borderSide: const BorderSide(color: AppColors.black),
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  controller: provider.otherController,
+                  obsecuretext: false,
+                ),
+              ),
+
+            const SizedBox(height: 5),
+
+            /// Next button
+            Visibility(
+              visible: !provider.isTextFieldEmpty,
+              child: CustomButton(
+                width: size.width * .30,
+                text: "Next",
+                onTap: () {
+                  final text = provider.otherController.text;
+
+                  provider.toggleTextFieldVisibility();
+                  provider.clearText();
+
+                  push(
                     context,
                     PostDetailScreen1(
                       subtext: "",
                       link: 'assets/images/logo.png',
                       color: Colors.white,
-                      titletext: otherController.text,
-                    ));
-              },
+                      titletext: text,
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
-           const SizedBox(
-            height: 10,
-          ),
-        ]),
+
+            const SizedBox(height: 10),
+          ],
+        ),
       ),
     );
   }

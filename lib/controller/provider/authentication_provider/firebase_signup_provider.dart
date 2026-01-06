@@ -1,11 +1,7 @@
 import 'dart:developer';
-
-import 'dart:developer';
-
 import 'package:bhai_chara/controller/services/shared_prefrences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-
 import '../../../view/authentication/otp_code_screen.dart';
 import '../../provider/phone_number.dart';
 import 'package:bhai_chara/controller/services/Firebase_Manager.dart';
@@ -13,7 +9,6 @@ import 'package:bhai_chara/utils/push.dart';
 import 'package:bhai_chara/utils/showSnack.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import '../../../view/authentication/location.dart';
 import '../../../view/authentication/signup_screen_by_phone.dart';
 
@@ -61,30 +56,35 @@ class SignUpProvider extends ChangeNotifier {
       log(user.toString());
       if (user != null) {
         showSnack(context: context, text: "SignUp SuccessFully");
-        pushUntil(context, SignUpScreenByPhone());
+        pushUntil(context, const SignUpScreenByPhone());
         return data;
       }
-    } catch (e) {
+    } on FirebaseAuthException catch (e) {
+      print(e);
       isLoading = false;
       notifyListeners();
-      showSnack(
-          context: context,
-          text: "The email address is already in use by another account.");
+      showSnack(context: context, text: e.message);
     }
   }
 
-  PhoneVerifyFireBase(context, phoneNumber) async {
+  phoneVerifyFireBase(context, phoneNumber) async {
     try {
       isLoading = true;
       notifyListeners();
 
       var users = await FirebaseFirestore.instance
-          .collection(USER_COLLECTION)
+          .collection('Client')
           .where("phoneNumber", isEqualTo: phoneNumber)
           .get();
-      isLoading = false;
-      notifyListeners();
-      if (users.docs.isEmpty) {
+      // isLoading = false;
+      // notifyListeners();
+      if (users.docs.isNotEmpty) {
+        isLoading = false;
+        notifyListeners();
+        showSnack(
+            context: context,
+            text: "Phone Number Already Exist. Please use another Number");
+      } else {
         await FirebaseAuth.instance.verifyPhoneNumber(
             phoneNumber: phoneNumber,
             verificationCompleted: (PhoneAuthCredential credential) {},
@@ -94,14 +94,15 @@ class SignUpProvider extends ChangeNotifier {
               verifiedID = FirebaseManager.verifyId;
               showSnack(context: context, text: "OTP Sent");
               PhoneNumber = phoneNumber.toString();
+
               isLoading = false;
-              
               notifyListeners();
+              
               Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => OTPScreen(
-                            phone: PhoneProvider.phonenumber,
+                            phone: phoneNumber,
                           )));
               //  push(
               //     context,
@@ -112,12 +113,6 @@ class SignUpProvider extends ChangeNotifier {
               // debugger();
             },
             codeAutoRetrievalTimeout: (String verificationId) {});
-      } else {
-        isLoading = false;
-        notifyListeners();
-        showSnack(
-            context: context,
-            text: "Phone Number Already Exist. Please use another Number");
       }
     } catch (e) {
       isLoading = false;
@@ -126,7 +121,7 @@ class SignUpProvider extends ChangeNotifier {
     }
   }
 
-  OTPVerify(context, String Otp, phoneNumber) async {
+  otpverify(context, String Otp, phoneNumber) async {
     try {
       isLoading = true;
       notifyListeners();
@@ -137,10 +132,19 @@ class SignUpProvider extends ChangeNotifier {
       if (isVerified) {
         String? uid = FirebaseAuth.instance.currentUser?.uid;
         if (uid != null) {
-          FirebaseFirestore.instance
+          print(phoneNumber);
+          await FirebaseFirestore.instance
               .collection(USER_COLLECTION)
               .doc(uid)
-              .update({"isPhoneVerified": true, "phoneNumber": phoneNumber});
+              .set({
+            "isPhoneVerified": true,
+            "phoneNumber": phoneNumber,
+          }, SetOptions(merge: true));
+
+          // FirebaseFirestore.instance
+          //     .collection(USER_COLLECTION)
+          //     .doc(uid)
+          //     .update({"isPhoneVerified": true, "phoneNumber": phoneNumber});
           pushUntil(context, const LocationScreen());
         }
       }

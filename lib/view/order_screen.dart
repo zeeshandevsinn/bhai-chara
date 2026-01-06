@@ -11,6 +11,8 @@ import '../controller/services/Firebase_Manager.dart';
 import '../utils/app_colors.dart';
 
 class OrderScreen extends StatelessWidget {
+  const OrderScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -125,7 +127,7 @@ class OrderScreen extends StatelessWidget {
                           );
                         }
 
-                        return CustomLoader();
+                        return const CustomLoader();
                       }),
                   Gap.h(80),
                 ],
@@ -196,7 +198,7 @@ class OrderScreen extends StatelessWidget {
                           );
                         }
 
-                        return CustomLoader();
+                        return const CustomLoader();
                       }),
                   Gap.h(80),
                 ],
@@ -267,7 +269,7 @@ class OrderScreen extends StatelessWidget {
                           );
                         }
 
-                        return CustomLoader();
+                        return const CustomLoader();
                       }),
                   Gap.h(80),
                 ],

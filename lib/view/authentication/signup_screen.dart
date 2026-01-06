@@ -29,7 +29,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Scaffold(
       backgroundColor: AppColors.white,
       // backgroundColor: AppColors.primary,
-      body: Container(
+      body: SizedBox(
         height: double.infinity,
         width: double.infinity,
         // padding: EdgeInsets.all(10),
@@ -131,12 +131,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   text: "Continue with Email",
                   style_text: AppTextStyles.textStyleNormalBoldXLBodySmall,
                   ontap: () {
-                    push(context, SignupByEmail());
+                    push(context, const SignupByEmail());
                   }),
               const SizedBox(
                 height: 20,
               ),
-              Container(
+              SizedBox(
                 child: RichText(
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,
@@ -152,10 +152,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         text: "Terms and Conditions ",
                         style: AppTextStyles
                             .textStyleNormalBody_BlueColor_Underline,
-                             recognizer: TapGestureRecognizer()
-                      ..onTap = () async {
-                        push(context, TermsAndConditionsScreen());
-                      },
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () async {
+                            push(context, const TermsAndConditionsScreen());
+                          },
                       ),
                       TextSpan(
                         text: "and ",
@@ -165,10 +165,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         text: "Privacy",
                         style: AppTextStyles
                             .textStyleNormalBody_BlueColor_Underline,
-                            recognizer: TapGestureRecognizer()
-                      ..onTap = () async {
-                        push(context, PrivacyPolicyScreen());
-                      },
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () async {
+                            push(context, PrivacyPolicyScreen());
+                          },
                       ),
                       const TextSpan(
                         text: " ",
@@ -177,10 +177,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         text: "Policy",
                         style: AppTextStyles
                             .textStyleNormalBody_BlueColor_Underline,
-                             recognizer: TapGestureRecognizer()
-                      ..onTap = () async {
-                        push(context, PrivacyPolicyScreen());
-                      },
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () async {
+                            push(context, PrivacyPolicyScreen());
+                          },
                       )
                     ],
                   ),
@@ -198,8 +198,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void _handleEnableLocationScenarios() async {
     final requestServiceRequestValue =
         await Geolocator.isLocationServiceEnabled();
-    if (!requestServiceRequestValue) {}
+    if (!requestServiceRequestValue) return;
+
     location = await Geolocator.getCurrentPosition();
+
+    if (!mounted) return;
     context.read<LoginProvider>().signInWithGoogleAccount(
         context, location!.latitude, location!.longitude);
   }
@@ -224,6 +227,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           await Geolocator.isLocationServiceEnabled();
       if (isLocationServiceEnabled) {
         location = await Geolocator.getCurrentPosition();
+        if (!mounted) return;
         context.read<LoginProvider>().signInWithGoogleAccount(
             context, location!.latitude, location!.longitude);
         return;

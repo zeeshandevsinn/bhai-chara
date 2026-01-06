@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import '../controller/provider/product/status.dart';
 import '../main.dart';
 import '../utils/app_colors.dart';
-import '../view/chatting/controller/service/chatt_service.dart';
+
 
 class OrderContainer extends StatefulWidget {
   OrderContainer(
@@ -58,7 +58,7 @@ class _OrderContainerState extends State<OrderContainer> {
         padding: const EdgeInsets.all(20),
         width: double.infinity,
         decoration: BoxDecoration(
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                   offset: Offset(2, 2), blurRadius: 10, color: AppColors.App)
             ],
@@ -103,11 +103,11 @@ class _OrderContainerState extends State<OrderContainer> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 12),
+              padding: const EdgeInsets.symmetric(vertical: 12),
               child: Row(
-                children: [
-                  Icon(Icons.location_on),
-                  SizedBox(
+                children:  [
+                 const Icon(Icons.location_on),
+                const  SizedBox(
                     width: 8,
                   ),
                   Text(widget.address ?? ""),
@@ -128,6 +128,9 @@ class _OrderContainerState extends State<OrderContainer> {
                     child: Container(
                       height: 30,
                       width: 100,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(7),
+                          color: widget.color1),
                       child: Center(
                         child: Text(
                           "Decline",
@@ -136,9 +139,6 @@ class _OrderContainerState extends State<OrderContainer> {
                               .copyWith(color: AppColors.white),
                         ),
                       ),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(7),
-                          color: widget.color1),
                     ),
                   ),
                   const SizedBox(
@@ -150,11 +150,15 @@ class _OrderContainerState extends State<OrderContainer> {
                           .collection(REQUEST_COLLECTION)
                           .doc(widget.uid)
                           .update({"request": ProductStatus.approved.name});
-                      startChat(context);
+                      // if(!mounted) return;    
+                      // startChat(context);
                     },
                     child: Container(
                       height: 30,
                       width: 100,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(7),
+                          color: widget.color2),
                       child: Center(
                         child: Text(
                           "Accept",
@@ -163,9 +167,6 @@ class _OrderContainerState extends State<OrderContainer> {
                               .copyWith(color: AppColors.white),
                         ),
                       ),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(7),
-                          color: widget.color2),
                     ),
                   )
                 ],

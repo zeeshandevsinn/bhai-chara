@@ -1,8 +1,5 @@
+import 'package:bhai_chara/controller/provider/amountprovider/amountprovider.dart';
 import 'package:bhai_chara/controller/provider/root_provider.dart';
-import 'package:bhai_chara/controller/services/Firebase_Manager.dart';
-import 'package:bhai_chara/controller/services/shared_prefrences.dart';
-import 'package:bhai_chara/model/user_model.dart';
-
 import 'package:bhai_chara/utils/app_colors.dart';
 import 'package:bhai_chara/utils/custom_loader.dart';
 import 'package:bhai_chara/utils/push.dart';
@@ -12,18 +9,14 @@ import 'package:bhai_chara/utils/text-styles.dart';
 import 'package:bhai_chara/view/authentication/login_screen.dart';
 import 'package:bhai_chara/view/item/item_screen.dart';
 import 'package:bhai_chara/view/settings-screens/about_us.dart';
-
 import 'package:bhai_chara/view/settings-screens/edit_profile.dart';
-
 import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
 import 'package:bhai_chara/view/settings-screens/privacy_policy.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
-
 import '../home-screens/premiumscreen.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -34,48 +27,52 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> {
-  final SharedPreferenceHelper _sharedPreferenceHelper =
-      SharedPreferenceHelper.instance();
-  UserModel? _userData;
+  // final SharedPreferenceHelper _sharedPreferenceHelper =
+  //     SharedPreferenceHelper.instance();
+  // UserModel? _userData;
   @override
   void initState() {
     super.initState();
-    fetchUserData();
+    final amountProvider = context.read<Amountprovider>();
+    amountProvider.fetchUserData();
   }
 
 /////////// UPDATE PROFILE //////////////
-  void fetchUserData() async {
-    UserModel? userData = await _sharedPreferenceHelper.user();
-    setState(() {
-      _userData = userData;
-    });
-  }
+  // void fetchUserData() async {
+  //   UserModel? userData = await _sharedPreferenceHelper.user();
+  //   setState(() {
+  //     _userData = userData;
+  //   });
+  // }
 
-  bool isloading = false;
-  Future<void> deleteAccount(String email, String password) async {
-    try {
-      setState(() {
-        isloading = true;
-      });
-      await FirebaseManager.deleteAccount(email, password);
-      await _sharedPreferenceHelper.clear();
-      context.read<RootProvider>().setSelectedScreen(0);
-      showSnack(context: context, text: 'User account deleted successfully');
-      pushUntil(context, LoginScreen());
-    } catch (e) {
-      showSnack(context: context, text: e.toString());
-      setState(() {
-        isloading = false;
-      });
-      // Handle error here
-    }
-  }
+  // bool isloading = false;
+  // Future<void> deleteAccount(String email, String password) async {
+  //   try {
+  //     setState(() {
+  //       isloading = true;
+  //     });
+  //     await FirebaseManager.deleteAccount(email, password);
+  //     await _sharedPreferenceHelper.clear();
+  //     if (!mounted) return;
+  //     context.read<RootProvider>().setSelectedScreen(0);
+  //     showSnack(context: context, text: 'User account deleted successfully');
+  //     pushUntil(context, const LoginScreen());
+  //   } catch (e) {
+  //     showSnack(context: context, text: e.toString());
+  //     setState(() {
+  //       isloading = false;
+  //     });
+  //     // Handle error here
+  //   }
+  // }
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final amountprovider = context.watch<Amountprovider>();
+    final imageUrl = amountprovider.userData?.image;
     return Scaffold(
         backgroundColor: AppColors.white,
         appBar: AppBar(
@@ -92,58 +89,52 @@ class _AccountScreenState extends State<AccountScreen> {
           //********************************//
           //**********Edit Profile**********//
           //********************************//
-          child: isloading == true
+          child: amountprovider.isloading == true
               ? const Center(
                   child: CustomLoader(),
                 )
               : ListView(
                   children: [
-                    _userData != null
+                    amountprovider.userData != null
                         ? InkWell(
                             onTap: () {
                               Navigator.push(
                                   context,
                                   CupertinoPageRoute(
                                       builder: (context) => ProfileEdit(
-                                          userdata: _userData!))).then((value) {
-                                fetchUserData();
+                                          userdata: amountprovider
+                                              .userData!))).then((value) {
+                                amountprovider.fetchUserData();
                               });
                             },
-                            child: Container(
+                            child: SizedBox(
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
-                                      _userData!.image == ""
-                                          ? Container(
-                                              height: 80,
-                                              width: 80,
-                                              decoration: const BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                image: DecorationImage(
-                                                  image: AssetImage(
-                                                      "assets/images/profile_photo.png"),
-                                                  fit: BoxFit
-                                                      .cover, // Adjust this according to your requirement
-                                                ),
-                                              ),
-                                            )
-                                          : Container(
-                                              height: 80,
-                                              width: 80,
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                image: DecorationImage(
-                                                  image: NetworkImage(_userData!
-                                                      .image
-                                                      .toString()),
-                                                  fit: BoxFit
-                                                      .cover, // Adjust this according to your requirement
-                                                ),
-                                              ),
-                                            ),
+                                      Container(
+                                        height: 80,
+                                        width: 80,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          image: imageUrl != null &&
+                                                  imageUrl.isNotEmpty
+                                              ? DecorationImage(
+                                                  image:
+                                                      CachedNetworkImageProvider(
+                                                          imageUrl),
+                                                  fit: BoxFit.cover,
+                                                )
+                                              : null,
+                                          color: Colors.grey.shade300,
+                                        ),
+                                        child: imageUrl == null ||
+                                                imageUrl.isEmpty
+                                            ? const Icon(Icons.person, size: 40)
+                                            : null,
+                                      ),
                                       const SizedBox(
                                         width: 12,
                                       ),
@@ -152,7 +143,8 @@ class _AccountScreenState extends State<AccountScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            _userData!.name.toString(),
+                                            amountprovider.userData!.name
+                                                .toString(),
                                             style: const TextStyle(
                                                 color: Colors.black,
                                                 fontWeight: FontWeight.bold,
@@ -161,7 +153,8 @@ class _AccountScreenState extends State<AccountScreen> {
                                           const SizedBox(
                                             height: 7,
                                           ),
-                                          Text(_userData!.email.toString())
+                                          Text(amountprovider.userData!.email
+                                              .toString())
                                         ],
                                       ),
                                     ],
@@ -277,7 +270,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.min,
-                                children: [
+                                children: const [
                                   Image(
                                     image: AssetImage(
                                         'assets/images/Bhai Chara svg 1.png'),
@@ -307,14 +300,17 @@ class _AccountScreenState extends State<AccountScreen> {
                                       style: TextStyle(color: AppColors.error),
                                     ),
                                     onPressed: () async {
-                                      _sharedPreferenceHelper.clear();
+                                      Text(amountprovider.userData!.email
+                                          .toString());
+                                      amountprovider.sharedPreferenceHelper
+                                          .clear();
                                       await FirebaseAuth.instance
                                           .signOut()
                                           .then((value) {
                                         context
                                             .read<RootProvider>()
                                             .setSelectedScreen(0);
-                                        pushUntil(context, LoginScreen());
+                                        pushUntil(context, const LoginScreen());
                                       });
                                     }),
                                 CupertinoDialogAction(
@@ -354,12 +350,31 @@ class _AccountScreenState extends State<AccountScreen> {
                                     emailController, // Pass email controller
                                 passwordController: passwordController,
 
-                                onPressed: () {
+                                onPressed: () async {
                                   String email = emailController.text;
                                   String password = passwordController.text;
 
-                                  deleteAccount(email, password);
-                                  Navigator.pop(context);
+                                  Text(amountprovider.userData!.email
+                                      .toString());
+                                  final error = await amountprovider
+                                      .deleteAccount(email, password);
+
+                                  if (!mounted) return;
+
+                                  if (error == null) {
+                                    showSnack(
+                                      context: context,
+                                      text: 'User account deleted successfully',
+                                    );
+
+                                    pushUntil(context, const LoginScreen());
+                                  } else {
+                                    // 🔥 SHOW ERROR IN SNACKBAR
+                                    showSnack(
+                                      context: context,
+                                      text: error,
+                                    );
+                                  }
                                 },
                               );
                             });

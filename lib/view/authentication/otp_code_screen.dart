@@ -1,7 +1,3 @@
-// ignore_for_file: use_key_in_widget_constructors
-
-import 'dart:developer';
-
 import 'package:bhai_chara/common/custom_pinput.dart';
 import 'package:bhai_chara/controller/provider/authentication_provider/firebase_signup_provider.dart';
 import 'package:bhai_chara/utils/app_config.dart';
@@ -17,7 +13,7 @@ import '../../utils/text-styles.dart';
 // ignore: must_be_immutable
 class OTPScreen extends StatefulWidget {
   var phone;
-  OTPScreen({this.phone = ""});
+  OTPScreen({super.key, this.phone = ""});
 
   @override
   State<OTPScreen> createState() => _OTPScreenState();
@@ -38,41 +34,16 @@ class _OTPScreenState extends State<OTPScreen> {
         backgroundColor: AppColors.white,
         body: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.only(left: 20, right: 20),
+            padding: const EdgeInsets.only(left: 20, right: 20),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  margin: EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(10),
                   child: Column(
                     children: [
                       Gap.h(40),
-                      // Container(
-                      //   child: Row(
-                      //     mainAxisAlignment: MainAxisAlignment.start,
-                      //     children: [
-                      //       IconButton(
-                      //         onPressed: () {
-                      //           pop(
-                      //             context,
-                      //           );
-                      //         },
-                      //         icon: Icon(
-                      //           Icons.arrow_back_ios,
-                      //           size: 20,
-                      //           color: AppColors.black,
-                      //         ),
-                      //       ),
-                      //       const SizedBox(
-                      //         width: 10,
-                      //       ),
-                      //       Text(
-                      //         "Login",
-                      //         style: AppTextStyles.textStyleNormalBodySmall,
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
+                
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -95,7 +66,7 @@ class _OTPScreenState extends State<OTPScreen> {
                         style: AppTextStyles.textStyleBoldBodyMedium,
                       ),
                       Gap.h(20),
-                      Container(
+                      SizedBox(
                           width: size.width * .80,
                           child: Text.rich(
                               maxLines: 3,
@@ -208,7 +179,7 @@ class _OTPScreenState extends State<OTPScreen> {
                           } else {
                             FocusScope.of(context).unfocus();
 
-                            await pro.OTPVerify(context, pro.OTPCode, widget.phone);
+                            await pro.otpverify(context, pro.OTPCode, widget.phone);
                           }
                           // showSnack(context: context, text: "Successfull");
                           // push(context, LocationScreen());

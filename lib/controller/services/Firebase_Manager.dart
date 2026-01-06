@@ -11,7 +11,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-import '../../model/product_detail_model.dart';
 
 const USER_COLLECTION = "Client";
 const CHAT_COLLECTION = "chat";
@@ -27,29 +26,67 @@ class FirebaseManager {
 
   //
 
-  static Future<void> deleteAccount(String email, String password) async {
-    try {
-      // Reauthenticate the user
-      User user = FirebaseAuth.instance.currentUser!;
-      AuthCredential credential = EmailAuthProvider.credential(
-        email: email,
-        password: password,
-      );
-      await user.reauthenticateWithCredential(credential);
+  // static Future<void> deleteAccount(String email, String password) async {
+  //   try {
+  //     // Reauthenticate the user
+  //     User user = FirebaseAuth.instance.currentUser!;
+  //     AuthCredential credential = EmailAuthProvider.credential(
+  //       email: email,
+  //       password: password,
+  //     );
+  //     await user.reauthenticateWithCredential(credential);
 
-      await FirebaseFirestore.instance
-          .collection('Client')
-          .doc(user.uid)
-          .delete();
-      // Delete the user account
-      await user.delete();
+  //     await FirebaseFirestore.instance
+  //         .collection('Client')
+  //         .doc(user.uid)
+  //         .delete();
+  //     // Delete the user account
+  //     await user.delete();
 
-      print('User account deleted successfully');
-    } catch (e) {
-      print('Error deleting user account: $e');
-      throw e;
+  //     print('User account deleted successfully');
+  //   } catch (e) {
+  //     print('Error deleting user account: $e');
+  //     throw e;
+  //   }
+  // }
+
+ static Future<String?> deleteAccount(String email, String password) async {
+  try {
+    final user = FirebaseAuth.instance.currentUser!;
+
+    final credential = EmailAuthProvider.credential(
+      email: email,
+      password: password,
+    );
+
+    await user.reauthenticateWithCredential(credential);
+
+    await FirebaseFirestore.instance
+        .collection('Client')
+        .doc(user.uid)
+        .delete();
+
+    await user.delete();
+
+    return null; // ✅ success
+  } on FirebaseAuthException catch (e) {
+    // 🔥 handle all possible auth errors
+    if (e.code == 'wrong-password' ||
+        e.code == 'invalid-credential' ||
+        e.code == 'invalid-login-credentials') {
+      return 'Your password is incorrect';
     }
+
+    if (e.code == 'user-mismatch') {
+      return 'Email does not match the logged-in user';
+    }
+
+    return e.message ?? 'Authentication failed';
+  } catch (e) {
+    return 'Something went wrong. Please try again.';
   }
+}
+
 
 ///////////////// UPDATE PROFILE DATA /////////////////////////
   static Future<Map<String, dynamic>> updateProfile({
@@ -134,8 +171,7 @@ class FirebaseManager {
       datetime,
       lat,
       lng,
-      currentadress
-      }) async {
+      currentadress}) async {
     try {
       var data = await FirebaseFirestore.instance.collection("Products").add({
         "price": price,
@@ -150,30 +186,28 @@ class FirebaseManager {
         "uid": uid,
         "lat": lat,
         "lng": lng,
-        "currentadress":currentadress
+        "currentadress": currentadress
       });
       return data;
-    } catch (e) {
-      debugger();
-      showSnack(text: e.toString());
+    } on FirebaseException catch (e) {
+      print('message: ${e.message}');
+      showSnack(text: e.message);
     }
   }
 
-  static AddImages(
-    List<File> selectedimages, {
-    price,
-    title,
-    age,
-    description,
-    category,
-    subcategory,
-    uid,
-    isFree,
-    datetime,
-    lat,
-    lng,
-    currentadress
-  }) async {
+  static AddImages(List<File> selectedimages,
+      {price,
+      title,
+      age,
+      description,
+      category,
+      subcategory,
+      uid,
+      isFree,
+      datetime,
+      lat,
+      lng,
+      currentadress}) async {
     try {
       List<String> urlImage = [];
 
@@ -211,20 +245,19 @@ class FirebaseManager {
       //   urlImage.add(await referenceImageToUpload.getDownloadURL());
       // }
       await addProduct(
-        urlImage: urlImage,
-        price: price,
-        age: age,
-        title: title,
-        description: description,
-        category: category,
-        subcategory: subcategory,
-        uid: uid,
-        isFree: isFree,
-        datetime: datetime,
-        lat: lat,
-        lng: lng,
-        currentadress : currentadress
-      );
+          urlImage: urlImage,
+          price: price,
+          age: age,
+          title: title,
+          description: description,
+          category: category,
+          subcategory: subcategory,
+          uid: uid,
+          isFree: isFree,
+          datetime: datetime,
+          lat: lat,
+          lng: lng,
+          currentadress: currentadress);
     } catch (e) {
       // showSnack(text: e.toString());
       return null;
@@ -265,6 +298,20 @@ class FirebaseManager {
       showSnack(text: e.toString());
     }
   }
+
+//   static Future<bool> VerifyOTP(String verificationID, String OTP) async {
+//   try {
+//     AuthCredential credential = PhoneAuthProvider.credential(
+//       verificationId: verificationID,
+//       smsCode: OTP.trim(),
+//     );
+//     return true;
+//   } catch (e) {
+//     print("OTP verification failed: $e");
+//     return false;
+//   }
+// }
+
 
   // ignore: non_constant_identifier_names
   static VerifyOTP(String verificationID, String OTP) async {

@@ -1,13 +1,9 @@
 // ignore_for_file: unused_local_variable
-
 import 'dart:async';
-
 import 'package:bhai_chara/controller/services/shared_prefrences.dart';
 import 'package:bhai_chara/view/home-screens/root_screen.dart';
 import 'package:bhai_chara/view/onboard_screens/intro_slider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import '../../utils/app_colors.dart';
 import '../../utils/push.dart';
 import '../../utils/text-styles.dart';
@@ -24,11 +20,11 @@ class _SplashScreenState extends State<SplashScreen> {
       SharedPreferenceHelper.instance();
   
   startTimer() async {
-    var _duration = const Duration(seconds: 5);
-    return Timer(_duration, Navigation);
+    var duration = const Duration(seconds: 3);
+    return Timer(duration, navigation);
   }
 
-  Navigation() {
+  navigation() {
     var user = _sharedPrefHelper.isUserLoggedIn;
     if (user == true) {
       pushUntil(context, RootScreen());

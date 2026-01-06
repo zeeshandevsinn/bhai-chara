@@ -1,10 +1,7 @@
-import 'dart:developer';
-
 import 'package:bhai_chara/utils/container_with_img.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import '../../utils/custom_loader.dart';
 import '../../utils/push.dart';
 import 'product_details_screen.dart';
@@ -27,22 +24,22 @@ class CustomSearchDelegate extends SearchDelegate<String> {
               onTap: () {
                 key = 'title';
               },
-              child: Text("Serch by title")),
+              child: const Text("Serch by title")),
           PopupMenuItem(
               onTap: () {
                 key = 'category';
               },
-              child: Text("Serch by category")),
+              child: const Text("Serch by category")),
           PopupMenuItem(
               onTap: () {
                 key = 'subcategory';
               },
-              child: Text("Serch by subcategory")),
+              child: const Text("Serch by subcategory")),
           PopupMenuItem(
               onTap: () {
                 key = 'price';
               },
-              child: Text("Serch by price")),
+              child: const Text("Serch by price")),
           // PopupMenuItem(
           //     onTap: () {
           //       key = 'free';
@@ -57,9 +54,7 @@ class CustomSearchDelegate extends SearchDelegate<String> {
   Widget buildLeading(BuildContext context) {
     return IconButton(
       icon: const Icon(Icons.arrow_back),
-      onPressed: () =>{
-        key='',
-         Navigator.of(context).pop()},
+      onPressed: () => {key = '', Navigator.of(context).pop()},
     );
   }
 
@@ -72,7 +67,6 @@ class CustomSearchDelegate extends SearchDelegate<String> {
       switch (key) {
         case 'category':
           {
-            
             stream = FirebaseFirestore.instance
                 .collection("Products")
                 .where(Filter.and(
@@ -136,34 +130,42 @@ class CustomSearchDelegate extends SearchDelegate<String> {
             //   }
           }
 
-          return filteredData.isEmpty?Center(child: Text("No Data found"),): GridView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: filteredData.length,
-            itemBuilder: (context, index) {
-              DocumentSnapshot dataDoc = filteredData[index];
+          return filteredData.isEmpty
+              ? const Center(
+                  child: Text("No Data found"),
+                )
+              : Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: filteredData.length,
+                    itemBuilder: (context, index) {
+                      DocumentSnapshot dataDoc = filteredData[index];
 
-              return CustomContainerBox(
-                isfree: dataDoc.get('isFree'),
-                text: dataDoc.get('title'),
-                secondText: dataDoc.get('description'),
-                imgLink: NetworkImage(dataDoc.get('urlImage')[0]),
-                ontap: () {
-                  push(
-                    context,
-                    ProductScreen(
-                      where: 'no',
-                      id: dataDoc.id,
-                    ),
-                  );
-                },
-              );
-            },
+                      return CustomContainerBox(
+                        isfree: dataDoc.get('isFree'),
+                        text: dataDoc.get('title'),
+                        secondText: dataDoc.get('description'),
+                        imgLink: dataDoc.get('urlImage')[0],
+                        ontap: () {
+                          push(
+                            context,
+                            ProductScreen(
+                              where: 'no',
+                              id: dataDoc.id,
+                            ),
+                          );
+                        },
+                      );
+                    },
 
-            // ignore: prefer_const_constructors
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, childAspectRatio: .85),
-          );
+                    // ignore: prefer_const_constructors
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2, childAspectRatio: .85),
+                  ),
+                );
         } else {
           return const Center(child: CustomLoader());
         }
@@ -217,33 +219,36 @@ class CustomSearchDelegate extends SearchDelegate<String> {
             //   }
           }
 
-          return GridView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: filteredData.length,
-            itemBuilder: (context, index) {
-              DocumentSnapshot dataDoc = filteredData[index];
+          return Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: GridView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: filteredData.length,
+              itemBuilder: (context, index) {
+                DocumentSnapshot dataDoc = filteredData[index];
 
-              return CustomContainerBox(
-                isfree: dataDoc.get('isFree'),
-                text: dataDoc.get('title'),
-                secondText: dataDoc.get('description'),
-                imgLink: NetworkImage(dataDoc.get('urlImage')[0]),
-                ontap: () {
-                  push(
-                    context,
-                    ProductScreen(
-                      where: 'no',
-                      id: dataDoc.id,
-                    ),
-                  );
-                },
-              );
-            },
+                return CustomContainerBox(
+                  isfree: dataDoc.get('isFree'),
+                  text: dataDoc.get('title'),
+                  secondText: dataDoc.get('description'),
+                  imgLink: dataDoc.get('urlImage')[0],
+                  ontap: () {
+                    push(
+                      context,
+                      ProductScreen(
+                        where: 'no',
+                        id: dataDoc.id,
+                      ),
+                    );
+                  },
+                );
+              },
 
-            // ignore: prefer_const_constructors
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, childAspectRatio: .85),
+              // ignore: prefer_const_constructors
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, childAspectRatio: .85),
+            ),
           );
         } else {
           return const Center(child: CustomLoader());
