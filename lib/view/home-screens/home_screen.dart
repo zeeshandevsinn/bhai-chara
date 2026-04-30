@@ -33,7 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
   TextEditingController searchController = TextEditingController();
-
   List<Color> colorList = [
     AppColors.orange,
     AppColors.yellow,
@@ -460,11 +459,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         push(
                                                           context,
                                                           ProductScreen(
-                                                            where: 'no',
-                                                            userid: dataDoc
-                                                                .get('uid'),
-                                                            id: dataDoc.id,
-                                                          ),
+                                                              where: 'no',
+                                                              userid: dataDoc
+                                                                  .get('uid'),
+                                                              id: dataDoc.id,
+                                                              currentuserid:
+                                                                  FirebaseAuth
+                                                                      .instance
+                                                                      .currentUser!
+                                                                      .uid),
                                                         );
                                                       },
                                                     );

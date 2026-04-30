@@ -12,8 +12,10 @@ import '../../utils/text-styles.dart';
 
 // ignore: must_be_immutable
 class OTPScreen extends StatefulWidget {
+  String? currentuserId;
   var phone;
-  OTPScreen({super.key, this.phone = ""});
+
+  OTPScreen({super.key, this.phone = "", required this.currentuserId});
 
   @override
   State<OTPScreen> createState() => _OTPScreenState();
@@ -43,7 +45,7 @@ class _OTPScreenState extends State<OTPScreen> {
                   child: Column(
                     children: [
                       Gap.h(40),
-                
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -156,44 +158,46 @@ class _OTPScreenState extends State<OTPScreen> {
                   ),
                 ),
                 Gap.h(190),
-                Consumer<SignUpProvider>(
-                  builder: (context, p,child) {
-                    return 
-                    p.isLoading ? const CustomLoader() :
-                    CustomButton(
-                      onTap: () async {
-                        // if (otp_1.text.isEmpty) {
-                        //   showSnack(context: context, text: "Enter OTP Please");
-                        // } else if (otp_2.text.isEmpty) {
-                        //   showSnack(context: context, text: "Enter OTP Please");
-                        // } else if (otp_3.text.isEmpty) {
-                        //   showSnack(context: context, text: "Enter OTP Please");
-                        // } else if (otp_4.text.isEmpty) {
-                        //   showSnack(context: context, text: "Enter OTP Please");
-                        // } else {
+                Consumer<SignUpProvider>(builder: (context, p, child) {
+                  return p.isLoading
+                      ? const CustomLoader()
+                      : CustomButton(
+                          onTap: () async {
+                            // if (otp_1.text.isEmpty) {
+                            //   showSnack(context: context, text: "Enter OTP Please");
+                            // } else if (otp_2.text.isEmpty) {
+                            //   showSnack(context: context, text: "Enter OTP Please");
+                            // } else if (otp_3.text.isEmpty) {
+                            //   showSnack(context: context, text: "Enter OTP Please");
+                            // } else if (otp_4.text.isEmpty) {
+                            //   showSnack(context: context, text: "Enter OTP Please");
+                            // } else {
 
-                        try {
-                          var pro = context.read<SignUpProvider>();
-                          if (pro.OTPCode.isEmpty) {
-                            showSnack(context: context, text: "Please, Enter OTP");
-                          } else {
-                            FocusScope.of(context).unfocus();
+                            try {
+                              var pro = context.read<SignUpProvider>();
+                              if (pro.OTPCode.isEmpty) {
+                                showSnack(
+                                    context: context,
+                                    text: "Please, Enter OTP");
+                              } else {
+                                FocusScope.of(context).unfocus();
 
-                            await pro.otpverify(context, pro.OTPCode, widget.phone);
-                          }
-                          // showSnack(context: context, text: "Successfull");
-                          // push(context, LocationScreen());
-                        } catch (e) {
-                          showSnack(
-                              context: context, text: "Something Went Wrong!");
-                        }
+                                await pro.otpverify(
+                                    context, pro.OTPCode, widget.phone, widget.currentuserId);
+                              }
+                              // showSnack(context: context, text: "Successfull");
+                              // push(context, LocationScreen());
+                            } catch (e) {
+                              showSnack(
+                                  context: context,
+                                  text: "Something Went Wrong!");
+                            }
 
-                        // }
-                      },
-                      text: "Next",
-                    );
-                  }
-                ),
+                            // }
+                          },
+                          text: "Next",
+                        );
+                }),
                 Gap.h(20),
               ],
             ),

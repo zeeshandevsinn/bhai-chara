@@ -9,13 +9,14 @@ import 'package:provider/provider.dart';
 import '../../common/custom_button.dart';
 import '../../controller/provider/visibility_provider.dart';
 
-
 import '../../utils/custom_textfield.dart';
 import '../../utils/push.dart';
 
 // ignore: must_be_immutable
 class CreatePasswardScreen extends StatelessWidget {
-  CreatePasswardScreen({super.key,});
+  CreatePasswardScreen({
+    super.key,
+  });
   var passwordController = TextEditingController();
   var confirmPasswordController = TextEditingController();
   final VisibilityProvider1 passwordVisibilityProvider = VisibilityProvider1();
@@ -26,13 +27,13 @@ class CreatePasswardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
-       appBar: AppBar(
+      appBar: AppBar(
         backgroundColor: AppColors.white,
         foregroundColor: AppColors.black,
-         title: Text(
-                "Create Password",
-                style: AppTextStyles.textStyleBoldBodyMedium,
-              ),
+        title: Text(
+          "Create Password",
+          style: AppTextStyles.textStyleBoldBodyMedium,
+        ),
         centerTitle: true,
       ),
       body: Column(
@@ -55,7 +56,13 @@ class CreatePasswardScreen extends StatelessWidget {
           Container(
               margin: const EdgeInsets.only(left: 24, right: 24, top: 20),
               child: CustomButton(
-                onTap: (){push(context, OTPScreen());},
+                onTap: () {
+                  push(
+                      context,
+                      OTPScreen(
+                        currentuserId: '',
+                      ));
+                },
                 text: "Next",
               )),
         ],

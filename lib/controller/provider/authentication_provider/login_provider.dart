@@ -116,7 +116,7 @@ class LoginProvider extends ChangeNotifier {
         await _sharedPrefHelper.insertUser(userData!);
         if (user != null) {
           showSnack(context: context, text: "SignUp SuccessFully");
-          pushUntil(context, const SignUpScreenByPhone());
+          pushUntil(context, SignUpScreenByPhone(userid: user.uid.toString()));
           // pushUntil(context, RootScreen());
         }
       } else {

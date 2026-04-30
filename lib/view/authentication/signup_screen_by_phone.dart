@@ -11,7 +11,8 @@ import '../../common/custom_button.dart';
 import '../../utils/custom_loader.dart';
 
 class SignUpScreenByPhone extends StatefulWidget {
-  const SignUpScreenByPhone({super.key});
+  final String userid;
+  const SignUpScreenByPhone({super.key, required this.userid});
 
   @override
   State<SignUpScreenByPhone> createState() => _SignUpScreenByPhoneState();
@@ -105,8 +106,8 @@ class _SignUpScreenByPhoneState extends State<SignUpScreenByPhone> {
                               FocusScope.of(context).unfocus();
                               var data = context.read<SignUpProvider>();
 
-                              await data.phoneVerifyFireBase(
-                                  context, numberController.text.trim());
+                              await data.phoneVerifyFireBase(context,
+                                  numberController.text.trim(), widget.userid);
 
                               // numberController =
                               //     await CustomCountryPhoneField().controller;

@@ -17,6 +17,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:bhai_chara/common/custom_button.dart';
 import '../../controller/provider/authentication_provider/auth_provider.dart';
+import '../../stripeservices/paymentservice.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/showSnack.dart';
 import '../../utils/text-styles.dart';
@@ -27,10 +28,12 @@ import 'mapScreen.dart';
 
 // ignore: must_be_immutable
 class ProductScreen extends StatefulWidget {
-  ProductScreen({super.key, this.id, this.userid, this.where});
+  ProductScreen(
+      {super.key, this.id, this.userid, this.where, this.currentuserid});
   var id;
   var userid;
   String? where;
+  String? currentuserid;
   @override
   State<ProductScreen> createState() => _ProductScreenState();
 }
@@ -38,6 +41,7 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   // final SharedPreferenceHelper _sharedPreferenceHelper =
   //     SharedPreferenceHelper.instance();
+  StripePaymentservices paymentservices = StripePaymentservices();
 
   @override
   void initState() {
@@ -463,6 +467,15 @@ class _ProductScreenState extends State<ProductScreen> {
                                             // isLoading = false;
                                             // setState(() {});
                                             if (user?.isPhoneVerified == true) {
+                                              bool paymentSuccess =
+                                                  await paymentservices
+                                                      .makePayment(
+                                                          context, '100');
+
+                                              if (!paymentSuccess) {
+                                                // Stop execution if payment failed
+                                                return;
+                                              }
                                               await p.addRequest(context,
                                                   productID: widget.id,
                                                   user: user,
@@ -489,8 +502,13 @@ class _ProductScreenState extends State<ProductScreen> {
                                                       buttonText: "GO",
                                                       onTap: () {
                                                         pop(context);
-                                                        push(context,
-                                                            const SignUpScreenByPhone());
+                                                        push(
+                                                            context,
+                                                            SignUpScreenByPhone(
+                                                              userid: widget
+                                                                  .currentuserid
+                                                                  .toString(),
+                                                            ));
                                                       },
                                                     );
                                                   });

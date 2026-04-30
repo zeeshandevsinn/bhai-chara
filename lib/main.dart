@@ -26,12 +26,13 @@ import 'controller/provider/slider_provider.dart';
 import 'controller/provider/switch_provider.dart';
 import 'controller/provider/timer_provider.dart';
 import 'controller/provider/visibility_provider.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPreferenceHelper.initializeSharedPreferences();
-
+  Stripe.publishableKey = "pk_test_51St7HRPPkLMB9mdQxWR0VXPBB7TZpCPeVUN05vR8N2vyI2XnLGWfJkbJlKj2kxX2GsixDOi8joghkw0UU6fFlrqx00CwnpMfOF"; // 🟢 SAFE KEY
   for (var app in Firebase.apps) {
     print("Initialized Firebase app: ${app.name}");
   }
